@@ -1,7 +1,8 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import Aside from "@/components/nav/aside";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,9 +26,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      {/* h-full here is critical to ensure the body can fill the screen */}
+      <body className="h-full flex antialiased">
+        {/* 1. ASIDE: Fixed width, white background, stays on the left */}
+        <Aside className="h-full bg-white border-r" />
+
+        {/* 2. MAIN: Takes up all remaining space (flex-1) and full height (h-full) */}
+        <main className="flex-1 h-full bg-brand-50 overflow-y-auto">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
