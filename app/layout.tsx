@@ -5,6 +5,7 @@ import "./globals.css";
 import Aside from "@/components/nav/aside";
 import Logo from "@/components/nav/logo";
 import Tabs from "@/components/nav/tabs";
+import AsideFooter from "@/components/nav/aside-footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,13 +33,7 @@ export default function RootLayout({
           <Logo />
           <hr className="slate-300" />
           <Aside className="flex-1" />
-          <div className="flex flex-col px-2 w-full">
-            <hr className="slate-300" />
-
-            <div>Dark Mode</div>
-            <div>Settings</div>
-            <div>User Data</div>
-          </div>
+          <AsideFooter />
         </div>
         {/* MOBILE TABS: Only visible on small screens (below md) */}
 
