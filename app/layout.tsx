@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Aside from "@/components/nav/aside";
+import Logo from "@/components/nav/logo";
+import Tabs from "@/components/nav/tabs";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,14 +32,22 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       {/* h-full here is critical to ensure the body can fill the screen */}
-      <body className="h-full flex antialiased">
+      <body className="h-full flex  flex-col md:flex-row antialiased w-full">
         {/* 1. ASIDE: Fixed width, white background, stays on the left */}
-        <Aside className="h-full bg-white border-r" />
+        <div className="hidden md:flex flex-col w-64 h-full bg-white border-r border-brand-300">
+          <Logo />
+          <hr className="border-brand-300" />
+          <Aside className="flex-1" />
+        </div>
+        {/* MOBILE TABS: Only visible on small screens (below md) */}
 
         {/* 2. MAIN: Takes up all remaining space (flex-1) and full height (h-full) */}
-        <main className="flex-1 h-full bg-brand-50 overflow-y-auto">
-          {children}
+        <main className="glass flex-1 h-full overflow-y-auto">
+          <div className="p-8">{children}</div>
         </main>
+        <div className="md:hidden w-full">
+          <Tabs />
+        </div>
       </body>
     </html>
   );

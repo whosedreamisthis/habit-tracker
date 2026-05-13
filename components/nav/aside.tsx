@@ -1,38 +1,33 @@
-import React from "react";
-import Link from "next/link";
-import {
-  LayoutDashboard,
-  ListChecks,
-  CalendarDays,
-  Brain,
-  BarChart3,
-} from "lucide-react";
+"use client";
 
-const nav = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/habits", label: "Habits", icon: ListChecks },
-  { to: "/weekly", label: "Weekly", icon: CalendarDays },
-  { to: "/insights", label: "Insights", icon: Brain },
-  { to: "/stats", label: "Statistics", icon: BarChart3 },
-];
+import React from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { NAV_LINKS } from "@/lib/constants";
 
 type Props = {
   className?: string;
 };
 
 const Aside = ({ className }: Props) => {
+  const pathname = usePathname();
+
   return (
-    <div className={`w-64  flex flex-col gap-3 px-5 ${className}`}>
-      {nav.map((item) => (
-        <Link
-          href={item.to}
-          key={item.to}
-          className="flex items-center gap-3 p-3 rounded-lg hover:bg-brand-100 transition-colors text-slate-700 hover:text-brand-500"
-        >
-          <item.icon className="w-5 h-5 " />
-          <span className="">{item.label}</span>
-        </Link>
-      ))}
+    <div className={`w-64  flex flex-col px-5 pt-4 ${className}`}>
+      {NAV_LINKS.map((item) => {
+        const isActive = pathname === item.to;
+
+        return (
+          <Link
+            href={item.to}
+            key={item.to}
+            className={`flex items-center gap-3 p-3 rounded-lg  transition-colors ${isActive ? "text-brand-700 bg-brand-100" : "text-slate-500"} cursor-pointer `}
+          >
+            <item.icon className="w-5 h-5 " />
+            <span className="">{item.label}</span>
+          </Link>
+        );
+      })}
     </div>
   );
 };
