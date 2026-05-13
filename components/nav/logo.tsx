@@ -3,9 +3,9 @@ import { Sparkles } from "lucide-react";
 
 const Logo = () => {
   return (
-    <div className="flex items-center gap-3 justify-center p-6">
-      <div className="bg-brand-500 h-10 w-10 rounded-full flex items-center justify-center">
-        <Sparkles />
+    <div className="bg-white  flex items-center gap-3 justify-start py-6 px-6">
+      <div className="h-10 w-10 rounded-md flex items-center justify-center bg-brand-600">
+        <Sparkles className="text-white" />
       </div>
 
       <span className="text-xl font-bold">Habit Tracker</span>

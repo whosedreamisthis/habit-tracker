@@ -1,19 +1,14 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Aside from "@/components/nav/aside";
 import Logo from "@/components/nav/logo";
 import Tabs from "@/components/nav/tabs";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter", // Keep it simple
 });
 
 export const metadata: Metadata = {
@@ -27,17 +22,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full`}
-    >
+    <html lang="en" className={` h-full`}>
       {/* h-full here is critical to ensure the body can fill the screen */}
-      <body className="h-full flex  flex-col md:flex-row antialiased w-full">
-        {/* 1. ASIDE: Fixed width, white background, stays on the left */}
-        <div className="hidden md:flex flex-col w-64 h-full bg-white border-r border-brand-300">
+      <body
+        className={`${inter.className}  h-full flex flex-col md:flex-row antialiased w-full`}
+      >
+        {/* 1. ASIDE: Fixed width, glass style, stays on the left */}
+        <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-300">
           <Logo />
-          <hr className="border-brand-300" />
+          <hr className="slate-300" />
           <Aside className="flex-1" />
+          <div className="flex flex-col px-2 w-full">
+            <hr className="slate-300" />
+
+            <div>Dark Mode</div>
+            <div>Settings</div>
+            <div>User Data</div>
+          </div>
         </div>
         {/* MOBILE TABS: Only visible on small screens (below md) */}
 

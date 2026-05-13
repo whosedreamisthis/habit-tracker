@@ -9,7 +9,7 @@ const Tabs = () => {
   const pathname = usePathname();
 
   return (
-    <div className="sticky bottom-0 h-16 bg-brand-50 w-full flex justify-between items-center px-10">
+    <div className="sticky bottom-0 h-16 glass w-full flex justify-between items-center px-10 bg-brand-50/70">
       {NAV_LINKS.map((link) => {
         const isActive = pathname === link.to;
         return (

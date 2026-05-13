@@ -5,10 +5,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Inter", "Inter var", ui-sans-serif, system-ui, -apple-system,
-  Segoe UI, Roboto, sans-serif;
-
-  --color-ink-50: #f7f7f8;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;  --color-ink-50: #f7f7f8;
   --color-ink-100: #eeeef1;
   --color-ink-200: #d7d7de;
   --color-ink-300: #b5b5c0;
@@ -36,19 +33,19 @@
   color-scheme: light;
 
   --bg-base: #faf8f2;
-  --bg-aurora-1: rgba(251, 191, 36, 0.28);   /* amber */
-  --bg-aurora-2: rgba(236, 72, 153, 0.14);   /* pink */
-  --bg-aurora-3: rgba(14, 165, 233, 0.14);   /* sky */
+  --bg-aurora-1: rgba(251, 191, 36, 0.65);   /* amber - increased opacity */
+  --bg-aurora-2: rgba(236, 72, 153, 0.45);   /* pink - increased opacity */
+  --bg-aurora-3: rgba(14, 165, 233, 0.45);   /* sky - increased opacity */
 
   --text: #13131b;
   --text-soft: #4e4e59;
   --text-muted: #6b6b78;
   --text-faint: #8b8b99;
 
-  --surface: rgba(255, 255, 255, 0.72);
+  --surface: rgba(255, 255, 255, 0.2);
   --surface-strong: rgba(255, 255, 255, 0.88);
   --surface-hover: rgba(255, 255, 255, 0.85);
-  --surface-border: rgba(255, 255, 255, 0.55);
+  --surface-border: rgba(255, 255, 255, 0.1);
   --surface-ring: rgba(255, 255, 255, 0.9);
 
   --input-bg: rgba(255, 255, 255, 0.75);
@@ -72,7 +69,7 @@
   --chart-tick: #6b6b78;
   --chart-tooltip-bg: rgba(255, 255, 255, 0.95);
   --chart-tooltip-border: rgba(15, 15, 27, 0.08);
-  --background: oklch(1 0 0);
+  --background: transparent;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -160,7 +157,7 @@ body,
   height: 100%;
   margin: 0;
   color: var(--text);
-  background: var(--bg-base);
+  background: transparent;
 }
 
 /* Aurora mesh background — sits behind everything */
@@ -182,8 +179,8 @@ body::before {
   .glass {
     background: var(--surface);
     border: 1px solid var(--surface-border);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
   }
   .glass-strong {
     background: var(--surface-strong);
@@ -410,9 +407,7 @@ body::before { animation: aurora-shift 22s ease-in-out infinite; }
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
+    @apply text-foreground;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;  }
+
 }
