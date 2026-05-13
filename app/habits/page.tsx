@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import HabitsHeader from "@/components/habits/habits-header";
 
 const HabitsPage = () => {
-    return (
-        <div>
-            HabitsPage
-        </div>
-    );
+  return (
+    <section>
+      <HabitsHeader />
+    </section>
+  );
 };
 
 export default HabitsPage;

@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import WeeklyHeader from "@/components/weekly/weekly-header";
 
 const WeeklyPage = () => {
-    return (
-        <div>
-            WeeklyPage
-        </div>
-    );
+  return (
+    <section>
+      <WeeklyHeader />
+    </section>
+  );
 };
 
 export default WeeklyPage;

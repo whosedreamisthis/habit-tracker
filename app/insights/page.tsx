@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import InsightsHeader from "@/components/insights/insights-header";
 
 const InsightsPage = () => {
-    return (
-        <div>
-            InsightsPage
-        </div>
-    );
+  return (
+    <section>
+      <InsightsHeader />
+    </section>
+  );
 };
 
 export default InsightsPage;
