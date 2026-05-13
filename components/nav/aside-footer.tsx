@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Settings, Moon, Sun } from "lucide-react";
+import { Settings, Moon, Sun, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 const AsideFooter = () => {
   const { theme, setTheme } = useTheme();
@@ -37,14 +37,17 @@ const AsideFooter = () => {
         <Settings size={18} />
         <p>Settings</p>
       </div>
-      <div className="flex gap-2">
-        <div className="h-10 w-10  flex items-center justify-center bg-brand-600 rounded-full">
-          <p className="text-xl text-white ">A</p>
+      <div className="flex items-center justify-between ">
+        <div className="flex gap-2">
+          <div className="h-10 w-10  flex items-center justify-center bg-brand-600 rounded-full">
+            <p className="text-xl text-white ">A</p>
+          </div>
+          <div className="flex flex-col">
+            <p className="text-md text-black font-semibold">Username</p>
+            <p className="text-xs text-muted-foreground">email@example.com</p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <p className="text-md text-black font-semibold">Username</p>
-          <p className="text-sm text-muted-foreground">email@example.com</p>
-        </div>
+        <LogOut className="mr-2" size={17} />
       </div>
     </div>
   );

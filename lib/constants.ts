@@ -4,6 +4,9 @@ import {
   CalendarDays,
   Brain,
   BarChart3,
+  Flame,
+  Trophy,
+  TrendingUp,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -12,4 +15,32 @@ export const NAV_LINKS = [
   { to: "/weekly", label: "Weekly", icon: CalendarDays },
   { to: "/insights", label: "Insights", icon: Brain },
   { to: "/statistics", label: "Statistics", icon: BarChart3 },
+];
+
+export const SUMMARY = [
+  {
+    icon: ListChecks,
+    iconBg: "rgba(99,102,241,0.15)",
+    iconFg: "#6366f1",
+    label: "Total habits",
+  },
+
+  {
+    icon: Flame,
+    iconBg: "rgba(249,115,22,0.15)",
+    iconFg: "#f97316",
+    label: "Active streaks",
+  },
+  {
+    icon: Trophy,
+    iconBg: "rgba(245,158,11,0.15)",
+    iconFg: "#f59e0b",
+    label: "Best streak",
+  },
+  {
+    icon: TrendingUp,
+    iconBg: "rgba(16,185,129,0.15)",
+    iconFg: "#10b981",
+    label: "This week",
+  },
 ];
