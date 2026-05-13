@@ -1,15 +1,38 @@
-import React from "react";
-import { Settings, Moon } from "lucide-react";
+"use client";
 
+import React, { useEffect, useState } from "react";
+import { Settings, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 const AsideFooter = () => {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const init = () => setMounted(true);
+    init();
+  }, []);
+
+  if (!mounted) return null;
   return (
     <div className="bg-brand-50/40 flex flex-col gap-3 pb-3 px-5 w-full text-slate-600 text-sm">
       <hr className="slate-300" />
 
-      <div className="flex items-center justify-start gap-2 ">
-        <Moon size={18} />
-        <p>Dark mode</p>
-      </div>
+      <button
+        className="flex items-center justify-start gap-4 cursor-pointer"
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      >
+        {theme === "light" ? (
+          <div className="flex gap-3">
+            <Moon size={18} />
+            <p>Dark mode</p>
+          </div>
+        ) : (
+          <div className="flex gap-3">
+            <Sun size={18} />
+            <p>Light mode</p>
+          </div>
+        )}
+      </button>
       <div className="flex items-center gap-2">
         <Settings size={18} />
         <p>Settings</p>

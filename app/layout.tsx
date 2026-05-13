@@ -6,6 +6,7 @@ import Aside from "@/components/nav/aside";
 import Logo from "@/components/nav/logo";
 import Tabs from "@/components/nav/tabs";
 import AsideFooter from "@/components/nav/aside-footer";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,27 +24,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={` h-full`}>
+    <html lang="en" className={` h-full`} suppressHydrationWarning>
       {/* h-full here is critical to ensure the body can fill the screen */}
+
       <body
         className={`${inter.className}  h-full flex flex-col md:flex-row antialiased w-full`}
       >
         {/* 1. ASIDE: Fixed width, glass style, stays on the left */}
-        <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-300">
-          <Logo />
-          <hr className="slate-300" />
-          <Aside className="flex-1" />
-          <AsideFooter />
-        </div>
-        {/* MOBILE TABS: Only visible on small screens (below md) */}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-300">
+            <Logo />
+            <hr className="slate-300" />
+            <Aside className="flex-1" />
+            <AsideFooter />
+          </div>
+          {/* MOBILE TABS: Only visible on small screens (below md) */}
 
-        {/* 2. MAIN: Takes up all remaining space (flex-1) and full height (h-full) */}
-        <main className="glass flex-1 h-full overflow-y-auto">
-          <div className="p-8">{children}</div>
-        </main>
-        <div className="md:hidden w-full">
-          <Tabs />
-        </div>
+          <main className="glass flex-1 h-full overflow-y-auto">
+            <div className="p-8">{children} </div>
+          </main>
+
+          <div className="md:hidden w-full">
+            <Tabs />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
