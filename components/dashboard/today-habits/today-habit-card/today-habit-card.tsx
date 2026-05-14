@@ -9,6 +9,7 @@ type Props = {
   category: string;
   icon: string;
   color: string;
+  completed: boolean;
 };
 
 const TodayHabitCard = ({
@@ -17,9 +18,12 @@ const TodayHabitCard = ({
   category,
   icon,
   color,
+  completed,
 }: Props) => {
   return (
-    <div className="flex items-center justify-between bg-brand-50 p-5 shadow-xs rounded-lg``">
+    <div
+      className={`flex items-center justify-between ${completed ? "bg-brand-50" : "bg-white"} p-5 shadow-xs rounded-lg`}
+    >
       <div className="flex gap-3 items-center">
         <HabitCardIcon icon={icon} color={color} />
         <TodayHabitInfo
@@ -29,7 +33,7 @@ const TodayHabitCard = ({
         />
       </div>
 
-      <TodayHabitActions />
+      <TodayHabitActions completed={false} />
     </div>
   );
 };
