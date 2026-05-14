@@ -6,7 +6,7 @@ import GridRow from "@/components/habit-tracker-grid/grid-row";
 const HabitTrackerGrid = async () => {
   const habits = await getAllHabits();
   return (
-    <div className="my-30 bg-white rounded-lg p-5">
+    <div className="my-10 bg-white rounded-lg p-5">
       <GridHeader />
       <hr className="my-2 text-muted-foreground" />
       <div className="mt-4">
