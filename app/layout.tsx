@@ -40,7 +40,7 @@ export default function RootLayout({
           </div>
           {/* MOBILE TABS: Only visible on small screens (below md) */}
 
-          <main className="glass flex-1 h-full overflow-y-auto">
+          <main className="bg-brand-100/50 flex-1 h-full overflow-y-auto">
             <div className="p-8">{children} </div>
           </main>
 

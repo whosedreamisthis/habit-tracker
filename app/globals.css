@@ -408,6 +408,18 @@ body::before { animation: aurora-shift 22s ease-in-out infinite; }
   }
   body {
     @apply text-foreground;
-    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;  }
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  }
 
+
+}
+
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+body[style] {
+  margin-right: 0px !important;
+  padding-right: 0px !important;
 }
