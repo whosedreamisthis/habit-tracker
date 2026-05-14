@@ -20,7 +20,7 @@ const HabitCardInfo = ({ description, name, frequency, category }: Props) => {
           <Badge className="text-slate-900 bg-slate-200/70">{frequency}</Badge>
         </div>
       </div>
-      <p className="text-sm text-gray-500 pt-2">{description}</p>
+      <p className="text-sm text-gray-500 py-2">{description}</p>
     </div>
   );
 };
