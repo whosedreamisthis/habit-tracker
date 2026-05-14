@@ -30,7 +30,7 @@ const HabitCard = ({
 }: HabitCardProps) => {
   return (
     <div className=" w-full bg-white border-none p-4 rounded-xl shadow-sm">
-      <div className="flex justify-between items-center w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-center w-full">
         <div className="flex  items-center gap-4">
           <HabitCardIcon icon={icon} color={color} />
           <HabitCardInfo

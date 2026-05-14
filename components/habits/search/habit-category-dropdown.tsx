@@ -6,7 +6,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -15,7 +14,7 @@ import { CATEGORIES } from "@/lib/constants";
 const HabitCategoryDropdown = () => {
   return (
     <Select>
-      <SelectTrigger className="w-full max-w-48   ">
+      <SelectTrigger className="w-full max-w-48   p-5">
         <SelectValue placeholder="All categories" />
       </SelectTrigger>
       <SelectContent
