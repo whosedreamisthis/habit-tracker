@@ -1,5 +1,5 @@
 import React from "react";
-import { Flame, Trophy } from "lucide-react";
+import { Flame, Trophy, Target } from "lucide-react";
 
 const StatsHabitCardStreaks = () => {
   return (
@@ -14,7 +14,7 @@ const StatsHabitCardStreaks = () => {
       </div>
 
       <div className="flex gap-1 items-center">
-        <Flame className="w-5 h-5 text-brand-600 pb-1" />
+        <Target className="w-5 h-5 text-brand-600 pb-1" />
         <p className="text-sm">1</p>
       </div>
     </div>

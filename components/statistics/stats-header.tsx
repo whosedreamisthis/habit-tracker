@@ -7,8 +7,6 @@ const StatsHeader = () => {
         title="Statistics"
         description="Deep insights from your habit data."
       />
-
-      <div className="flex gap-1.5">right side of header</div>
     </div>
   );
 };

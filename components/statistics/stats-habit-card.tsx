@@ -15,7 +15,7 @@ const StatsHabitCard = ({ category, name, icon, color }: Props) => {
       <div className="flex gap-3 items-center">
         <HabitCardIcon icon={icon} color={color} />
         <div>
-          <p className="font-semibold">{name}</p>
+          <p className="font-semibold line-clamp-1">{name}</p>
           <p className="text-muted-foreground text-sm"> {category}</p>
         </div>
       </div>
