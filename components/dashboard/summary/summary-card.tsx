@@ -18,7 +18,7 @@ const SummaryCard = ({
     <Card className="bg-white p-3 rounded-lg border-none">
       <div className="flex gap-3 justify-center items-center">
         <div
-          className={`flex items-center justify-center w-10 h-10 rounded-md`}
+          className={`flex items-center justify-center w-10 h-10 rounded-md shrink-0`}
           style={{ backgroundColor: iconBg, color: iconFg }}
         >
           <Icon />

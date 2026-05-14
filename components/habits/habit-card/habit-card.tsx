@@ -1,6 +1,6 @@
 import React from "react";
-import HabitCardIcon from "@/components/habits/habit-card/habit-card-icon";
-import HabitCardInfo from "@/components/habits/habit-card/habit-card-info";
+import HabitCardIcon from "../../helpers/habit-card-icon";
+import HabitCardInfo from "./habit-card-info";
 import HabitCardStreaksAndButtons from "@/components/habits/habit-card/habit-card-streaks-and-buttons";
 
 type HabitCardProps = {
