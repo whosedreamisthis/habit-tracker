@@ -1,6 +1,6 @@
 import React from "react";
 import HabitCardIcon from "@/components/helpers/habit-card-icon";
-import StatsHabitCardStreaks from "@/components/statistics/stats-habit-card-streaks";
+import StatsHabitCardStreaks from "@/components/statistics/all-habits/stats-habit-card-streaks";
 
 type Props = {
   category: string;

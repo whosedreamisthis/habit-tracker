@@ -1,10 +1,10 @@
 import React from "react";
-import StatsHabitCard from "@/components/statistics/stats-habit-card";
+import StatsHabitCard from "./stats-habit-card";
 import { Habit } from "@/lib/types";
 
-const StatsHabits = ({ habits }: { habits: Habit[] }) => {
+const StatsAllHabits = ({ habits }: { habits: Habit[] }) => {
   return (
-    <div className="pt-5">
+    <div>
       <p className="text-md pb-3 ">All habits</p>
       <div className="flex flex-col gap-2">
         {habits.map((habit, index) => (
@@ -15,4 +15,4 @@ const StatsHabits = ({ habits }: { habits: Habit[] }) => {
   );
 };
 
-export default StatsHabits;
+export default StatsAllHabits;
