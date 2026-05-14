@@ -9,20 +9,19 @@ const Tabs = () => {
   const pathname = usePathname();
 
   return (
-    <div className="sticky bottom-0 h-16 glass w-full flex justify-between items-center px-10 bg-brand-50/70">
+    <div className="sticky bottom-0  glass w-full flex justify-around items-center py-4 px-10 bg-brand-50/70 safe-area-bottom">
       {NAV_LINKS.map((link) => {
         const isActive = pathname === link.to;
         return (
-          <div key={link.to}>
-            <Link
-              href={link.to}
-              className={`p-2 flex flex-col justify-center items-center ${isActive ? "text-brand-800" : "text-slate-500/80"}`}
-            >
-              <link.icon className="w-5 h-5 " />
+          <Link
+            key={link.to}
+            href={link.to}
+            className={`flex flex-col justify-center items-center ${isActive ? "text-brand-800" : "text-slate-500/80"}`}
+          >
+            <link.icon className="w-5 h-5 " />
 
-              <p className="text-sm">{link.label}</p>
-            </Link>
-          </div>
+            <p className="text-xs sm:text-sm">{link.label}</p>
+          </Link>
         );
       })}
     </div>

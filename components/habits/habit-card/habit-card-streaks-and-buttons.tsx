@@ -11,7 +11,7 @@ const HabitCardStreaksAndButtons = () => {
         <Trophy size={14} className="text-brand-600" />
         <p className="text-sm">58</p>
       </div>
-      <div className="text-muted-foreground text-xs">88 total</div>
+      {/*<div className="text-muted-foreground text-xs">88 total</div>*/}
       <Pencil className="text-slate-600" size={16} />
       <Archive className="text-slate-600" size={16} />
       <Trash2 size={16} className="text-red-500" />

@@ -82,3 +82,9 @@ export const SUMMARY = [
     label: "This week",
   },
 ];
+
+export const WEEKLY_STATS = [
+  {
+    label: "Week rate",
+  },
+];
