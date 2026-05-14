@@ -57,7 +57,18 @@ const CompletionChart = ({
               tickLine={false}
               tick={{ fill: "#94a3b8", fontSize: 12 }}
               interval={0}
-              domain={[0, (dataMax: number) => Math.ceil(dataMax + 2)]}
+              allowDecimals={false}
+              {...(() => {
+                const max = Math.max(
+                  ...data.map((d) => Math.ceil(d.completions)),
+                  0,
+                );
+                const ticks = Array.from({ length: max + 3 }, (_, i) => i);
+                return {
+                  domain: [0, max + 2],
+                  ticks: ticks,
+                };
+              })()}
             />
             {/* This cursor creates the gray box highlight */}
             <Tooltip
