@@ -1,12 +1,36 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 const HabitStatus = () => {
+  const [isActive, setIsActive] = useState(true);
+
   return (
-    <div className="flex  items-center gap-3 text-sm shrink-0 select-none">
-      <div className="bg-brand-500/20 px-4 py-3 rounded-l-xl">
-        <p className="text-amber-600">Active · 7</p>
+    /* 1. Added a fixed width (w-60) and p-1 to create that nice inner-padding look */
+    <div className="flex items-center text-sm shrink-0 select-none bg-slate-100 rounded-xl w-60">
+      {/* Active Button */}
+      <div
+        /* 2. Added flex-1 and text-center to lock the button size */
+        className={`flex-1 px-4 py-2 rounded-l-lg cursor-pointer transition-all text-center ${
+          isActive
+            ? "bg-brand-100/70 shadow-sm text-brand-600 font-semibold"
+            : "text-slate-500 hover:text-slate-700"
+        }`}
+        onClick={() => setIsActive(true)}
+      >
+        <p>Active · 7</p>
       </div>
-      <div>
+
+      {/* Archived Button */}
+      <div
+        /* 2. Added flex-1 and text-center here as well */
+        className={`flex-1 px-4 py-2 rounded-r-lg cursor-pointer transition-all text-center ${
+          !isActive
+            ? "bg-brand-100/70 shadow-sm text-brand-600 font-semibold"
+            : "text-slate-500 hover:text-slate-700"
+        }`}
+        onClick={() => setIsActive(false)}
+      >
         <p>Archived · 7</p>
       </div>
     </div>
