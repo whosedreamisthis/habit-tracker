@@ -1,14 +1,18 @@
 import React from "react";
-import SectionHeader from "@/components/section-header";
+import SectionHeader from "../helpers/section-header";
+import WeekPicker from "./week-picker";
+
 const HabitsHeader = () => {
   return (
-    <div className="flex justify-between items-center pb-5">
+    <div className="flex sm:flex-row justify-between items-center pb-5 flex-wrap">
       <SectionHeader
         title="Weekly overview"
         description="See every habit across all 7 days at a glance."
       />
 
-      <div className="flex gap-1.5">right side of header</div>
+      <div className="shrink-0">
+        <WeekPicker />
+      </div>
     </div>
   );
 };

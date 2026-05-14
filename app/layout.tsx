@@ -6,7 +6,7 @@ import Aside from "@/components/nav/aside";
 import Logo from "@/components/nav/logo";
 import Tabs from "@/components/nav/tabs";
 import AsideFooter from "@/components/nav/aside-footer";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const inter = Inter({
   subsets: ["latin"],

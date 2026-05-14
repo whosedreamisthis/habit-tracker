@@ -1,7 +1,7 @@
 import React from "react";
 import { Sparkle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import SectionHeader from "@/components/section-header";
+import SectionHeader from "../helpers/section-header";
 const HabitsHeader = () => {
   return (
     <div className="flex justify-between items-center pb-5">
