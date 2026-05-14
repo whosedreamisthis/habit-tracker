@@ -1,5 +1,5 @@
 import React from "react";
-import HabitCardIcon from "../../helpers/habit-card-icon";
+import HabitIcon from "../../helpers/habit-icon";
 import HabitCardInfo from "./habit-card-info";
 import HabitCardStreaksAndButtons from "@/components/habits/habit-card/habit-card-streaks-and-buttons";
 
@@ -32,7 +32,7 @@ const HabitCard = ({
     <div className=" w-full bg-white border-none p-4 rounded-xl shadow-sm">
       <div className="flex flex-col sm:flex-row justify-between items-center w-full">
         <div className="flex  items-center gap-4">
-          <HabitCardIcon icon={icon} color={color} />
+          <HabitIcon icon={icon} color={color} />
           <HabitCardInfo
             description={description}
             frequency={frequency}
