@@ -1,5 +1,5 @@
 import React from "react";
-import SectionHeader from "../helpers/section-header";
+import SectionHeader from "../common/section-header";
 import WeekPicker from "./week-picker";
 
 const HabitsHeader = () => {

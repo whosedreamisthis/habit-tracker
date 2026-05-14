@@ -1,5 +1,5 @@
 import React from "react";
-import SectionHeader from "../helpers/section-header";
+import SectionHeader from "../common/section-header";
 const StatsHeader = () => {
   return (
     <div className="flex justify-between items-center pb-5">

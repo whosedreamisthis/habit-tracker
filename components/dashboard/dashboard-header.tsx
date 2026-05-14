@@ -1,7 +1,7 @@
 import React from "react";
 import { Sparkle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import SectionHeader from "../helpers/section-header";
+import SectionHeader from "../common/section-header";
 const DashboardHeader = () => {
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",

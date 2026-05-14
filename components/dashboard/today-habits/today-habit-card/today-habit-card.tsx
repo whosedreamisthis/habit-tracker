@@ -1,6 +1,6 @@
 import React from "react";
 import TodayHabitInfo from "./today-habit-info";
-import HabitIcon from "../../../helpers/habit-icon";
+import HabitIcon from "../../../common/habit-icon";
 import TodayHabitActions from "@/components/dashboard/today-habits/today-habit-card/today-habit-actions";
 
 type Props = {

@@ -5,7 +5,7 @@ const HabitIcon = ({
 }: {
   icon: string;
   color: string;
-  isSmall: boolean;
+  isSmall?: boolean;
 }) => {
   return (
     <div

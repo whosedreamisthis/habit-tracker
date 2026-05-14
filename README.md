@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Full-Stack Habit Tracker
 
-## Getting Started
+A modern, high-performance habit tracking application built with a focus on type-safety and the latest React 19 patterns.
 
-First, run the development server:
+## 🎨 Design Credit
+The UI/UX design for this project was inspired by the tutorial: [Build a Full-Stack AI-Powered Habit Tracker App](https://www.youtube.com/watch?v=PO-UZsQnkNU&list=PLbRpkalMD_hxM8lBsTiRetKkrd-QyDxEQ&index=1) (MERN Stack).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> **Note:** While the visual design is inspired by the tutorial above, the **entire technical implementation is original**. This project moves away from the traditional MERN stack in favor of a modern Next.js architecture.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tech Stack & Implementation
+This version was built from the ground up using a different and more modern stack:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Framework:** [Next.js](https://nextjs.org/) (App Router)
+* **Authentication:** [Clerk](https://clerk.com/)
+* **Language:** [TypeScript](https://www.typescriptlang.org/) for full-stack type safety.
+* **Form Handling:** [React Hook Form](https://react-hook-form.com/)
+* **State Management:** Built using React 19's new `useActionState` hook for seamless Server Action integration.
+* **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Key Features
+* **Zero-Config Styling:** Utilizing Tailwind v4's CSS-first configuration.
+* **Server Actions:** Direct database mutations with optimistic UI updates.
+* **Dynamic Weekly Grid:** Automated date calculation for a rolling 7-day tracking view.
+* **Scalable SVG Components:** Custom-built circular progress bars and habit icons.

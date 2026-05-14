@@ -1,5 +1,5 @@
 import React from "react";
-import HabitIcon from "../helpers/habit-icon";
+import HabitIcon from "../common/habit-icon";
 import { randomInt } from "node:crypto";
 import { Check } from "lucide-react";
 interface Props {

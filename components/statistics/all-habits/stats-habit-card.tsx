@@ -1,5 +1,5 @@
 import React from "react";
-import HabitIcon from "../../helpers/habit-icon";
+import HabitIcon from "../../common/habit-icon";
 import StatsHabitCardStreaks from "@/components/statistics/all-habits/stats-habit-card-streaks";
 
 type Props = {

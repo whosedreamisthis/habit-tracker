@@ -1,5 +1,5 @@
 import React from "react";
-import HabitIcon from "../../helpers/habit-icon";
+import HabitIcon from "../../common/habit-icon";
 import HabitCardInfo from "./habit-card-info";
 import HabitCardStreaksAndButtons from "@/components/habits/habit-card/habit-card-streaks-and-buttons";
 

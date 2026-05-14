@@ -1,5 +1,5 @@
 import React from "react";
-import SectionHeader from "../helpers/section-header";
+import SectionHeader from "../common/section-header";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
