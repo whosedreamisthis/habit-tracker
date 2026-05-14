@@ -1,12 +1,12 @@
 import React from "react";
 import WeeklyHeader from "@/components/weekly/weekly-header";
-import WeeklyStats from "@/components/weekly/WeeklyStats";
+import WeeklySummary from "../../components/weekly/summary/WeeklySummary";
 
 const WeeklyPage = () => {
   return (
     <section>
       <WeeklyHeader />
-      <WeeklyStats />
+      <WeeklySummary />
     </section>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
-import WeeklyStatsCard from "@/components/weekly/WeeklyStatsCard";
+import WeeklyStatsCard from "./WeeklySummaryCard";
 
-const WeeklyStats = () => {
+const WeeklySummary = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <WeeklyStatsCard label="Week rate" description="32 of 49" value="65%" />
@@ -24,4 +24,4 @@ const WeeklyStats = () => {
   );
 };
 
-export default WeeklyStats;
+export default WeeklySummary;
