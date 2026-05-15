@@ -44,7 +44,11 @@ export const FormSelect: React.FC<FormSelectProps> = ({
         </SelectTrigger>
         <SelectContent>
           {options.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
+            <SelectItem
+              key={opt.value}
+              value={opt.value}
+              className="focus:bg-brand-700 focus:text-white data-highlighted:bg-brand-700 data-highlighted:text-white cursor-pointer"
+            >
               {opt.label}
             </SelectItem>
           ))}

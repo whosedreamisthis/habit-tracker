@@ -8,6 +8,7 @@ import { FormInput } from "@/components/forms/fields/form-input";
 import { FormTextarea } from "@/components/forms/fields/form-textarea";
 import { FormSelect } from "@/components/forms/fields/form-select";
 import { CATEGORIES } from "@/lib/constants";
+import FormIcon from "@/components/forms/fields/form-icon";
 
 const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
   const {
@@ -81,6 +82,7 @@ const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
             )}
           />
         </div>
+        <FormIcon />
       </form>
     </div>
   );
