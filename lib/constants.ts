@@ -1,13 +1,13 @@
 export const CATEGORIES = [
-  "Health",
-  "Fitness",
-  "Learning",
-  "Mindfulness",
-  "Productivity",
-  "Social",
-  "Finance",
-  "Creative",
-  "Other",
+  { value: "health", label: "Health" },
+  { value: "fitness", label: "Fitness" },
+  { value: "learning", label: "Learning" },
+  { value: "mindfulness", label: "Mindfulness" },
+  { value: "productivity", label: "Productivity" },
+  { value: "social", label: "Social" },
+  { value: "finance", label: "Finance" },
+  { value: "creative", label: "Creative" },
+  { value: "other", label: "Other" },
 ];
 
 export const ICONS = [

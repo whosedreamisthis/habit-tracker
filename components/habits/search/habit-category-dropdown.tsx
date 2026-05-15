@@ -30,14 +30,14 @@ const HabitCategoryDropdown = () => {
           >
             All categories
           </SelectItem>
-          {CATEGORIES.map((category) => (
+          {CATEGORIES.map(({ label, value }) => (
             <SelectItem
               className="data-highlighted:bg-blue-500
     data-highlighted:**:text-white!"
-              key={category}
-              value={category}
+              key={label}
+              value={value}
             >
-              {category}
+              {label}
             </SelectItem>
           ))}
         </SelectGroup>
