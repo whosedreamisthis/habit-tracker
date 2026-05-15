@@ -5,17 +5,19 @@ import HabitList from "@/components/habits/habit-list";
 import HabitSearch from "@/components/habits/search/habit-search";
 
 interface PageProps {
-  searchParams: Promise<{ status?: string; q?: string }>;
+  searchParams: Promise<{ status?: string; q?: string; category?: string }>;
 }
 
 const HabitsPage = async ({ searchParams }: PageProps) => {
   const params = await searchParams;
   const currentStatus = params.status || "active"; // fallback to active
   const searchQuery = params.q || "";
+  const currentCategory = params.category || "";
 
   const habits = await getAllHabits({
     status: currentStatus,
     search: searchQuery,
+    category: currentCategory,
   });
 
   const allHabitsRaw = await getAllHabits();

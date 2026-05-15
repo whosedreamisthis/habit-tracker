@@ -11,9 +11,17 @@ import {
 } from "@/components/ui/select";
 import { CATEGORIES } from "@/lib/constants";
 
-const HabitCategoryDropdown = () => {
+interface HabitCategoryDropdownProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const HabitCategoryDropdown = ({
+  value,
+  onChange,
+}: HabitCategoryDropdownProps) => {
   return (
-    <Select>
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full max-w-48   p-5">
         <SelectValue placeholder="All categories" />
       </SelectTrigger>

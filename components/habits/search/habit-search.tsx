@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import HabitCategoryDropdown from "@/components/habits/search/habit-category-dropdown";
 import HabitStatus from "@/components/habits/search/habit-status";
@@ -19,29 +19,47 @@ const HabitSearch = ({
 }: HabitSearchProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // 1. Maintain local input field text state
   const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+  // 2. Use a mutable ref to safely store the timer index without causing re-renders
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+
+  // 3. Fire search updates only when typing actively occurs
+  const handleSearchChange = (text: string) => {
+    setSearchTerm(text);
+
+    // Clear the previous timer instantly
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    // Set a new clean countdown
+    debounceTimer.current = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
-
-      if (searchTerm) {
-        params.set("q", searchTerm);
+      if (text) {
+        params.set("q", text);
       } else {
-        params.delete("q"); // Clear the param if the user empties the input
+        params.delete("q");
       }
-      console.log("delayDebounceFn PUSHNIING", params);
       router.push(`?${params.toString()}`);
-    }, 300); // Wait 300ms after the user stops typing
+    }, 300);
+  };
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, router, searchParams]);
+  // 4. Update categories cleanly on manual select action click
+  const handleCategoryChange = (category: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (category && category !== "All categories") {
+      params.set("category", category);
+    } else {
+      params.delete("category");
+    }
+    router.push(`?${params.toString()}`);
+  };
 
+  // 5. Update status cleanly on tab navigation click
   const handleStatusChange = (status: "active" | "archived") => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("status", status);
-    console.log("handleStatusChange PUSHNIING", params);
-    // Pushes the new URL state: e.g., /habits?status=archived
     router.push(`?${params.toString()}`);
   };
 
@@ -55,10 +73,13 @@ const HabitSearch = ({
           /* min-w ensures the input doesn't get squashed to 0px */
           className="flex-1 min-w-25 p-5 text-left focus-visible:ring-brand-500/50"
           value={searchTerm} // 👈 Turn input into a controlled field
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
         />
         <div className="shrink-0">
-          <HabitCategoryDropdown />
+          <HabitCategoryDropdown
+            value={searchParams.get("category") || "All categories"}
+            onChange={handleCategoryChange}
+          />
         </div>
       </div>
 

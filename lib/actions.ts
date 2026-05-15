@@ -12,14 +12,16 @@ export interface Habit extends NewHabit {
 
 // 1. Define the input parameters interface
 interface GetHabitsFilters {
-  status: string;
-  search: string;
+  status?: string;
+  search?: string;
+  category?: string;
 }
 
 export const getAllHabits = async (filters?: GetHabitsFilters) => {
   // Fallback to defaults if no filters object is passed
   const statusFilter = filters?.status;
-  const searchFilter = filters?.search.toLowerCase() || "";
+  const searchFilter = filters?.search?.toLowerCase() || "";
+  const categoryFilter = filters?.category;
 
   // 2. Filter the mock array down dynamically
   return mockHabits.filter((habit) => {
@@ -31,7 +33,12 @@ export const getAllHabits = async (filters?: GetHabitsFilters) => {
       habit.name.toLowerCase().includes(searchFilter) ||
       habit.description.toLowerCase().includes(searchFilter);
 
-    return matchesStatus && matchesSearch;
+    const matchesCategory =
+      !categoryFilter || categoryFilter === "All categories"
+        ? true
+        : habit.category === categoryFilter;
+
+    return matchesStatus && matchesSearch && matchesCategory;
   });
 };
 
