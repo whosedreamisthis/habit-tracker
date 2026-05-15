@@ -4,7 +4,7 @@ import StatsSummary from "../../components/statistics/summary/stats-summary";
 import { getAllHabits } from "@/lib/actions";
 import StatsAllHabits from "../../components/statistics/all-habits/stats-all-habits";
 
-import StatsCharts from "@/components/statistics/stats-charts";
+import StatsCharts from "../../components/charts/stats-charts";
 
 const StatsPage = async () => {
   const habits = await getAllHabits();

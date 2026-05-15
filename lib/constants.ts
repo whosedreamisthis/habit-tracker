@@ -34,6 +34,7 @@ export const COLORS = [
   "#ec4899",
   "#8b5cf6",
   "#14b8a6",
+  "#84cc16",
 ];
 
 import {
