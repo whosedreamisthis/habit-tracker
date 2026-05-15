@@ -28,7 +28,7 @@ const EditHabitButton = ({
   return (
     <>
       <Button
-        className="hover:opacity-70 transition-opacity bg-transparent"
+        className="hover:opacity-70 transition-opacity bg-transparent p-0"
         onClick={() => setIsOpen(true)}
       >
         <Pencil className="text-slate-500" size={16} />
