@@ -15,7 +15,7 @@ const GridRow = ({ icon, color, name }: Props) => {
     <div className="grid grid-cols-[1fr_repeat(7,40px)] gap-2 items-center py-3 border-b border-slate-50 last:border-0 shrink-0">
       {/* 1. Habit Name Column (takes up the 1fr space) */}
       <div className="flex items-center gap-2 min-w-0">
-        <HabitIcon icon={icon} color={color} isSmall={true} />
+        <HabitIcon icon={icon} color={color} size="small" />
         {/* truncate is vital to keep long names from pushing the squares */}
         <p className="truncate text-sm font-medium text-slate-700">{name}</p>
       </div>

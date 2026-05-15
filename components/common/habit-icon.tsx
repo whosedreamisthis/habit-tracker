@@ -1,15 +1,15 @@
 const HabitIcon = ({
   icon,
   color,
-  isSmall = false,
+  size,
 }: {
   icon: string;
   color: string;
-  isSmall?: boolean;
+  size: "small" | "medium" | "large";
 }) => {
   return (
     <div
-      className={`relative flex items-center justify-center ${isSmall ? "w-7 h-7" : "w-10 h-10"}`}
+      className={`relative flex items-center justify-center ${size === "small" ? "w-7 h-7" : size === "medium" ? "w-8.5 h-8.5" : "w-10 h-10"}`}
     >
       <div
         className="absolute inset-0 opacity-20 rounded-md"
@@ -18,7 +18,11 @@ const HabitIcon = ({
 
       {/* Icon Layer - This is 100% solid */}
       <div className="relative z-10">
-        <p className={`${isSmall ? "text-ms" : "text-xl"} font-bold`}>{icon}</p>
+        <p
+          className={`${size === "small" ? "text-sm" : size === "medium" ? "text-md" : "text-xl"} font-bold`}
+        >
+          {icon}
+        </p>
       </div>
     </div>
   );
