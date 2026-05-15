@@ -31,6 +31,9 @@ export const FormSelect: React.FC<FormSelectProps> = ({
   onChange,
   onBlur,
 }) => {
+  console.log("options", options);
+  console.log("label", label);
+  console.log("value", value);
   return (
     <div className="flex flex-col gap-2 w-full mb-4">
       <Label htmlFor={id}>{label}</Label>

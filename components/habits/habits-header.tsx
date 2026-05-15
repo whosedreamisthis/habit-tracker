@@ -1,7 +1,7 @@
 import React from "react";
 import SectionHeader from "../common/section-header";
-import SuggestHabitButton from "@/components/forms/suggest-habit/suggest-habit-button";
-import AddHabitButton from "@/components/forms/add-habit/add-habit-button";
+import SuggestHabitButton from "../forms/habit/suggest-habit-button";
+import AddHabitButton from "../forms/habit/add-habit-button";
 const HabitsHeader = () => {
   return (
     <div className="flex justify-between items-center pb-5">

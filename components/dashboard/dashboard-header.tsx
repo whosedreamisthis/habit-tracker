@@ -1,7 +1,7 @@
 import React from "react";
 import SectionHeader from "../common/section-header";
-import AddHabitButton from "@/components/forms/add-habit/add-habit-button";
-import SuggestHabitButton from "@/components/forms/suggest-habit/suggest-habit-button";
+import AddHabitButton from "../forms/habit/add-habit-button";
+import SuggestHabitButton from "../forms/habit/suggest-habit-button";
 const DashboardHeader = () => {
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import FormHeader from "../form-header";
+import FormHeader from "../forms/form-header";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NewHabit, newHabitSchema } from "@/lib/schema";
@@ -11,9 +11,22 @@ import { FormSelect } from "@/components/forms/fields/form-select";
 import { CATEGORIES } from "@/lib/constants";
 import FormIcon from "@/components/forms/fields/form-icon";
 import FormColor from "@/components/forms/fields/form-color";
-import AddHabitFormButtons from "@/components/forms/add-habit/add-habit-form-buttons";
+import HabitFormButtons from "../forms/habit/habit-form-buttons";
 
-const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
+interface HabitFormProps {
+  onClose: () => void;
+  initialData?: any; // Includes the DB id for editing
+  onSave: (data: NewHabit) => void;
+  buttonLabel: string;
+}
+
+const HabitForm = ({
+  onClose,
+  initialData,
+  onSave,
+  buttonLabel,
+}: HabitFormProps) => {
+  const isEditing = !!initialData;
   const {
     register,
     control,
@@ -22,7 +35,7 @@ const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
     formState: { errors },
   } = useForm<NewHabit>({
     resolver: zodResolver(newHabitSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       name: "",
       description: "",
       category: "",
@@ -33,14 +46,16 @@ const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
   });
 
   const onSubmit = (data: NewHabit) => {
-    console.log("on submit");
-    console.log(data);
-    reset();
+    onSave(data);
+    if (!isEditing) reset();
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <FormHeader title="New Habit" onClose={onClose} />
+      <FormHeader
+        title={isEditing ? "Edit Habit" : "New Habit"}
+        onClose={onClose}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
@@ -125,10 +140,10 @@ const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
             </div>
           )}
         />
-        <AddHabitFormButtons onCancel={onClose} />
+        <HabitFormButtons onCancel={onClose} buttonLabel={buttonLabel} />
       </form>
     </div>
   );
 };
 
-export default AddHabitForm;
+export default HabitForm;

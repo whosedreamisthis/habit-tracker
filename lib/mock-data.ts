@@ -34,7 +34,7 @@ export const mockHabits = [
   habit({
     name: "Drink 2L of water",
     description: "Stay hydrated throughout the day.",
-    category: "Health",
+    category: "health",
     color: "#0ea5e9",
     icon: "💧",
     order: 0,
@@ -43,7 +43,7 @@ export const mockHabits = [
   habit({
     name: "Morning run",
     description: "30-minute run before breakfast.",
-    category: "Fitness",
+    category: "fitness",
     targetDays: 5,
     color: "#ef4444",
     icon: "🏃",
@@ -55,7 +55,7 @@ export const mockHabits = [
   habit({
     name: "Read 20 minutes",
     description: "Fiction or non-fiction, no phone.",
-    category: "Learning",
+    category: "learning",
     color: "#6366f1",
     icon: "📚",
     order: 2,
@@ -64,7 +64,7 @@ export const mockHabits = [
   habit({
     name: "Meditate",
     description: "10 minutes of breath-focused meditation.",
-    category: "Mindfulness",
+    category: "mindfulness",
     color: "#8b5cf6",
     icon: "🧘",
     order: 3,
@@ -73,7 +73,7 @@ export const mockHabits = [
   habit({
     name: "Journal",
     description: "Write 3 things I'm grateful for.",
-    category: "Mindfulness",
+    category: "mindfulness",
     targetDays: 5,
     color: "#ec4899",
     icon: "✍️",
@@ -84,7 +84,7 @@ export const mockHabits = [
   habit({
     name: "Strength training",
     description: "Push/pull/legs split.",
-    category: "Fitness",
+    category: "fitness",
     frequency: "weekly",
     targetDays: 3,
     color: "#f59e0b",
@@ -96,7 +96,7 @@ export const mockHabits = [
   habit({
     name: "Side project — 1hr",
     description: "Ship something small every day.",
-    category: "Productivity",
+    category: "productivity",
     targetDays: 6,
     color: "#14b8a6",
     icon: "🎯",
@@ -183,7 +183,7 @@ Most streaks don't break because of motivation — they break because of frictio
       name: "5-minute morning stretch",
       description: "Loosen up before the day starts.",
       frequency: "daily",
-      category: "Health",
+      category: "health",
       icon: "🧘",
       reason:
         "Pairs naturally with your existing morning habits and takes almost no willpower.",
@@ -192,7 +192,7 @@ Most streaks don't break because of motivation — they break because of frictio
       name: "No screens for the first 30 minutes",
       description: "Start the morning offline.",
       frequency: "daily",
-      category: "Mindfulness",
+      category: "mindfulness",
       icon: "😴",
       reason:
         "Helps your meditation habit stick and reduces decision fatigue early in the day.",
@@ -201,7 +201,7 @@ Most streaks don't break because of motivation — they break because of frictio
       name: "Weekly long walk",
       description: "60–90 minutes outdoors on Sunday.",
       frequency: "weekly",
-      category: "Fitness",
+      category: "fitness",
       icon: "🚶",
       reason:
         "Gives you a low-friction movement habit on weekends when your run consistency drops.",

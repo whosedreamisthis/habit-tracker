@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
 import Modal from "../modal";
-import AddHabitForm from "./add-habit-form";
+import HabitForm from "@/components/common/habit-form";
 import { Button } from "@/components/ui/button";
 
 const AddHabitButton = () => {
@@ -20,7 +20,11 @@ const AddHabitButton = () => {
       </Button>
 
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <AddHabitForm onClose={closeModal} />
+        <HabitForm
+          onClose={closeModal}
+          onSave={() => {}}
+          buttonLabel="Create habit"
+        />
       </Modal>
     </>
   );

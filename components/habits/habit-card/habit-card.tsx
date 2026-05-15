@@ -43,7 +43,14 @@ const HabitCard = ({
             category={category}
           />
         </div>
-        <HabitCardStreaksAndButtons />
+        <HabitCardStreaksAndButtons
+          description={description}
+          frequency={frequency}
+          name={name}
+          category={category}
+          icon={icon}
+          color={color}
+        />
       </div>
     </div>
   );
