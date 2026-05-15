@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Settings, Moon, Sun, LogOut } from "lucide-react";
+import { Moon, Sun, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
+import SettingsButton from "../forms/settings/settings-button";
 const AsideFooter = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -33,10 +34,7 @@ const AsideFooter = () => {
           </div>
         )}
       </button>
-      <div className="flex items-center gap-2">
-        <Settings size={18} />
-        <p>Settings</p>
-      </div>
+      <SettingsButton />
       <div className="flex items-center justify-between ">
         <div className="flex gap-2">
           <div className="h-10 w-10  flex items-center justify-center bg-brand-600 rounded-full">
