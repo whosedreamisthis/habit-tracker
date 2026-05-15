@@ -3,8 +3,8 @@ import { z } from "zod";
 export const newHabitSchema = z.object({
   name: z.string().min(1, "Name is required").max(50),
   description: z.string().min(1, "Description is required").max(200),
-  category: z.string(),
-  frequency: z.string(),
+  category: z.string("Category is required").min(1, "Category is required"),
+  frequency: z.string("Frequency is required").min(1, "Frequency is required"),
   icon: z.string(),
   color: z.string(),
 });

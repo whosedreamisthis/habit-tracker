@@ -34,7 +34,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full mb-4">
       <Label htmlFor={id}>{label}</Label>
-      <Select value={value} onValueChange={onChange}>
+      <Select value={value || ""} onValueChange={onChange}>
         <SelectTrigger
           id={id}
           onBlur={onBlur}

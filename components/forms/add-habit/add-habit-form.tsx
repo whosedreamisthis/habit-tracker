@@ -9,26 +9,36 @@ import { FormTextarea } from "@/components/forms/fields/form-textarea";
 import { FormSelect } from "@/components/forms/fields/form-select";
 import { CATEGORIES } from "@/lib/constants";
 import FormIcon from "@/components/forms/fields/form-icon";
+import FormColor from "@/components/forms/fields/form-color";
+import AddHabitFormButtons from "@/components/forms/add-habit/add-habit-form-buttons";
 
 const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
   const {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<NewHabit>({
     resolver: zodResolver(newHabitSchema),
   });
 
+  const onInvalid = (errors: any) => {
+    console.error("Form submission blocked by validation errors! 👇");
+    console.log(errors);
+  };
+
   const onSubmit = (data: NewHabit) => {
+    console.log("on submit");
     console.log(data);
+    reset();
   };
 
   return (
     <div className="flex flex-col gap-4">
       <FormHeader title="New Habit" onClose={onClose} />
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
         <FormInput
           id="name"
           label="Habit Name"
@@ -82,7 +92,36 @@ const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
             )}
           />
         </div>
-        <FormIcon />
+        <Controller
+          control={control}
+          name="icon"
+          render={({ field }) => (
+            <div className="flex flex-col gap-1">
+              <FormIcon selectedIcon={field.value} onChange={field.onChange} />
+              {errors.icon?.message && (
+                <p className="text-sm text-red-500">{errors.icon.message}</p>
+              )}
+            </div>
+          )}
+        />
+
+        {/* 2. Wire up FormColor using a Controller 👇 */}
+        <Controller
+          control={control}
+          name="color"
+          render={({ field }) => (
+            <div className="flex flex-col gap-1">
+              <FormColor
+                selectedColor={field.value}
+                onChange={field.onChange}
+              />
+              {errors.color?.message && (
+                <p className="text-sm text-red-500">{errors.color.message}</p>
+              )}
+            </div>
+          )}
+        />
+        <AddHabitFormButtons onCancel={onClose} />
       </form>
     </div>
   );

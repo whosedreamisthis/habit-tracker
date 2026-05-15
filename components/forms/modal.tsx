@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
       />
 
       {/* Modal Content Box */}
-      <div className="relative bg-gray-100 rounded-xl shadow-xl w-full max-w-md p-6 z-10 animate-in fade-in zoom-in-95 duration-150">
+      <div className="relative bg-slate-200 rounded-xl shadow-xl w-full max-w-md p-6 z-10 animate-in fade-in zoom-in-95 duration-150">
         {children}
       </div>
     </div>
