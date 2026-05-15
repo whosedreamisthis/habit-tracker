@@ -24,7 +24,7 @@ const CategoryChart = ({ data }: { data: CategoryData[] }) => {
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={60}
+              innerRadius={50}
               outerRadius={80}
               paddingAngle={data.length > 1 ? 5 : 0} // No gap if only one category
               dataKey="value"
