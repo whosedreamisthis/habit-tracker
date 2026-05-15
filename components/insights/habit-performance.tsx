@@ -4,7 +4,7 @@ import HabitLeaderboardRow from "@/components/common/habit-leaderboard-row";
 
 const HabitPerformance = ({ habits }: { habits: Habit[] }) => {
   return (
-    <div className="h-full w-full flex flex-col gap-1 bg-white p-5 rounded-lg mt-5 mb-10">
+    <div className="h-full w-full flex flex-col gap-1 bg-white p-5 rounded-lg mt-5">
       <p className="text-sm font-bold text-slate-800 mb-2">Habit performance</p>
       {habits.map((habit) => (
         <HabitLeaderboardRow
