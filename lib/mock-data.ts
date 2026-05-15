@@ -38,6 +38,7 @@ export const mockHabits = [
     color: "#0ea5e9",
     icon: "💧",
     order: 0,
+    status: "active", // 👈 Added
     _streakProb: 0.95,
   }),
   habit({
@@ -48,6 +49,7 @@ export const mockHabits = [
     color: "#ef4444",
     icon: "🏃",
     order: 1,
+    status: "active", // 👈 Added
     _streakProb: 0.7,
     _pattern: "weekdays",
     _brokeAt: 20,
@@ -59,6 +61,7 @@ export const mockHabits = [
     color: "#6366f1",
     icon: "📚",
     order: 2,
+    status: "active", // 👈 Added
     _streakProb: 0.82,
   }),
   habit({
@@ -68,6 +71,7 @@ export const mockHabits = [
     color: "#8b5cf6",
     icon: "🧘",
     order: 3,
+    status: "archived", // 👈 Added (Great for testing your archived tab)
     _streakProb: 0.6,
   }),
   habit({
@@ -78,6 +82,7 @@ export const mockHabits = [
     color: "#ec4899",
     icon: "✍️",
     order: 4,
+    status: "active", // 👈 Added
     _streakProb: 0.75,
     _pattern: "dropoff",
   }),
@@ -90,6 +95,7 @@ export const mockHabits = [
     color: "#f59e0b",
     icon: "💪",
     order: 5,
+    status: "active", // 👈 Added
     _streakProb: 0.55,
     _pattern: "weekdays",
   }),
@@ -101,6 +107,7 @@ export const mockHabits = [
     color: "#14b8a6",
     icon: "🎯",
     order: 6,
+    status: "archived", // 👈 Added (Great for testing your archived tab)
     _streakProb: 0.78,
   }),
 ];

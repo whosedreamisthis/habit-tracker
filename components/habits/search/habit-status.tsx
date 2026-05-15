@@ -1,9 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
-const HabitStatus = () => {
-  const [isActive, setIsActive] = useState(true);
+interface HabitStatusProps {
+  currentStatus: string;
+  onChange: (status: "active" | "archived") => void;
+  activeCount: number;
+  archivedCount: number;
+}
+
+const HabitStatus = ({
+  currentStatus,
+  onChange,
+  activeCount,
+  archivedCount,
+}: HabitStatusProps) => {
+  const isActive = currentStatus === "active";
 
   return (
     /* 1. Added a fixed width (w-60) and p-1 to create that nice inner-padding look */
@@ -16,9 +28,9 @@ const HabitStatus = () => {
             ? "bg-brand-100/70 shadow-sm text-brand-600 font-semibold"
             : "text-slate-500 hover:text-slate-700"
         }`}
-        onClick={() => setIsActive(true)}
+        onClick={() => onChange("active")}
       >
-        <p>Active · 7</p>
+        <p>Active · {activeCount}</p>
       </div>
 
       {/* Archived Button */}
@@ -29,9 +41,9 @@ const HabitStatus = () => {
             ? "bg-brand-100/70 shadow-sm text-brand-600 font-semibold"
             : "text-slate-500 hover:text-slate-700"
         }`}
-        onClick={() => setIsActive(false)}
+        onClick={() => onChange("archived")}
       >
-        <p>Archived · 7</p>
+        <p>Archived · {archivedCount}</p>
       </div>
     </div>
   );

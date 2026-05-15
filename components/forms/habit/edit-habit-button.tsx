@@ -24,8 +24,7 @@ const EditHabitButton = ({
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
-  console.log("frequency", frequency);
-  console.log("category", category);
+
   return (
     <>
       <Button

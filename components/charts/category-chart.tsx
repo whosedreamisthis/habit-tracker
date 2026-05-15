@@ -10,7 +10,6 @@ interface CategoryData {
 }
 
 const CategoryChart = ({ data }: { data: CategoryData[] }) => {
-  console.log("CategoryData", data);
   return (
     <div className="h-80 w-full bg-white p-6 rounded-2xl border border-slate-100 shadow-sm mt-5">
       <p className="text-sm font-bold text-slate-800 mb-2">

@@ -1,9 +1,33 @@
+"use client";
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import HabitCategoryDropdown from "@/components/habits/search/habit-category-dropdown";
 import HabitStatus from "@/components/habits/search/habit-status";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const HabitSearch = () => {
+interface HabitSearchProps {
+  currentStatus: string;
+  activeCount: number;
+  archivedCount: number;
+}
+
+const HabitSearch = ({
+  currentStatus,
+  activeCount,
+  archivedCount,
+}: HabitSearchProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handleStatusChange = (status: "active" | "archived") => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("status", status);
+
+    // Pushes the new URL state: e.g., /habits?status=archived
+    router.push(`?${params.toString()}`);
+  };
+
   return (
     /* flex-wrap is the secret sauce here */
     <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 w-full p-5 bg-white mb-5 rounded-lg">
@@ -21,7 +45,12 @@ const HabitSearch = () => {
 
       {/* Status Tabs */}
       <div className="shrink-0">
-        <HabitStatus />
+        <HabitStatus
+          currentStatus={currentStatus}
+          onChange={handleStatusChange}
+          activeCount={activeCount}
+          archivedCount={archivedCount}
+        />
       </div>
     </div>
   );
