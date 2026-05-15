@@ -3,6 +3,7 @@
 import { mockHabits } from "@/lib/mock-data";
 // Inside your actions file (e.g., @/lib/actions.ts)
 import { NewHabit } from "./schema";
+import { cache } from "react";
 
 // Extend your data type to include structural fields like id and status
 export interface Habit extends NewHabit {
@@ -17,11 +18,12 @@ interface GetHabitsFilters {
   category?: string;
 }
 
-export const getAllHabits = async (filters?: GetHabitsFilters) => {
+export const getAllHabits = cache(async (filters?: GetHabitsFilters) => {
   // Fallback to defaults if no filters object is passed
   const statusFilter = filters?.status;
   const searchFilter = filters?.search?.toLowerCase() || "";
   const categoryFilter = filters?.category;
+
 
   // 2. Filter the mock array down dynamically
   return mockHabits.filter((habit) => {
@@ -40,6 +42,6 @@ export const getAllHabits = async (filters?: GetHabitsFilters) => {
 
     return matchesStatus && matchesSearch && matchesCategory;
   });
-};
+});
 
 // --- Mock Data Sample Setup for Reference ---

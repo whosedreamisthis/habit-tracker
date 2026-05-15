@@ -17,7 +17,11 @@ const CategoryChart = ({ data }: { data: CategoryData[] }) => {
       </p>
 
       <div className="h-48 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          initialDimension={{ width: 100, height: 50 }}
+        >
           <PieChart>
             <Pie
               data={data}

@@ -28,7 +28,11 @@ const CompletionChart = ({
       <p className="text-sm font-bold text-slate-800 mb-6">{title}</p>
 
       <div className="h-56 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          initialDimension={{ width: 100, height: 50 }}
+        >
           <BarChart
             data={data}
             margin={{ top: 10, right: 0, left: -25, bottom: -10 }}

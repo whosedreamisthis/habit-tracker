@@ -41,7 +41,13 @@ const WeeklyComparisonChart = ({
       </p>
 
       <div className="flex-1 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          minHeight="100"
+          minWidth="100"
+          initialDimension={{ width: 100, height: 50 }}
+        >
           <BarChart
             data={data}
             // Add a bottom margin to make space for the custom legend

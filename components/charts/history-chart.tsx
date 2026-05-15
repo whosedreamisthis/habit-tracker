@@ -49,7 +49,11 @@ const HistoryChart = () => {
     <div className="h-80  w-full bg-white p-5 rounded-xl shadow-sm">
       <p className="text-sm font-bold text-slate-800 mb-6">Last 30 days</p>
       <div className="h-56 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          initialDimension={{ width: 100, height: 50 }}
+        >
           <BarChart
             data={data}
             margin={{ top: 10, right: 3, left: -25, bottom: 0 }}
