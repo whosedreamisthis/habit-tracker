@@ -8,7 +8,7 @@ type Props = {
 
 const TopHabit = ({ name, icon, color }: Props) => {
   return (
-    <div className="flex flex-col items-center justify-center p-1 rounded-md  w-full gap-2">
+    <div className=" flex flex-col items-center justify-center p-1 rounded-md  w-full gap-2">
       <div className="flex justify-between items-center w-full">
         <div className="flex gap-3 items-center">
           <p>{icon}</p>
