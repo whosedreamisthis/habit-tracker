@@ -4,6 +4,7 @@ import FormHeader from "../form-header";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NewHabit, newHabitSchema } from "@/lib/schema";
+
 import { FormInput } from "@/components/forms/fields/form-input";
 import { FormTextarea } from "@/components/forms/fields/form-textarea";
 import { FormSelect } from "@/components/forms/fields/form-select";
@@ -21,12 +22,15 @@ const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
     formState: { errors },
   } = useForm<NewHabit>({
     resolver: zodResolver(newHabitSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      category: "",
+      frequency: "",
+      icon: "💪",
+      color: "#6366f1",
+    },
   });
-
-  const onInvalid = (errors: any) => {
-    console.error("Form submission blocked by validation errors! 👇");
-    console.log(errors);
-  };
 
   const onSubmit = (data: NewHabit) => {
     console.log("on submit");
@@ -38,7 +42,7 @@ const AddHabitForm = ({ onClose }: { onClose: () => void }) => {
     <div className="flex flex-col gap-4">
       <FormHeader title="New Habit" onClose={onClose} />
 
-      <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           id="name"
           label="Habit Name"
