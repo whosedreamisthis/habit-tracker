@@ -24,14 +24,14 @@ const CompletionChart = ({
   data: ChartDataPoint[];
 }) => {
   return (
-    <div className="h-80 w-full bg-white p-6 rounded-2xl border border-slate-100 shadow-sm mt-5">
+    <div className="h-70 w-full bg-white rounded-2xl  shadow-sm p-5">
       <p className="text-sm font-bold text-slate-800 mb-6">{title}</p>
 
       <div className="h-56 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            margin={{ top: 0, right: 0, left: -25, bottom: 0 }}
+            margin={{ top: 10, right: 0, left: -25, bottom: 10 }}
           >
             <defs>
               <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
@@ -50,7 +50,7 @@ const CompletionChart = ({
               axisLine={false}
               tickLine={false}
               tick={{ fill: "#94a3b8", fontSize: 12 }}
-              dy={10}
+              dy={1}
             />
             <YAxis
               axisLine={false}
@@ -79,7 +79,7 @@ const CompletionChart = ({
               dataKey="completions"
               fill="url(#barGradient)"
               radius={[6, 6, 0, 0]}
-              barSize={40}
+              barSize={60}
             />
           </BarChart>
         </ResponsiveContainer>
