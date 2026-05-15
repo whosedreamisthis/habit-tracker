@@ -4,6 +4,9 @@ import CompletionChart from "../../components/charts/completion-chart";
 import { getThisWeekData } from "@/lib/date-utils";
 import { getAllHabits } from "@/lib/actions";
 import InsightsSummary from "@/components/insights/summary/insights-summary";
+import WeeklyComparisonChart from "@/components/charts/weekly-comparison-chart";
+import HabitPerformance from "@/components/insights/habit-performance";
+
 const InsightsPage = async () => {
   const habits = await getAllHabits();
 
@@ -15,6 +18,8 @@ const InsightsPage = async () => {
 
       <InsightsSummary />
       <CompletionChart title="Completion by day" data={thisWeek} />
+      <WeeklyComparisonChart />
+      <HabitPerformance habits={habits} />
     </section>
   );
 };

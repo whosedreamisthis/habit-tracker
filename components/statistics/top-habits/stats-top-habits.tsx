@@ -1,6 +1,6 @@
 import React from "react";
 import { Habit } from "@/lib/types";
-import TopHabit from "@/components/statistics/top-habits/top-habit";
+import HabitLeaderboardRow from "../../common/habit-leaderboard-row";
 
 const StatsTopHabits = ({ habits }: { habits: Habit[] }) => {
   const topHabits = habits.slice(0, 5);
@@ -10,7 +10,12 @@ const StatsTopHabits = ({ habits }: { habits: Habit[] }) => {
         Top habits by completion (30d)
       </p>
       {topHabits.map((habit) => (
-        <TopHabit key={habit._id} {...habit} />
+        <HabitLeaderboardRow
+          key={habit._id}
+          {...habit}
+          currentValue={27}
+          total={30}
+        />
       ))}
     </div>
   );

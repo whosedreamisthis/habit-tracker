@@ -4,9 +4,17 @@ type Props = {
   name: string;
   icon: string;
   color: string;
+  currentValue: number;
+  total: number;
 };
 
-const TopHabit = ({ name, icon, color }: Props) => {
+const HabitLeaderboardRow = ({
+  name,
+  icon,
+  color,
+  currentValue,
+  total,
+}: Props) => {
   return (
     <div className=" flex flex-col items-center justify-center p-1 rounded-md  w-full gap-2">
       <div className="flex justify-between items-center w-full">
@@ -14,7 +22,9 @@ const TopHabit = ({ name, icon, color }: Props) => {
           <p>{icon}</p>
           <p>{name}</p>
         </div>
-        <p className="text-muted-foreground text-sm">29/30 · 97%</p>
+        <p className="text-muted-foreground text-sm">
+          {currentValue}/{total} · 97%
+        </p>
       </div>
       <div className="relative w-full h-2">
         <div className="absolute inset-0 bg-slate-200/80 rounded-full"></div>
@@ -27,4 +37,4 @@ const TopHabit = ({ name, icon, color }: Props) => {
   );
 };
 
-export default TopHabit;
+export default HabitLeaderboardRow;

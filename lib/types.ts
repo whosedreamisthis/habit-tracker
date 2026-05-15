@@ -20,5 +20,11 @@ export interface Habit {
   category: "Learning";
   color: "#6366f1";
   icon: "📚";
+  completions?: Completion[];
   _streakProb: 0.82;
+}
+
+export interface Completion {
+  _id: string;
+  date: Date | string;
 }
