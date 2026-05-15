@@ -1,5 +1,7 @@
 import { Habit } from "@/lib/types";
 import React from "react";
+import ConsistencyHeader from "@/components/dashboard/consistency-header";
+import { getColor } from "@/lib/utils";
 
 const ConsistencyGrid = ({ habits }: { habits: Habit[] }) => {
   // 1. Generate an array of the last 91 days (13 weeks * 7)
@@ -9,26 +11,15 @@ const ConsistencyGrid = ({ habits }: { habits: Habit[] }) => {
     return count;
   });
 
-  const getColor = (count: number) => {
-    if (count === 0) return "bg-slate-100";
-    if (count === 1) return "bg-amber-200";
-    if (count === 2) return "bg-amber-400";
-    if (count === 3) return "bg-orange-500";
-    return "bg-orange-700";
-  };
-
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm w-fit">
+    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm w-full">
       {/* Labels & Legend omitted for brevity */}
-      <p className="text-md">Consistency</p>
-      <p className="text-xs md pb-3 text-muted-foreground">
-        438 completions in the last 90 days
-      </p>
-      <div className="grid grid-flow-col grid-rows-7 gap-1.5">
+      <ConsistencyHeader />
+      <div className="grid grid-flow-col grid-rows-7 gap-1 w-fit">
         {days.map((count, i) => (
           <div
             key={i}
-            className={`w-4 h-4 rounded-[4px] ${getColor(count)}`}
+            className={`w-3.5 h-3.5 rounded-[4px] ${getColor(count)}`}
             title={`Completions: ${count}`}
           />
         ))}
