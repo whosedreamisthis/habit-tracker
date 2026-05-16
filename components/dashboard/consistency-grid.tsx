@@ -1,14 +1,14 @@
-import { Habit } from "@/lib/types";
 import React from "react";
 import ConsistencyHeader from "@/components/dashboard/consistency-header";
 import { getColor } from "@/lib/utils";
+import { getAllHabits } from "@/lib/actions";
 
-const ConsistencyGrid = ({ habits }: { habits: Habit[] }) => {
-  // 1. Generate an array of the last 91 days (13 weeks * 7)
-  const days = Array.from({ length: 91 }).map((_, i) => {
+const ConsistencyGrid = async () => {
+  // const habits = await getAllHabits({ status: "active" });
+
+  const days = Array.from({ length: 91 }).map((_) => {
     // Logic to count completions for each date goes here
-    const count = Math.floor(Math.random() * 5); // Mock data
-    return count;
+    return Math.floor(Math.random() * 5); // Mock data
   });
 
   return (

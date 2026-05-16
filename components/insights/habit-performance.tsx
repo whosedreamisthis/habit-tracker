@@ -1,8 +1,10 @@
 import React from "react";
-import { Habit } from "@/lib/types";
 import HabitLeaderboardRow from "@/components/common/habit-leaderboard-row";
+import { getAllHabits } from "@/lib/actions";
 
-const HabitPerformance = ({ habits }: { habits: Habit[] }) => {
+const HabitPerformance = async () => {
+  const habits = await getAllHabits({ status: "active" });
+
   return (
     <div className="h-full w-full flex flex-col gap-1 bg-white p-5 rounded-lg mt-5">
       <p className="text-sm font-bold text-slate-800 mb-2">Habit performance</p>

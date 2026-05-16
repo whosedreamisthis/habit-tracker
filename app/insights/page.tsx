@@ -9,7 +9,7 @@ import HabitPerformance from "@/components/insights/habit-performance";
 import ActiveStreaks from "@/components/insights/active-streaks";
 
 const InsightsPage = async () => {
-  const habits = await getAllHabits();
+  const habits = await getAllHabits({ status: "active" });
 
   const thisWeek = getThisWeekData(habits);
 
@@ -20,8 +20,8 @@ const InsightsPage = async () => {
       <InsightsSummary />
       <CompletionChart title="Completion by day" data={thisWeek} />
       <WeeklyComparisonChart />
-      <HabitPerformance habits={habits} />
-      <ActiveStreaks habits={habits} />
+      <HabitPerformance />
+      <ActiveStreaks />
     </section>
   );
 };

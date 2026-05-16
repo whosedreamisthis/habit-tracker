@@ -27,7 +27,7 @@ export const getCategoryData = (habits: Habit[]) => {
 };
 
 const StatsCharts = async () => {
-  const habits = await getAllHabits();
+  const habits = await getAllHabits({ status: "active" });
 
   const rolling7 = getLast7DaysData(habits);
   const categoryData = getCategoryData(habits);

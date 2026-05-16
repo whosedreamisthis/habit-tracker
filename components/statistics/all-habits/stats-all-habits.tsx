@@ -1,8 +1,10 @@
 import React from "react";
 import StatsHabitCard from "./stats-habit-card";
-import { Habit } from "@/lib/types";
+import { getAllHabits } from "@/lib/actions";
 
-const StatsAllHabits = ({ habits }: { habits: Habit[] }) => {
+const StatsAllHabits = async () => {
+  const habits = await getAllHabits({ status: "active" });
+
   return (
     <div>
       <p className="text-md pb-3 mt-5">All habits</p>

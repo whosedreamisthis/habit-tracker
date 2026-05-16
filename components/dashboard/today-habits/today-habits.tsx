@@ -4,7 +4,7 @@ import { getAllHabits } from "@/lib/actions";
 import TodayHabitCard from "./today-habit-card/today-habit-card";
 
 const TodayHabits = async () => {
-  const habits = await getAllHabits();
+  const habits = await getAllHabits({ status: "active" });
 
   return (
     <div className="flex flex-col gap-4 mt-5 bg-gray-100 p-5 rounded-lg shadow-sm">

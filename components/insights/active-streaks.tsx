@@ -1,8 +1,10 @@
 import React from "react";
-import { Habit } from "@/lib/types";
 import ActiveStreakCard from "@/components/insights/active-streak-card";
+import { getAllHabits } from "@/lib/actions";
 
-const ActiveStreaks = ({ habits }: { habits: Habit[] }) => {
+const ActiveStreaks = async () => {
+  const habits = await getAllHabits({ status: "active" });
+
   return (
     <div className="bg-white rounded-lg` shadow-md p-4 mt-5">
       <div className="flex items-center justify-between mb-5">
