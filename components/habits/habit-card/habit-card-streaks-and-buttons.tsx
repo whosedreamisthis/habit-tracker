@@ -10,18 +10,7 @@ import { useRouter } from "next/navigation";
 const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const {
-    _id,
-    description,
-    name,
-    frequency,
-    category,
-    color,
-    icon,
-    status,
-    activeStreak,
-    bestStreak,
-  } = habit;
+  const { _id, status, activeStreak, bestStreak } = habit;
 
   const handleArchiveToggle = () => {
     startTransition(async () => {
@@ -54,14 +43,7 @@ const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
 
       {/* Group 2: Action Buttons */}
       <div className="flex items-center gap-4 shrink-0">
-        <EditHabitButton
-          description={description}
-          name={name}
-          frequency={frequency}
-          category={category}
-          color={color}
-          icon={icon}
-        />
+        <EditHabitButton habit={habit} />
 
         <button
           className={`hover:opacity-70 transition-opacity ${isPending ? "opacity-50 pointer-events-none" : ""}`}

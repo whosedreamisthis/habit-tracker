@@ -9,18 +9,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useState, useTransition, useOptimistic } from "react";
+import React, { useState, useTransition, useOptimistic } from "react";
 import { archiveHabit, toggleHabitCompletion } from "@/lib/actions";
+import { Habit } from "@/lib/types";
+import Modal from "@/components/forms/modal";
+import HabitForm from "@/components/common/habit-form";
 
 const TodayHabitActions = ({
-  habitId,
+  habit,
   completed,
   activeStreak,
 }: {
-  habitId: string;
+  habit: Habit;
   completed: boolean;
   activeStreak: number;
 }) => {
+  const [isEditOpen, setIsEditOpen] = useState(false); // 1. Locally control layout visibility
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
@@ -36,7 +40,7 @@ const TodayHabitActions = ({
         setOptimisticCompleted(!completed);
 
         // 3. Fire off the backend mutation
-        await toggleHabitCompletion(habitId, completed);
+        await toggleHabitCompletion(habit._id, completed);
         router.refresh();
       } catch (error) {
         console.error("Failed to update habit:", error);
@@ -49,7 +53,7 @@ const TodayHabitActions = ({
   const handleArchive = async () => {
     startTransition(async () => {
       try {
-        await archiveHabit(habitId);
+        await archiveHabit(habit._id);
         router.refresh();
       } catch (error) {
         console.error("Failed to archive habit:", error);
@@ -76,8 +80,13 @@ const TodayHabitActions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>
-            <DropdownMenuItem onSelect={handleEdit}>
-              <Pencil />
+            <DropdownMenuItem
+              onSelect={(e) => {
+                e.preventDefault();
+                setIsEditOpen(true);
+              }}
+            >
+              <Pencil className="mr-2" size={14} />
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={handleArchive}>
@@ -91,7 +100,27 @@ const TodayHabitActions = ({
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
+      <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
+        <HabitForm
+          buttonLabel="Save changes"
+          onClose={() => setIsEditOpen(false)}
+          onSave={() => setIsEditOpen(false)}
+          initialData={{
+            name: habit.name,
+            description: habit.description,
+            category: habit.category,
+            frequency: habit.frequency,
+            color: habit.color,
+            icon: habit.icon,
+          }}
+        />
+      </Modal>
 
+      {/*<EditHabitModal*/}
+      {/*  habit={habit}*/}
+      {/*  isOpen={isEditOpen}*/}
+      {/*  onClose={() => setIsEditOpen(false)}*/}
+      {/*/>*/}
       <button
         className={`flex items-center bg-linear-to-r ${optimisticCompleted ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-500/60 border-amber-500/60 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
         onClick={handleToggle}

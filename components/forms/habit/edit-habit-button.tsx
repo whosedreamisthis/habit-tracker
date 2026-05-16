@@ -4,27 +4,12 @@ import { Pencil } from "lucide-react";
 import Modal from "../modal";
 import HabitForm from "@/components/common/habit-form";
 import { Button } from "@/components/ui/button";
+import { Habit } from "@/lib/types";
 
-interface Props {
-  description: string;
-  name: string;
-  frequency: string;
-  category: string;
-  color: string;
-  icon: string;
-}
-
-const EditHabitButton = ({
-  description,
-  name,
-  frequency,
-  category,
-  color,
-  icon,
-}: Props) => {
+const EditHabitButton = ({ habit }: { habit: Habit }) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
-
+  const { description, name, frequency, category, color, icon } = habit;
   return (
     <>
       <Button

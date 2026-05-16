@@ -10,7 +10,7 @@ type Props = {
 };
 
 const TodayHabitCard = ({ habit, completed }: Props) => {
-  const { _id, name, description, category, icon, color } = habit;
+  const { name, description, category, icon, color } = habit;
   return (
     <div
       className={`flex flex-col justify-center items-center gap-2 sm:flex-row sm:justify-between ${completed ? "bg-brand-50" : "bg-white"} p-5 shadow-xs rounded-lg`}
@@ -27,7 +27,7 @@ const TodayHabitCard = ({ habit, completed }: Props) => {
       <TodayHabitActions
         completed={completed}
         activeStreak={habit.activeStreak}
-        habitId={_id}
+        habit={habit}
       />
     </div>
   );
