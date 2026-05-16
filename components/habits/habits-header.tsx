@@ -4,7 +4,7 @@ import SuggestHabitButton from "../forms/habit/suggest-habit-button";
 import AddHabitButton from "../forms/habit/add-habit-button";
 const HabitsHeader = () => {
   return (
-    <div className="flex justify-between items-center pb-5">
+    <div className="flex flex-col sm:flex-row justify-between items-center pb-5 gap-2">
       <SectionHeader
         title="All habits"
         description="Manage every habit you've ever created."

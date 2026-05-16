@@ -6,14 +6,17 @@ import GridRow from "@/components/habit-tracker-grid/grid-row";
 const HabitTrackerGrid = async () => {
   const habits = await getAllHabits();
   return (
-    <div className="my-10 bg-white rounded-lg p-5">
-      <GridHeader />
-      <hr className="my-2 text-muted-foreground" />
-      <div className="mt-4">
-        {habits.map((habit) => {
-          return <GridRow key={habit._id} {...habit} />;
-        })}
-        ,
+    <div className="my-10 bg-white rounded-lg p-5 w-full flex flex-col">
+      <div className="w-full overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-100">
+        <div className="min-w-[450px] w-full">
+          <GridHeader />
+          <hr className="my-2 text-muted-foreground" />
+          <div className="mt-4">
+            {habits.map((habit) => {
+              return <GridRow key={habit._id} {...habit} />;
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

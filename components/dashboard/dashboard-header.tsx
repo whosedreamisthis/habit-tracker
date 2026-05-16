@@ -9,7 +9,7 @@ const DashboardHeader = () => {
     day: "numeric",
   });
   return (
-    <div className="flex justify-between items-center pb-5">
+    <div className="flex flex-col sm:flex-row justify-between items-center pb-5 gap-2">
       <SectionHeader title="Hey Alex 👋" description={today} />
 
       <div className="flex gap-1.5">

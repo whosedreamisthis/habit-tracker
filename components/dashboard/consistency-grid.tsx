@@ -19,7 +19,7 @@ const ConsistencyGrid = ({ habits }: { habits: Habit[] }) => {
         {days.map((count, i) => (
           <div
             key={i}
-            className={`w-3.5 h-3.5 rounded-[4px] ${getColor(count)}`}
+            className={`w-3.5 h-3.5 rounded-lg ${getColor(count)}`}
             title={`Completions: ${count}`}
           />
         ))}
