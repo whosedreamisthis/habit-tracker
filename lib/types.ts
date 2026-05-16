@@ -24,6 +24,7 @@ export interface Habit {
   completions?: Completion[];
   activeStreak: number;
   bestStreak: number;
+  isCompletedToday: boolean;
   _streakProb: 0.82;
 }
 
