@@ -2,8 +2,9 @@
 
 import { mockHabits as initialMockHabits } from "@/lib/mock-data";
 import { revalidatePath } from "next/cache";
-import { Habit } from "@/lib/types";
+import { Completion, Habit } from "@/lib/types";
 import { NewHabit } from "@/lib/schema";
+import { nanoid } from "nanoid";
 
 // --- FIX: Pin memory to globalThis so workers don't reset it on page switch ---
 const globalForHabits = globalThis as unknown as {
@@ -94,6 +95,30 @@ export async function editHabit(habitId: string, data: NewHabit) {
     }
     return habit;
   });
+
+  // Revalidate everything to ensure all pages are updated
+  revalidatePath("/", "layout");
+}
+
+export async function createHabit(data: NewHabit) {
+  console.log(`Creating habit ${data}`);
+  const newHabit = {
+    ...data,
+    _id: nanoid(),
+    status: "active" as const,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    userId: "",
+    targetDays: 7,
+    order: 7,
+    activeStreak: 0,
+    bestStreak: 0,
+    isCompletedToday: false,
+    _streakProb: 0.82,
+  };
+
+  const currentHabits = globalForHabits.localHabits || [];
+  globalForHabits.localHabits = [...currentHabits, newHabit];
 
   // Revalidate everything to ensure all pages are updated
   revalidatePath("/", "layout");

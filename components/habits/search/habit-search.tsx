@@ -7,7 +7,7 @@ import HabitStatus from "@/components/habits/search/habit-status";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface HabitSearchProps {
-  currentStatus: string;
+  currentStatus: "active" | "archived";
   activeCount: number;
   archivedCount: number;
 }

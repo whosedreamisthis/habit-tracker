@@ -3,7 +3,7 @@
 import React from "react";
 
 interface HabitStatusProps {
-  currentStatus: string;
+  currentStatus: "active" | "archived";
   onChange: (status: "active" | "archived") => void;
   activeCount: number;
   archivedCount: number;

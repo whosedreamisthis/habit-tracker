@@ -4,11 +4,17 @@ import { Plus } from "lucide-react";
 import Modal from "../modal";
 import HabitForm from "@/components/common/habit-form";
 import { Button } from "@/components/ui/button";
+import { NewHabit } from "@/lib/schema";
+import { createHabit } from "@/lib/actions";
 
 const AddHabitButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
 
+  const handleSave = async (data: NewHabit) => {
+    await createHabit(data);
+    closeModal();
+  };
   return (
     <>
       <Button
@@ -22,7 +28,7 @@ const AddHabitButton = () => {
       <Modal isOpen={isOpen} onClose={closeModal}>
         <HabitForm
           onClose={closeModal}
-          onSave={() => {}}
+          onSave={handleSave}
           buttonLabel="Create habit"
         />
       </Modal>
