@@ -13,7 +13,6 @@ export interface Habit {
   frequency: "daily" | "weekly" | "monthly";
   status: "active" | "archived";
   targetDays: number;
-  isArchived: boolean;
   order: number;
   createdAt: string;
   updatedAt: string;

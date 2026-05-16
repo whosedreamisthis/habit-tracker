@@ -15,6 +15,16 @@ interface GetHabitsFilters {
   category?: string;
 }
 
+export async function resetAllHabitsData() {
+  console.log("Resetting application state back to default mock data...");
+
+  // Re-clone the original baseline mock data
+  localHabits = [...initialMockHabits] as Habit[];
+
+  // Clear the Next.js cache so the UI updates instantly everywhere
+  revalidatePath("/", "layout");
+}
+
 export async function toggleHabitCompletion(
   habitId: string,
   currentCompletedState: boolean,

@@ -20,7 +20,6 @@ const habit = (overrides: any) => ({
   description: "",
   frequency: "daily",
   targetDays: 7,
-  isArchived: false,
   order: nextHabitId,
   createdAt: subDays(new Date(), 89).toISOString(),
   updatedAt: subDays(new Date(), 89).toISOString(),
