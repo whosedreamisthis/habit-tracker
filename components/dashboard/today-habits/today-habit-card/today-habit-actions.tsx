@@ -1,7 +1,7 @@
 "use client";
 import { Ellipsis, Flame, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTransition } from "react";
+import { useState, useTransition, useOptimistic } from "react";
 import { toggleHabitCompletion } from "@/lib/actions";
 
 const TodayHabitActions = ({
@@ -14,11 +14,19 @@ const TodayHabitActions = ({
   activeStreak: number;
 }) => {
   const [isPending, startTransition] = useTransition();
+  const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
+    completed,
+    (state, newCompletedValue: boolean) => newCompletedValue,
+  );
+  useState(completed);
 
   const handleToggle = () => {
-    // startTransition keeps the UI responsive while the server action runs
     startTransition(async () => {
       try {
+        // 2. Instantly flip the state visually before the network request goes out
+        setOptimisticCompleted(!completed);
+
+        // 3. Fire off the backend mutation
         await toggleHabitCompletion(habitId, completed);
       } catch (error) {
         console.error("Failed to update habit:", error);
@@ -37,7 +45,7 @@ const TodayHabitActions = ({
         <Ellipsis className="mt-2" />
       </Button>
       <button
-        className={`flex items-center bg-linear-to-r ${completed ? "from-amber-500 to-amber-700 text-white shadow-md" : "bg-amber-200/50 text-amber-500/60 border-amber-500/60 border-2"}  rounded-full p-2.5 transition-transform duration-200 active:scale-95 ${isPending ? "pointer-events-none" : ""}`}
+        className={`flex items-center bg-linear-to-r ${optimisticCompleted ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-500/60 border-amber-500/60 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
         onClick={handleToggle}
         disabled={isPending}
       >
