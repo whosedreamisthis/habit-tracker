@@ -4,7 +4,7 @@ import WeekPicker from "./week-picker";
 
 const HabitsHeader = () => {
   return (
-    <div className="flex sm:flex-row justify-between items-center pb-5 flex-wrap">
+    <div className="flex xs:flex-row justify-center xs:justify-between items-center pb-5 flex-wrap">
       <SectionHeader
         title="Weekly overview"
         description="See every habit across all 7 days at a glance."

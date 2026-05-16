@@ -47,7 +47,7 @@ const data = [
 const HistoryChart = () => {
   return (
     <div className="h-80  w-full bg-white p-5 rounded-xl shadow-sm">
-      <p className="text-sm font-bold text-slate-800 mb-6">Last 30 days</p>
+      <p className="text-sm font-bold text-slate-800">Last 30 days</p>
       <div className="h-56 w-full">
         <ResponsiveContainer
           width="100%"

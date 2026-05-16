@@ -12,7 +12,7 @@ const ConsistencyGrid = ({ habits }: { habits: Habit[] }) => {
   });
 
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm w-full">
+    <div className="mt-5 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm w-full">
       {/* Labels & Legend omitted for brevity */}
       <ConsistencyHeader />
       <div className="grid grid-flow-col grid-rows-7 gap-1 w-fit">

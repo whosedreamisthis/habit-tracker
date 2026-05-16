@@ -24,7 +24,7 @@ const CompletionChart = ({
   data: ChartDataPoint[];
 }) => {
   return (
-    <div className="h-80 w-full bg-white rounded-2xl  shadow-sm p-5">
+    <div className="h-80 w-full bg-white rounded-2xl  shadow-sm p-5 mt-5">
       <p className="text-sm font-bold text-slate-800 mb-6">{title}</p>
 
       <div className="h-56 w-full">

@@ -33,7 +33,7 @@ const StatsCharts = async () => {
   const categoryData = getCategoryData(habits);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 my-5">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <CompletionChart title="Rolling Activity (Last 7 Days)" data={rolling7} />
       <HistoryChart />
       <CategoryChart data={categoryData} />

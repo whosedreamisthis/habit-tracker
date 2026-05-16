@@ -4,7 +4,7 @@ import { Activity, TrendingUp, CalendarRange, Trophy } from "lucide-react";
 
 const InsightsSummary = () => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <InsightsSummaryCard
         label="Completions"
         icon={Activity}

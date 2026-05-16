@@ -22,10 +22,10 @@ const TodayHabitCard = ({
 }: Props) => {
   return (
     <div
-      className={`flex items-center justify-between ${completed ? "bg-brand-50" : "bg-white"} p-5 shadow-xs rounded-lg`}
+      className={`flex flex-col justify-center items-center gap-2 sm:flex-row sm:justify-between ${completed ? "bg-brand-50" : "bg-white"} p-5 shadow-xs rounded-lg`}
     >
       <div className="flex gap-3 items-center">
-        <HabitIcon icon={icon} color={color} />
+        <HabitIcon icon={icon} color={color} size="large" />
         <TodayHabitInfo
           name={name}
           description={description}
