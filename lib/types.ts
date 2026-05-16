@@ -11,6 +11,7 @@ export interface Habit {
   userId: string;
   description: string;
   frequency: "daily" | "weekly" | "monthly";
+  status: "active" | "archived";
   targetDays: number;
   isArchived: boolean;
   order: number;
@@ -21,6 +22,8 @@ export interface Habit {
   color: "#6366f1";
   icon: "📚";
   completions?: Completion[];
+  activeStreak: number;
+  bestStreak: number;
   _streakProb: 0.82;
 }
 

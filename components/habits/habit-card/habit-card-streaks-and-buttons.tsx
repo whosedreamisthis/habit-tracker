@@ -1,23 +1,9 @@
-import { Trophy, Flame, Trash2, Archive } from "lucide-react";
+import { Trophy, Flame, Trash2, Archive, ArchiveRestore } from "lucide-react";
 import EditHabitButton from "@/components/forms/habit/edit-habit-button";
+import { Habit } from "@/lib/types";
 
-interface Props {
-  description: string;
-  name: string;
-  frequency: string;
-  category: string;
-  color: string;
-  icon: string;
-}
-
-const HabitCardStreaksAndButtons = ({
-  description,
-  name,
-  frequency,
-  category,
-  color,
-  icon,
-}: Props) => {
+const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
+  const { description, name, frequency, category, color, icon, status } = habit;
   return (
     <div className="flex flex-wrap items-center justify-end gap-y-3 gap-x-6">
       {/* Group 1: Streaks (Flame and Trophy) */}
@@ -44,7 +30,11 @@ const HabitCardStreaksAndButtons = ({
         />
 
         <button className="hover:opacity-70 transition-opacity">
-          <Archive className="text-slate-500" size={16} />
+          {status === "active" ? (
+            <Archive className="text-slate-500" size={16} />
+          ) : (
+            <ArchiveRestore className="text-slate-500" size={16} />
+          )}
         </button>
         <button className="hover:opacity-70 transition-opacity">
           <Trash2 className="text-red-500" size={16} />

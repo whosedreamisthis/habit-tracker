@@ -2,55 +2,18 @@ import React from "react";
 import HabitIcon from "../../common/habit-icon";
 import HabitCardInfo from "./habit-card-info";
 import HabitCardStreaksAndButtons from "@/components/habits/habit-card/habit-card-streaks-and-buttons";
+import { Habit } from "@/lib/types";
 
-type HabitCardProps = {
-  description: string;
-  frequency: "daily" | "weekly" | "monthly";
-  targetDays: number;
-  isArchived: boolean;
-  order: number;
-  createdAt: string;
-  updatedAt: string;
-  category: string;
-  name: string;
-  icon: string;
-  color: string;
-};
-
-const HabitCard = ({
-  description,
-  frequency,
-  targetDays,
-  isArchived,
-  order,
-  category,
-  color,
-  icon,
-  name,
-}: HabitCardProps) => {
+const HabitCard = ({ habit }: { habit: Habit }) => {
+  const { icon, color } = habit;
   return (
     <div className=" w-full bg-white border-none p-4 rounded-xl shadow-sm">
       <div className="flex flex-col sm:flex-row justify-between items-center w-full">
         <div className="flex  items-center gap-4">
           <HabitIcon icon={icon} color={color} size="large" />
-          <HabitCardInfo
-            description={description}
-            frequency={frequency}
-            targetDays={targetDays}
-            isArchived={isArchived}
-            order={order}
-            name={name}
-            category={category}
-          />
+          <HabitCardInfo habit={habit} />
         </div>
-        <HabitCardStreaksAndButtons
-          description={description}
-          frequency={frequency}
-          name={name}
-          category={category}
-          icon={icon}
-          color={color}
-        />
+        <HabitCardStreaksAndButtons habit={habit} />
       </div>
     </div>
   );

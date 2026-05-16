@@ -1,16 +1,8 @@
 import { Badge } from "@/components/ui/badge";
+import { Habit } from "@/lib/types";
 
-interface Props {
-  description: string;
-  name: string;
-  frequency: string;
-  targetDays: number;
-  isArchived: boolean;
-  category: string;
-  order: number;
-}
-
-const HabitCardInfo = ({ description, name, frequency, category }: Props) => {
+const HabitCardInfo = ({ habit }: { habit: Habit }) => {
+  const { description, name, frequency, category } = habit;
   return (
     <div className="flex flex-col justify-start">
       <div className="flex flex-col sm:flex-row gap-2 justify-start items-start">

@@ -1,15 +1,10 @@
 import React from "react";
 import HabitIcon from "../../common/habit-icon";
 import StatsHabitCardStreaks from "@/components/statistics/all-habits/stats-habit-card-streaks";
+import { Habit } from "@/lib/types";
 
-type Props = {
-  category: string;
-  name: string;
-  icon: string;
-  color: string;
-};
-
-const StatsHabitCard = ({ category, name, icon, color }: Props) => {
+const StatsHabitCard = ({ habit }: { habit: Habit }) => {
+  const { category, name, icon, color } = habit;
   return (
     <div className="flex justify-between items-center shadow-sm rounded-md bg-white p-4">
       <div className="flex gap-3 items-center">

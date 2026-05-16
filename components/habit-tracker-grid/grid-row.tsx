@@ -2,13 +2,11 @@ import React from "react";
 import HabitIcon from "../common/habit-icon";
 import { randomInt } from "node:crypto";
 import { Check } from "lucide-react";
-interface Props {
-  icon: string;
-  color: string;
-  name: string;
-}
+import { Habit } from "@/lib/types";
 
-const GridRow = ({ icon, color, name }: Props) => {
+const GridRow = ({ habit }: { habit: Habit }) => {
+  const { icon, color, name } = habit;
+
   const arr = [1, 2, 3, 4, 5, 6, 7];
   return (
     /* Must match Header: grid-cols-[1fr_repeat(7,40px)] and gap-2 */

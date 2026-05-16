@@ -10,7 +10,7 @@ const TodayHabits = async () => {
     <div className="flex flex-col gap-4 mt-5 bg-gray-100 p-5 rounded-lg shadow-sm">
       <TodayHabitHeader />
       {habits.map((habit) => (
-        <TodayHabitCard key={habit._id} {...habit} />
+        <TodayHabitCard key={habit._id} habit={habit} completed={false} />
       ))}
     </div>
   );

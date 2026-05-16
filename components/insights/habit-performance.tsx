@@ -9,7 +9,7 @@ const HabitPerformance = ({ habits }: { habits: Habit[] }) => {
       {habits.map((habit) => (
         <HabitLeaderboardRow
           key={habit._id}
-          {...habit}
+          habit={habit}
           currentValue={4}
           total={7}
         />

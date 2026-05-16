@@ -11,7 +11,7 @@ const ActiveStreaks = ({ habits }: { habits: Habit[] }) => {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
         {habits.map((habit) => (
-          <ActiveStreakCard key={habit._id} {...habit} activeStreak={13} />
+          <ActiveStreakCard key={habit._id} habit={habit} />
         ))}
       </div>
     </div>

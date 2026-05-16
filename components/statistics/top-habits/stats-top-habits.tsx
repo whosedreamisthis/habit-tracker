@@ -12,7 +12,7 @@ const StatsTopHabits = ({ habits }: { habits: Habit[] }) => {
       {topHabits.map((habit) => (
         <HabitLeaderboardRow
           key={habit._id}
-          {...habit}
+          habit={habit}
           currentValue={27}
           total={30}
         />

@@ -10,7 +10,7 @@ const HabitList = ({ habits }: HabitListProps) => {
   return (
     <div className="flex flex-col gap-4">
       {habits.map((habit) => (
-        <HabitCard key={habit._id} {...habit} />
+        <HabitCard key={habit._id} habit={habit} />
       ))}
     </div>
   );

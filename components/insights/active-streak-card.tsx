@@ -1,14 +1,10 @@
 import React from "react";
 import HabitIcon from "@/components/common/habit-icon";
 import { Flame } from "lucide-react";
+import { Habit } from "@/lib/types";
 
-type Props = {
-  name: string;
-  icon: string;
-  color: string;
-  activeStreak: number;
-};
-const ActiveStreakCard = ({ name, icon, color, activeStreak }: Props) => {
+const ActiveStreakCard = ({ habit }: { habit: Habit }) => {
+  const { name, icon, color, activeStreak } = habit;
   return (
     <div className="flex items-center gap-2">
       <HabitIcon icon={icon} color={color} size="medium" />

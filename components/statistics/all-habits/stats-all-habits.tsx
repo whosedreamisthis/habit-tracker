@@ -8,7 +8,7 @@ const StatsAllHabits = ({ habits }: { habits: Habit[] }) => {
       <p className="text-md pb-3 mt-5">All habits</p>
       <div className="flex flex-col gap-2">
         {habits.map((habit, index) => (
-          <StatsHabitCard key={index} {...habit} />
+          <StatsHabitCard key={index} habit={habit} />
         ))}
       </div>
     </div>

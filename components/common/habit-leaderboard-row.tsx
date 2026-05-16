@@ -1,20 +1,14 @@
 import React from "react";
+import { Habit } from "@/lib/types";
 
 type Props = {
-  name: string;
-  icon: string;
-  color: string;
   currentValue: number;
   total: number;
+  habit: Habit;
 };
 
-const HabitLeaderboardRow = ({
-  name,
-  icon,
-  color,
-  currentValue,
-  total,
-}: Props) => {
+const HabitLeaderboardRow = ({ habit, total, currentValue }: Props) => {
+  const { name, icon, color } = habit;
   return (
     <div className=" flex flex-col items-center justify-center p-1 rounded-md  w-full gap-2">
       <div className="flex justify-between items-center w-full">
