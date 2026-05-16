@@ -2,12 +2,18 @@ import React from "react";
 import { Ellipsis, Flame, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TodayHabitActions = ({ completed }: { completed: boolean }) => {
+const TodayHabitActions = ({
+  completed,
+  activeStreak,
+}: {
+  completed: boolean;
+  activeStreak: number;
+}) => {
   return (
     <div className="flex gap-4">
       <div className="flex gap-0.5 items-center">
         <Flame size={16} className="text-red-500/80" />
-        <p className="text-sm">13</p>
+        <p className="text-sm">{activeStreak}</p>
       </div>
 
       <Button variant="ghost">

@@ -3,18 +3,28 @@ import EditHabitButton from "@/components/forms/habit/edit-habit-button";
 import { Habit } from "@/lib/types";
 
 const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
-  const { description, name, frequency, category, color, icon, status } = habit;
+  const {
+    description,
+    name,
+    frequency,
+    category,
+    color,
+    icon,
+    status,
+    activeStreak,
+    bestStreak,
+  } = habit;
   return (
     <div className="flex flex-wrap items-center justify-end gap-y-3 gap-x-6">
       {/* Group 1: Streaks (Flame and Trophy) */}
       <div className="flex items-center gap-3 shrink-0">
         <div className="flex items-center gap-1">
           <Flame size={14} className="text-brand-600" />
-          <p className="text-sm font-medium">13</p>
+          <p className="text-sm font-medium">{activeStreak}</p>
         </div>
         <div className="flex items-center gap-1">
           <Trophy size={14} className="text-brand-600" />
-          <p className="text-sm font-medium">58</p>
+          <p className="text-sm font-medium">{bestStreak}</p>
         </div>
       </div>
 

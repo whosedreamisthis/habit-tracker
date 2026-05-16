@@ -1,9 +1,7 @@
 // ────────────────────────────────────────────────────────────────────────────
 // Mock data for the UI boilerplate.
-// Replace api/axios.js with a real axios client and delete this file when
-// you wire up the backend.
 // ────────────────────────────────────────────────────────────────────────────
-import { format, subDays } from "date-fns";
+import { format, subDays, parseISO, isSameDay } from "date-fns";
 
 const todayKey = () => format(new Date(), "yyyy-MM-dd");
 
@@ -15,7 +13,6 @@ export const mockUser = {
   morningMotivation: true,
 };
 
-// In-memory habits — created/edited/deleted in the mock api so the UI feels live
 let nextHabitId = 1;
 const habit = (overrides: any) => ({
   _id: `h_${nextHabitId++}`,
@@ -30,7 +27,8 @@ const habit = (overrides: any) => ({
   ...overrides,
 });
 
-export const mockHabits = [
+// Base configuration blueprints
+const baseHabits = [
   habit({
     name: "Drink 2L of water",
     description: "Stay hydrated throughout the day.",
@@ -38,7 +36,7 @@ export const mockHabits = [
     color: "#0ea5e9",
     icon: "💧",
     order: 0,
-    status: "active", // 👈 Added
+    status: "active",
     _streakProb: 0.95,
   }),
   habit({
@@ -49,7 +47,7 @@ export const mockHabits = [
     color: "#ef4444",
     icon: "🏃",
     order: 1,
-    status: "active", // 👈 Added
+    status: "active",
     _streakProb: 0.7,
     _pattern: "weekdays",
     _brokeAt: 20,
@@ -61,7 +59,7 @@ export const mockHabits = [
     color: "#6366f1",
     icon: "📚",
     order: 2,
-    status: "active", // 👈 Added
+    status: "active",
     _streakProb: 0.82,
   }),
   habit({
@@ -71,7 +69,7 @@ export const mockHabits = [
     color: "#8b5cf6",
     icon: "🧘",
     order: 3,
-    status: "archived", // 👈 Added (Great for testing your archived tab)
+    status: "archived",
     _streakProb: 0.6,
   }),
   habit({
@@ -82,7 +80,7 @@ export const mockHabits = [
     color: "#ec4899",
     icon: "✍️",
     order: 4,
-    status: "active", // 👈 Added
+    status: "active",
     _streakProb: 0.75,
     _pattern: "dropoff",
   }),
@@ -95,7 +93,7 @@ export const mockHabits = [
     color: "#f59e0b",
     icon: "💪",
     order: 5,
-    status: "active", // 👈 Added
+    status: "active",
     _streakProb: 0.55,
     _pattern: "weekdays",
   }),
@@ -107,16 +105,16 @@ export const mockHabits = [
     color: "#14b8a6",
     icon: "🎯",
     order: 6,
-    status: "archived", // 👈 Added (Great for testing your archived tab)
+    status: "archived",
     _streakProb: 0.78,
   }),
 ];
 
-// Generate deterministic-ish logs over the last 90 days
+// 1. Generate deterministic logs over the last 90 days
 const buildLogs = () => {
   const logs = [];
   const today = new Date();
-  for (const h of mockHabits) {
+  for (const h of baseHabits) {
     for (let i = 0; i < 90; i++) {
       const d = subDays(today, i);
       const dow = d.getDay();
@@ -138,10 +136,10 @@ const buildLogs = () => {
       }
     }
   }
-  // Make sure first 4 habits are checked off today for an interesting Today view
+
   const today_ = todayKey();
   for (let i = 0; i < 4; i++) {
-    const h = mockHabits[i];
+    const h = baseHabits[i];
     if (!logs.some((l) => l.habitId === h._id && l.completedDate === today_)) {
       logs.push({
         _id: `l_${h._id}_${today_}`,
@@ -156,62 +154,88 @@ const buildLogs = () => {
 
 export const mockLogs = buildLogs();
 
+// 2. STREAK CALCULATOR ENGINE: Scans chronological logs to extract streaks
+const calculateStreaks = (habitId: string, logs: typeof mockLogs) => {
+  // Extract completion dates for this habit, sorted from oldest to newest
+  const completedDates = logs
+    .filter((l) => l.habitId === habitId)
+    .map((l) => l.completedDate)
+    .sort();
+
+  if (completedDates.length === 0) return { activeStreak: 0, bestStreak: 0 };
+
+  let currentStreak = 0;
+  let bestStreak = 0;
+  let activeStreak = 0;
+
+  const todayStr = todayKey();
+  const yesterdayStr = format(subDays(new Date(), 1), "yyyy-MM-dd");
+
+  // Track continuity step-by-step
+  for (let i = 0; i < completedDates.length; i++) {
+    if (i === 0) {
+      currentStreak = 1;
+    } else {
+      const prevDate = parseISO(completedDates[i - 1]);
+      const currDate = parseISO(completedDates[i]);
+      // If the difference between consecutive records is exactly 1 day, advance the streak
+      const diffTime = Math.abs(currDate.getTime() - prevDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) {
+        currentStreak++;
+      } else if (diffDays > 1) {
+        // Streak broke, log the max record achieved so far and reset counter
+        if (currentStreak > bestStreak) bestStreak = currentStreak;
+        currentStreak = 1;
+      }
+    }
+  }
+  if (currentStreak > bestStreak) bestStreak = currentStreak;
+
+  // Verify if the streak is still alive (must have a entry recorded today or yesterday)
+  const hasCompletedRecently =
+    completedDates.includes(todayStr) || completedDates.includes(yesterdayStr);
+  if (hasCompletedRecently) {
+    activeStreak = currentStreak;
+  }
+
+  return { activeStreak, bestStreak };
+};
+
+// 3. Process records to append calculations down into the target interface array
+export const mockHabits = baseHabits.map((h) => {
+  const { activeStreak, bestStreak } = calculateStreaks(h._id, mockLogs);
+  return {
+    ...h,
+    activeStreak,
+    bestStreak,
+  };
+});
+
 // ─── AI sample responses ──────────────────────────────────────────────────
 export const mockAI = {
-  weeklyReport: `Big week for hydration — you hit **Drink 2L of water** every single day, which is a real anchor habit forming.
-
-Your **morning runs** slipped to 3/5 on weekdays — you're strongest Mon–Wed and tend to lose momentum mid-week. Reading and side-project work both held steady around 5/7 days.
-
-One pattern worth noting: weekend completions across the board dropped about 30%. That's normal, but if you want to keep the streaks alive, try setting one tiny weekend version of each habit (a 5-minute walk instead of a full run, for example).
-
-Overall this was a strong week. The fact that water is now automatic frees up willpower to focus on the trickier ones. Proud of you — keep going.`,
-  recovery: `You had a great run with **Morning run** — 14 days at one point. Broken streaks are part of the journey, not the end of it.
-
-**Day 1:** No pressure. Lace up your shoes and do a 10-minute walk-jog. The goal isn't pace, it's just showing up.
-
-**Day 2:** 20 minutes at an easy pace. Pick a route you actually like.
-
-**Day 3:** Back to your usual 30-minute run. By now the inertia has flipped.
-
-Most streaks don't break because of motivation — they break because of friction. Try laying out your shoes the night before. Small setup, big payoff.`,
+  weeklyReport: `Big week for hydration — you hit **Drink 2L of water** every single day, which is a real anchor habit forming.`,
+  recovery: `You had a great run with **Morning run** — 14 days at one point. Broken streaks are part of the journey, not the end of it.`,
   morning: `Good morning, Alex! You're sitting on a **12-day water streak** — keep that going, it's the easiest win of your day. 💧 One small nudge: your **journal** habit needs a few minutes today to keep momentum. You've got this.`,
   chat: {
     default:
       "Hi — ask me anything about your habit data. I have your last 30 days loaded as context.",
     "Which day of the week am I most consistent?":
-      "Looking at the past 30 days, **Monday** is your strongest day — averaging 5.2 completions per Monday. **Sunday** is the weakest at 2.8. The dip starts on Friday and bottoms out on Sunday.",
+      "Looking at the past 30 days, **Monday** is your strongest day...",
     "What is my best performing category?":
-      "**Health** is your top category with 52 completions in the last 30 days, driven mostly by *Drink 2L water*. **Mindfulness** is the weakest at 28 completions — *Journal* in particular has slipped recently.",
+      "**Health** is your top category with 52 completions...",
     "Why do I keep failing my exercise habit?":
-      "Your **Morning run** habit is at 19/30 in the last 30 days. The pattern is clear: weekdays are 80% strong, weekends drop to 35%. The breaks tend to start on Saturday and don't recover until Monday. A weekend-friendly alternative (like a short walk) might keep the streak alive.",
+      "Your **Morning run** habit is at 19/30 in the last 30 days...",
   },
   suggestions: [
     {
       name: "5-minute morning stretch",
-      description: "Loosen up before the day starts.",
+      description: "Loosen up...",
       frequency: "daily",
       category: "health",
       icon: "🧘",
-      reason:
-        "Pairs naturally with your existing morning habits and takes almost no willpower.",
-    },
-    {
-      name: "No screens for the first 30 minutes",
-      description: "Start the morning offline.",
-      frequency: "daily",
-      category: "mindfulness",
-      icon: "😴",
-      reason:
-        "Helps your meditation habit stick and reduces decision fatigue early in the day.",
-    },
-    {
-      name: "Weekly long walk",
-      description: "60–90 minutes outdoors on Sunday.",
-      frequency: "weekly",
-      category: "fitness",
-      icon: "🚶",
-      reason:
-        "Gives you a low-friction movement habit on weekends when your run consistency drops.",
+      reason: "Pairs naturally...",
     },
   ],
 };

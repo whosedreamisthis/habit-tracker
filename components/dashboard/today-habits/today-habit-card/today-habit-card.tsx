@@ -24,7 +24,7 @@ const TodayHabitCard = ({ habit, completed }: Props) => {
         />
       </div>
 
-      <TodayHabitActions completed={false} />
+      <TodayHabitActions completed={false} activeStreak={habit.activeStreak} />
     </div>
   );
 };
