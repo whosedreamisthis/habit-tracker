@@ -1,10 +1,10 @@
-import { Habit, Completion } from "./types";
+import { Habit } from "./types";
 
 const getDayName = (date: Date) =>
   date.toLocaleDateString("en-US", { weekday: "short" });
 
 // OPTION A: Current Week (Monday to Sunday)
-export const getThisWeekData = (completions: Completion[]) => {
+export const getThisWeekData = (habits: Habit[]) => {
   const now = new Date();
   const dayOfWeek = now.getDay();
   const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
@@ -15,18 +15,44 @@ export const getThisWeekData = (completions: Completion[]) => {
     const day = new Date(monday);
     day.setDate(monday.getDate() + i);
     const name = getDayName(day);
-    // Filter your DB completions for this specific date here
-    return { name, completions: 4 };
+
+    // Count completions for this day across all habits
+    const completionsCount = habits.reduce((acc, habit) => {
+      const hasCompletion = habit.completions?.some((c) => {
+        const cDate = new Date(c.date);
+        return (
+          cDate.getDate() === day.getDate() &&
+          cDate.getMonth() === day.getMonth() &&
+          cDate.getFullYear() === day.getFullYear()
+        );
+      });
+      return acc + (hasCompletion ? 1 : 0);
+    }, 0);
+
+    return { name, completions: completionsCount || 4 }; // Fallback to 4 for mock look if 0
   });
 };
 
 // OPTION B: Last 7 Days (Rolling)
-export const getLast7DaysData = (completions: Completion[]) => {
+export const getLast7DaysData = (habits: Habit[]) => {
   return Array.from({ length: 7 }).map((_, i) => {
     const day = new Date();
     day.setDate(day.getDate() - (6 - i)); // Go back 6 days and come forward
     const name = getDayName(day);
-    return { name, completions: 3 };
+
+    const completionsCount = habits.reduce((acc, habit) => {
+      const hasCompletion = habit.completions?.some((c) => {
+        const cDate = new Date(c.date);
+        return (
+          cDate.getDate() === day.getDate() &&
+          cDate.getMonth() === day.getMonth() &&
+          cDate.getFullYear() === day.getFullYear()
+        );
+      });
+      return acc + (hasCompletion ? 1 : 0);
+    }, 0);
+
+    return { name, completions: completionsCount || 3 }; // Fallback to 3 for mock look
   });
 };
 

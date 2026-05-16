@@ -7,12 +7,14 @@ type SummaryCardProps = {
   iconFg: string;
   iconBg: string;
   label: string;
+  value: string | number;
 };
 const SummaryCard = ({
   icon: Icon,
   iconFg,
   iconBg,
   label,
+  value,
 }: SummaryCardProps) => {
   return (
     <Card className="bg-white p-3 rounded-lg border-none">
@@ -25,7 +27,7 @@ const SummaryCard = ({
         </div>
         <div className="flex flex-col justify-start items-start">
           <p className="text-xs`">{label}</p>
-          <p className="text-xl font-semibold">{7}</p>
+          <p className="text-xl font-semibold">{value}</p>
         </div>
       </div>
     </Card>

@@ -8,8 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 import { useState, useTransition, useOptimistic } from "react";
-import { toggleHabitCompletion } from "@/lib/actions";
+import { archiveHabit, toggleHabitCompletion } from "@/lib/actions";
 
 const TodayHabitActions = ({
   habitId,
@@ -20,6 +21,7 @@ const TodayHabitActions = ({
   completed: boolean;
   activeStreak: number;
 }) => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
     completed,
@@ -35,6 +37,7 @@ const TodayHabitActions = ({
 
         // 3. Fire off the backend mutation
         await toggleHabitCompletion(habitId, completed);
+        router.refresh();
       } catch (error) {
         console.error("Failed to update habit:", error);
       }
@@ -44,7 +47,14 @@ const TodayHabitActions = ({
   const handleEdit = () => {};
 
   const handleArchive = async () => {
-    //await updateStatus(habitId, "archived");
+    startTransition(async () => {
+      try {
+        await archiveHabit(habitId);
+        router.refresh();
+      } catch (error) {
+        console.error("Failed to archive habit:", error);
+      }
+    });
   };
 
   const handleDelete = () => {};

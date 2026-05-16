@@ -1,10 +1,9 @@
 import React from "react";
 import HabitLeaderboardRow from "@/components/common/habit-leaderboard-row";
-import { getAllHabits } from "@/lib/actions";
 
-const HabitPerformance = async () => {
-  const habits = await getAllHabits({ status: "active" });
+import { Habit } from "@/lib/types";
 
+const HabitPerformance = async ({ habits }: { habits: Habit[] }) => {
   return (
     <div className="h-full w-full flex flex-col gap-1 bg-white p-5 rounded-lg mt-5">
       <p className="text-sm font-bold text-slate-800 mb-2">Habit performance</p>
@@ -12,8 +11,8 @@ const HabitPerformance = async () => {
         <HabitLeaderboardRow
           key={habit._id}
           habit={habit}
-          currentValue={4}
-          total={7}
+          currentValue={habit.isCompletedToday ? 1 : 0}
+          total={1}
         />
       ))}
     </div>

@@ -4,6 +4,9 @@ import { getAllHabits } from "@/lib/actions";
 import HabitList from "@/components/habits/habit-list";
 import HabitSearch from "@/components/habits/search/habit-search";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface PageProps {
   searchParams: Promise<{ status?: string; q?: string; category?: string }>;
 }
@@ -14,17 +17,24 @@ const HabitsPage = async ({ searchParams }: PageProps) => {
   const searchQuery = params.q || "";
   const currentCategory = params.category || "";
 
-  const habits = await getAllHabits({
-    status: currentStatus,
-    search: searchQuery,
-    category: currentCategory,
-  });
-
   const allHabitsRaw = await getAllHabits();
   const activeCount = allHabitsRaw.filter((h) => h.status === "active").length;
   const archivedCount = allHabitsRaw.filter(
     (h) => h.status === "archived",
   ).length;
+
+  const habits = allHabitsRaw.filter((habit) => {
+    const matchesStatus = habit.status === currentStatus;
+    const matchesSearch =
+      habit.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      habit.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      !currentCategory || currentCategory === "All categories"
+        ? true
+        : habit.category === currentCategory;
+
+    return matchesStatus && matchesSearch && matchesCategory;
+  });
 
   return (
     <section>
