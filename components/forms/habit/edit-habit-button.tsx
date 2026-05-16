@@ -5,11 +5,19 @@ import Modal from "../modal";
 import HabitForm from "@/components/common/habit-form";
 import { Button } from "@/components/ui/button";
 import { Habit } from "@/lib/types";
+import { NewHabit } from "@/lib/schema";
+import { editHabit } from "@/lib/actions";
 
 const EditHabitButton = ({ habit }: { habit: Habit }) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
   const { description, name, frequency, category, color, icon } = habit;
+
+  const handleSave = async (data: NewHabit) => {
+    await editHabit(habit._id, data);
+    closeModal();
+  };
+
   return (
     <>
       <Button
@@ -23,9 +31,7 @@ const EditHabitButton = ({ habit }: { habit: Habit }) => {
         <HabitForm
           buttonLabel="Save changes"
           onClose={closeModal}
-          onSave={() => {
-            closeModal();
-          }}
+          onSave={handleSave}
           initialData={{
             name,
             description,

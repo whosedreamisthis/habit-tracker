@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition, useOptimistic } from "react";
-import { archiveHabit, toggleHabitCompletion } from "@/lib/actions";
+import { archiveHabit, editHabit, toggleHabitCompletion } from "@/lib/actions";
 import { Habit } from "@/lib/types";
 import Modal from "@/components/forms/modal";
 import HabitForm from "@/components/common/habit-form";
+import { NewHabit } from "@/lib/schema";
 
 const TodayHabitActions = ({
   habit,
@@ -48,7 +49,10 @@ const TodayHabitActions = ({
     });
   };
 
-  const handleEdit = () => {};
+  const handleSave = async (data: NewHabit) => {
+    await editHabit(habit._id, data);
+    setIsEditOpen(false);
+  };
 
   const handleArchive = async () => {
     startTransition(async () => {
@@ -104,7 +108,9 @@ const TodayHabitActions = ({
         <HabitForm
           buttonLabel="Save changes"
           onClose={() => setIsEditOpen(false)}
-          onSave={() => setIsEditOpen(false)}
+          onSave={(data) => {
+            handleSave(data);
+          }}
           initialData={{
             name: habit.name,
             description: habit.description,

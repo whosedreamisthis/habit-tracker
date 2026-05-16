@@ -3,6 +3,7 @@
 import { mockHabits as initialMockHabits } from "@/lib/mock-data";
 import { revalidatePath } from "next/cache";
 import { Habit } from "@/lib/types";
+import { NewHabit } from "@/lib/schema";
 
 // --- FIX: Pin memory to globalThis so workers don't reset it on page switch ---
 const globalForHabits = globalThis as unknown as {
@@ -70,6 +71,24 @@ export async function archiveHabit(habitId: string) {
       return {
         ...habit,
         status: "archived",
+        updatedAt: new Date().toISOString(),
+      };
+    }
+    return habit;
+  });
+
+  // Revalidate everything to ensure all pages are updated
+  revalidatePath("/", "layout");
+}
+
+export async function editHabit(habitId: string, data: NewHabit) {
+  console.log(`Editing habit ${data}`);
+
+  globalForHabits.localHabits = globalForHabits.localHabits!.map((habit) => {
+    if (habit._id === habitId) {
+      return {
+        ...habit,
+        ...data,
         updatedAt: new Date().toISOString(),
       };
     }
