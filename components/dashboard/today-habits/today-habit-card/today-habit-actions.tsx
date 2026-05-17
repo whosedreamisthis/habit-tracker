@@ -59,7 +59,7 @@ const TodayHabitActions = ({
         <Flame size={16} className="text-red-400/80" />
         <p className="text-sm dark:text-stone-300">
           {activeStreak}
-          {habit.targetDays < 7 && "w"}
+          {habit.targetDays < 7 ? "w" : "d"}
         </p>
       </div>
       <DropdownMenu>

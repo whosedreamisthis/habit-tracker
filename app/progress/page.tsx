@@ -21,6 +21,7 @@ import { getThisWeekData, getWeeklyComparisonData } from "@/lib/date-utils";
 import StatsSummary from "@/components/statistics/summary/stats-summary";
 import StatsCharts from "@/components/charts/stats-charts";
 import StatsAllHabits from "@/components/statistics/all-habits/stats-all-habits";
+import WeeklyReport from "@/components/weekly/weekly-reports";
 
 interface PageProps {
   searchParams: Promise<{ tab?: string }>;
@@ -69,6 +70,7 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
       <div className="mt-2">
         {activeTab === "weekly" && (
           <div className="flex flex-col gap-6">
+            <WeeklyReport />
             <WeeklySummary habits={habits} />
             <HabitTrackerGrid habits={habits} />
           </div>
