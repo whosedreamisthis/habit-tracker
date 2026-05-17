@@ -15,6 +15,8 @@ import { Habit } from "@/lib/types";
 import Modal from "@/components/forms/modal";
 import HabitForm from "@/components/common/habit-form";
 import { NewHabit } from "@/lib/schema";
+import DeleteHabitConfirmationButton from "@/components/forms/habit/delete-habit-confirmation-button";
+import DeleteHabitForm from "@/components/forms/habit/delete-habit-form";
 
 const TodayHabitActions = ({
   habit,
@@ -25,7 +27,10 @@ const TodayHabitActions = ({
   completed: boolean;
   activeStreak: number;
 }) => {
-  const [isEditOpen, setIsEditOpen] = useState(false); // 1. Locally control layout visibility
+  const [isEditOpen, setIsEditOpen] = useState(false); // 1. Locally control
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState(false); // 1. Locally control layout visibility
+  // layout visibility
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
@@ -97,8 +102,14 @@ const TodayHabitActions = ({
               <Archive />
               Archive
             </DropdownMenuItem>
-            <DropdownMenuItem variant="destructive" onSelect={handleDelete}>
-              <Trash2 />
+            <DropdownMenuItem
+              className="text-red-500"
+              onSelect={(e) => {
+                e.preventDefault();
+                setIsDeleteConfirmationOpen(true);
+              }}
+            >
+              <Trash2 className="mr-2" size={14} />
               Delete
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -121,12 +132,12 @@ const TodayHabitActions = ({
           }}
         />
       </Modal>
-
-      {/*<EditHabitModal*/}
-      {/*  habit={habit}*/}
-      {/*  isOpen={isEditOpen}*/}
-      {/*  onClose={() => setIsEditOpen(false)}*/}
-      {/*/>*/}
+      <Modal
+        isOpen={isDeleteConfirmationOpen}
+        onClose={() => setIsDeleteConfirmationOpen(false)}
+      >
+        <DeleteHabitForm onClose={() => setIsDeleteConfirmationOpen(false)} />
+      </Modal>
       <button
         className={`flex items-center bg-linear-to-r ${optimisticCompleted ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-500/60 border-amber-500/60 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
         onClick={handleToggle}

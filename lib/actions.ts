@@ -124,6 +124,17 @@ export async function createHabit(data: NewHabit) {
   revalidatePath("/", "layout");
 }
 
+export async function deleteHabit(habitId: string) {
+  console.log(`[SERVER] Deleting habit ${habitId}`);
+
+  globalForHabits.localHabits = globalForHabits.localHabits!.filter(
+    (habit) => habit._id !== habitId,
+  );
+
+  // Revalidate layout caches to drop the element everywhere instantly
+  revalidatePath("/", "layout");
+}
+
 export async function restoreHabit(habitId: string) {
   console.log(`Restoring habit ${habitId}`);
 

@@ -6,6 +6,8 @@ import { Habit } from "@/lib/types";
 import { useTransition } from "react";
 import { archiveHabit, restoreHabit } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+import DeleteHabitButton from "../../forms/habit/delete-habit-confirmation-button";
+import DeleteHabitConfirmationButton from "../../forms/habit/delete-habit-confirmation-button";
 
 const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
   const router = useRouter();
@@ -56,9 +58,7 @@ const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
             <ArchiveRestore className="text-slate-500" size={16} />
           )}
         </button>
-        <button className="hover:opacity-70 transition-opacity">
-          <Trash2 className="text-red-500" size={16} />
-        </button>
+        <DeleteHabitConfirmationButton habitId={habit._id} />
       </div>
     </div>
   );
