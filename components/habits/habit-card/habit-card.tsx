@@ -7,7 +7,7 @@ import { Habit } from "@/lib/types";
 const HabitCard = ({ habit }: { habit: Habit }) => {
   const { icon, color } = habit;
   return (
-    <div className=" w-full bg-white border-none p-4 rounded-xl shadow-sm">
+    <div className=" w-full bg-white dark:bg-stone-800 border-none p-4 rounded-xl shadow-sm">
       <div className="flex flex-col sm:flex-row justify-between items-center w-full">
         <div className="flex  items-center gap-4">
           <HabitIcon icon={icon} color={color} size="large" />

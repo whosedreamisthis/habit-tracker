@@ -33,12 +33,16 @@ const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
       {/* Group 1: Streaks (Flame and Trophy) */}
       <div className="flex items-center gap-3 shrink-0">
         <div className="flex items-center gap-1">
-          <Flame size={14} className="text-brand-600" />
-          <p className="text-sm font-medium">{activeStreak}</p>
+          <Flame size={14} className="text-brand-600 dark:text-brand-400" />
+          <p className="text-sm font-medium dark:text-stone-300">
+            {activeStreak}
+          </p>
         </div>
         <div className="flex items-center gap-1">
-          <Trophy size={14} className="text-brand-600" />
-          <p className="text-sm font-medium">{bestStreak}</p>
+          <Trophy size={14} className="text-brand-600 dark:text-brand-400" />
+          <p className="text-sm font-medium dark:text-stone-300">
+            {bestStreak}
+          </p>
         </div>
       </div>
 

@@ -9,8 +9,8 @@ const ActiveStreakCard = ({ habit }: { habit: Habit }) => {
     <div className="flex items-center gap-2">
       <HabitIcon icon={icon} color={color} size="medium" />
       <div className="flex flex-col justify-start">
-        <p className="text-sm line-clamp-1">{name}</p>
-        <div className="flex gap-1 text-xs text-brand-600 ">
+        <p className="text-sm line-clamp-1 dark:text-stone-300">{name}</p>
+        <div className="flex gap-1 text-xs text-brand-600 dark:text-brand-400 ">
           <svg
             className="absolute w-0 h-0"
             aria-hidden="true"

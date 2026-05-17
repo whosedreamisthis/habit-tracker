@@ -65,7 +65,7 @@ const HabitSearch = ({
 
   return (
     /* flex-wrap is the secret sauce here */
-    <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 w-full p-5 bg-white mb-5 rounded-lg">
+    <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 w-full p-5 bg-white dark:bg-stone-800 mb-5 rounded-lg">
       {/* Search + Dropdown Group */}
       <div className="flex flex-wrap items-center justify-center gap-4 flex-1 min-w-[320px]">
         <Input

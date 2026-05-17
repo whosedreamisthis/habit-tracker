@@ -32,16 +32,14 @@ const HabitCategoryDropdown = ({
       >
         <SelectGroup>
           <SelectItem
-            className="data-highlighted:bg-blue-500
-    data-highlighted:**:text-white!"
+            className="data-highlighted:bg-blue-500 data-highlighted:**:text-white! dark:text-stone-300"
             value="All categories"
           >
             All categories
           </SelectItem>
           {CATEGORIES.map(({ label, value }) => (
             <SelectItem
-              className="data-highlighted:bg-blue-500
-    data-highlighted:**:text-white!"
+              className="data-highlighted:bg-blue-500 data-highlighted:**:text-white! dark:text-stone-300"
               key={label}
               value={value}
             >
