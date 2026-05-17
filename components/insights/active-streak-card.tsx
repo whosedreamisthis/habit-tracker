@@ -34,7 +34,9 @@ const ActiveStreakCard = ({ habit }: { habit: Habit }) => {
             fill="url(#amberGradient)"
             // className="stroke-amber-600 stroke-0`" /* Optional: keeps the outline matching */
           />
-          <p>{activeStreak} days</p>
+          <p>
+            {activeStreak} {habit.targetDays === 7 ? "days" : "weeks"}
+          </p>
         </div>
       </div>
     </div>

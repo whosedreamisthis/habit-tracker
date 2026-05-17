@@ -1,7 +1,7 @@
 // ────────────────────────────────────────────────────────────────────────────
 // Mock data for the UI boilerplate.
 // ────────────────────────────────────────────────────────────────────────────
-import { format, subDays, parseISO, isSameDay } from "date-fns";
+import { format, subDays, parseISO } from "date-fns";
 
 const todayKey = () => format(new Date(), "yyyy-MM-dd");
 
@@ -48,8 +48,6 @@ const baseHabits = [
     order: 1,
     status: "active",
     _streakProb: 0.7,
-    _pattern: "weekdays",
-    _brokeAt: 20,
   }),
   habit({
     name: "Read 20 minutes",
@@ -81,7 +79,6 @@ const baseHabits = [
     order: 4,
     status: "active",
     _streakProb: 0.75,
-    _pattern: "dropoff",
   }),
   habit({
     name: "Strength training",
@@ -94,7 +91,6 @@ const baseHabits = [
     order: 5,
     status: "active",
     _streakProb: 0.55,
-    _pattern: "weekdays",
   }),
   habit({
     name: "Side project — 1hr",
@@ -116,19 +112,13 @@ const buildLogs = () => {
   for (const h of baseHabits) {
     for (let i = 0; i < 90; i++) {
       const d = subDays(today, i);
-      const dow = d.getDay();
       const key = format(d, "yyyy-MM-dd");
       let p = h._streakProb;
 
       // Boost probability for the last 14 days to ensure the user has data to look at
       if (i < 14) p = Math.max(p, 0.85);
 
-      if (h._pattern === "weekdays" && (dow === 0 || dow === 6)) {
-        p = 0; // No completions on weekends for weekday habits
-      }
-
       if (h._pattern === "dropoff" && i < 14) p *= 0.25;
-      if (h._brokeAt && i >= h._brokeAt - 2 && i <= h._brokeAt + 2) p = 0;
 
       if (p > 0) {
         const seed = Math.sin(i * 9301 + h.name.length * 49297) * 233280;
@@ -166,9 +156,8 @@ export const mockLogs = buildLogs();
 const calculateStreaks = (
   habitId: string,
   logs: typeof mockLogs,
-  habitPattern?: string,
+  targetDays: number = 7,
 ) => {
-  // Extract completion dates for this habit, sorted from oldest to newest
   const completedDates = logs
     .filter((l) => l.habitId === habitId)
     .map((l) => l.completedDate)
@@ -176,76 +165,122 @@ const calculateStreaks = (
 
   if (completedDates.length === 0) return { activeStreak: 0, bestStreak: 0 };
 
-  let currentStreak = 0;
-  let bestStreak = 0;
-  let activeStreak = 0;
+  // If targetDays is 7, we use the daily streak logic
+  if (targetDays === 7) {
+    let currentStreak = 0;
+    let bestStreak = 0;
+    let activeStreak = 0;
 
-  const todayStr = todayKey();
-  const yesterdayStr = format(subDays(new Date(), 1), "yyyy-MM-dd");
+    const maxGap = 1; // For daily, gap must be 1 day
 
-  // Track continuity step-by-step
-  for (let i = 0; i < completedDates.length; i++) {
-    if (i === 0) {
-      currentStreak = 1;
-    } else {
-      const prevDate = parseISO(completedDates[i - 1]);
-      const currDate = parseISO(completedDates[i]);
-      // If the difference between consecutive records is exactly 1 day, advance the streak
-      const diffTime = Math.abs(currDate.getTime() - prevDate.getTime());
-      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    for (let i = 0; i < completedDates.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prevDate = parseISO(completedDates[i - 1]);
+        const currDate = parseISO(completedDates[i]);
+        const diffTime = Math.abs(currDate.getTime() - prevDate.getTime());
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
-      if (diffDays === 1) {
-        currentStreak++;
-      } else if (habitPattern === "weekdays" && diffDays > 1) {
-        // For weekday habits, check if the gap is just a weekend
-        let isWeekendGap = true;
-        for (let day = 1; day < diffDays; day++) {
-          const checkDate = new Date(prevDate);
-          checkDate.setDate(prevDate.getDate() + day);
-          const dow = checkDate.getDay();
-          if (dow !== 0 && dow !== 6) {
-            isWeekendGap = false;
-            break;
-          }
-        }
-        if (isWeekendGap) {
+        if (diffDays <= maxGap) {
           currentStreak++;
         } else {
           if (currentStreak > bestStreak) bestStreak = currentStreak;
           currentStreak = 1;
         }
-      } else if (diffDays > 1) {
-        // Streak broke, log the max record achieved so far and reset counter
-        if (currentStreak > bestStreak) bestStreak = currentStreak;
-        currentStreak = 1;
       }
     }
-  }
-  if (currentStreak > bestStreak) bestStreak = currentStreak;
+    if (currentStreak > bestStreak) bestStreak = currentStreak;
 
-  // Verify if the streak is still alive (must have a entry recorded today or yesterday)
-  // For weekday habits, if today is Saturday/Sunday, it's alive if completed on Friday
-  let hasCompletedRecently =
-    completedDates.includes(todayStr) || completedDates.includes(yesterdayStr);
-
-  if (!hasCompletedRecently && habitPattern === "weekdays") {
+    const lastCompletion = parseISO(completedDates[completedDates.length - 1]);
     const today = new Date();
-    const dow = today.getDay();
-    if (dow === 0 || dow === 6) {
-      // It's weekend. Check if completed on the most recent Friday.
-      const diffToFriday = dow === 0 ? 2 : 1;
-      const fridayStr = format(subDays(today, diffToFriday), "yyyy-MM-dd");
-      if (completedDates.includes(fridayStr)) {
-        hasCompletedRecently = true;
+    const diffTime = Math.abs(today.getTime() - lastCompletion.getTime());
+    const diffDaysFromToday = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDaysFromToday <= maxGap) {
+      activeStreak = currentStreak;
+    }
+
+    return { activeStreak, bestStreak };
+  } else {
+    // WEEKLY STREAK LOGIC for habits with targetDays < 7
+    // A streak is defined by consecutive weeks meeting the targetDays requirement.
+    const today = new Date();
+    // Get start of current week (Monday)
+    const dayOfWeek = today.getDay();
+    const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const currentWeekMonday = new Date(today);
+    currentWeekMonday.setDate(today.getDate() - diffToMonday);
+    currentWeekMonday.setHours(0, 0, 0, 0);
+
+    // Group completions by week (using Monday as start)
+    const completionsByWeek: Record<string, number> = {};
+    completedDates.forEach((dateStr) => {
+      const date = parseISO(dateStr);
+      const dOW = date.getDay();
+      const dTM = dOW === 0 ? 6 : dOW - 1;
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - dTM);
+      monday.setHours(0, 0, 0, 0);
+      const weekKey = format(monday, "yyyy-MM-dd");
+      completionsByWeek[weekKey] = (completionsByWeek[weekKey] || 0) + 1;
+    });
+
+    // Get all week keys in order
+    const sortedWeeks = Object.keys(completionsByWeek).sort();
+    if (sortedWeeks.length === 0) return { activeStreak: 0, bestStreak: 0 };
+
+    let currentWeeklyStreak = 0;
+    let bestWeeklyStreak = 0;
+    let activeWeeklyStreak = 0;
+
+    // To find streaks, we need to consider all weeks from the first completion to now
+    const firstWeek = parseISO(sortedWeeks[0]);
+    const weeks: string[] = [];
+    const iterWeek = new Date(firstWeek);
+    while (iterWeek <= currentWeekMonday) {
+      weeks.push(format(iterWeek, "yyyy-MM-dd"));
+      iterWeek.setDate(iterWeek.getDate() + 7);
+    }
+
+    for (const weekKey of weeks) {
+      const count = completionsByWeek[weekKey] || 0;
+      if (count >= targetDays) {
+        currentWeeklyStreak++;
+      } else {
+        // If it's the current week and we haven't hit the target yet,
+        // we don't break the active streak yet, but we don't increment it either.
+        if (weekKey === format(currentWeekMonday, "yyyy-MM-dd")) {
+          // Current week hasn't failed yet until it's over
+        } else {
+          if (currentWeeklyStreak > bestWeeklyStreak)
+            bestWeeklyStreak = currentWeeklyStreak;
+          currentWeeklyStreak = 0;
+        }
       }
     }
-  }
+    if (currentWeeklyStreak > bestWeeklyStreak)
+      bestWeeklyStreak = currentWeeklyStreak;
 
-  if (hasCompletedRecently) {
-    activeStreak = currentStreak;
-  }
+    // Active streak: if current week met target, or if last week met target and current week is ongoing
+    const currentWeekKey = format(currentWeekMonday, "yyyy-MM-dd");
+    const lastWeekMonday = new Date(currentWeekMonday);
+    lastWeekMonday.setDate(lastWeekMonday.getDate() - 7);
+    const lastWeekKey = format(lastWeekMonday, "yyyy-MM-dd");
 
-  return { activeStreak, bestStreak };
+    if ((completionsByWeek[currentWeekKey] || 0) >= targetDays) {
+      activeWeeklyStreak = currentWeeklyStreak;
+    } else {
+      // Check if current week is still "alive" (last week was successful)
+      if ((completionsByWeek[lastWeekKey] || 0) >= targetDays) {
+        activeWeeklyStreak = currentWeeklyStreak;
+      } else {
+        activeWeeklyStreak = 0;
+      }
+    }
+
+    return { activeStreak: activeWeeklyStreak, bestStreak: bestWeeklyStreak };
+  }
 };
 
 // 3. Process records to append calculations down into the target interface array
@@ -253,7 +288,7 @@ export const mockHabits = baseHabits.map((h) => {
   const { activeStreak, bestStreak } = calculateStreaks(
     h._id,
     mockLogs,
-    h._pattern,
+    h.targetDays,
   );
   const completions = mockLogs
     .filter((l) => l.habitId === h._id)

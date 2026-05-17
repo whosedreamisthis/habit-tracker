@@ -57,7 +57,10 @@ const TodayHabitActions = ({
     <div className="flex gap-4">
       <div className="flex gap-0.5 items-center">
         <Flame size={16} className="text-red-400/80" />
-        <p className="text-sm dark:text-stone-300">{activeStreak}</p>
+        <p className="text-sm dark:text-stone-300">
+          {activeStreak}
+          {habit.targetDays < 7 && "w"}
+        </p>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
