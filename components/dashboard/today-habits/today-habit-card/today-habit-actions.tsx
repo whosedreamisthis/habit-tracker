@@ -15,7 +15,6 @@ import { Habit } from "@/lib/types";
 import Modal from "@/components/forms/modal";
 import HabitForm from "@/components/common/habit-form";
 import { NewHabit } from "@/lib/schema";
-import DeleteHabitConfirmationButton from "@/components/forms/habit/delete-habit-confirmation-button";
 import DeleteHabitForm from "@/components/forms/habit/delete-habit-form";
 
 const TodayHabitActions = ({
@@ -90,9 +89,8 @@ const TodayHabitActions = ({
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onSelect={(e) => {
-                e.preventDefault();
-                setIsEditOpen(true);
+              onSelect={() => {
+                setTimeout(() => setIsEditOpen(true), 150);
               }}
             >
               <Pencil className="mr-2" size={14} />
@@ -104,9 +102,8 @@ const TodayHabitActions = ({
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-500"
-              onSelect={(e) => {
-                e.preventDefault();
-                setIsDeleteConfirmationOpen(true);
+              onSelect={() => {
+                setTimeout(() => setIsDeleteConfirmationOpen(true), 150);
               }}
             >
               <Trash2 className="mr-2" size={14} />
