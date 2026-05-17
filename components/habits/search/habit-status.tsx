@@ -26,7 +26,7 @@ const HabitStatus = ({
         className={`flex-1 px-4 py-2 rounded-l-lg cursor-pointer transition-all text-center ${
           isActive
             ? "bg-brand-100/70 shadow-sm text-brand-600 dark:text-brand-800 font-semibold"
-            : "text-slate-500 dark:text-stone-400 hover:text-slate-700 dark:hover:text-stone-200"
+            : "text-slate-500 dark:text-stone-300 hover:text-slate-700 dark:hover:text-stone-200"
         }`}
         onClick={() => onChange("active")}
       >
@@ -38,7 +38,7 @@ const HabitStatus = ({
         /* 2. Added flex-1 and text-center here as well */
         className={`flex-1 px-4 py-2 rounded-r-lg cursor-pointer transition-all text-center ${
           !isActive
-            ? "bg-brand-100/70 shadow-sm text-brand-600 dark:text-brand-400 font-semibold"
+            ? "bg-brand-100/70 shadow-sm text-brand-600 dark:text-brand-800  font-semibold"
             : "text-slate-500 dark:text-stone-400 hover:text-slate-700 dark:hover:text-stone-200"
         }`}
         onClick={() => onChange("archived")}
