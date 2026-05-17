@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 
-const WeeklyReportHeader = () => {
+const WeeklyReportHeader = ({ onRegenerate }: { onRegenerate: () => void }) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex gap-3">
@@ -17,7 +17,10 @@ const WeeklyReportHeader = () => {
           </p>
         </div>
       </div>
-      <Button className="px-4 py-4 bg-linear-to-r from-brand-300 to-brand-700">
+      <Button
+        className="px-4 py-4 bg-linear-to-r from-brand-300 to-brand-700"
+        onClick={onRegenerate}
+      >
         Regenerate report
       </Button>
     </div>
