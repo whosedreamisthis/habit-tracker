@@ -154,9 +154,6 @@ export async function restoreHabit(habitId: string) {
 }
 
 export async function getAllHabits(filters?: GetHabitsFilters) {
-  // Add a small delay to simulate network/db and ensure Next.js sees it as a fresh request
-  await new Promise((resolve) => setTimeout(resolve, 10));
-
   // Fallback to defaults if no filters object is passed
   const statusFilter = filters?.status;
   const searchFilter = filters?.search?.toLowerCase() || "";

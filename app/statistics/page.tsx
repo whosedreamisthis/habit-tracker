@@ -7,9 +7,6 @@ import StatsCharts from "../../components/charts/stats-charts";
 
 import { getAllHabits } from "@/lib/actions";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 const StatsPage = async () => {
   const allHabits = await getAllHabits();
   const habits = allHabits.filter((h) => h.status === "active");

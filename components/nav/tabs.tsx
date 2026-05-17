@@ -16,7 +16,6 @@ const Tabs = () => {
           <Link
             key={link.to}
             href={link.to}
-            prefetch={false}
             className={`flex flex-col justify-center items-center ${isActive ? "text-brand-800" : "text-slate-500/80"}`}
           >
             <link.icon className="w-5 h-5 " />

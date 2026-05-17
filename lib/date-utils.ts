@@ -128,9 +128,8 @@ export const countCompletionsForDayRange = (
       // We divide the mock count by the number of habits so the total sum across
       // all habits equals our target chart numbers.
       const targetMockTotal = getMockCountForDay(dayIndex, weekRange);
-      const mockCompletionsForThisHabit = Math.ceil(
-        targetMockTotal / habits.length,
-      );
+      const mockCompletionsForThisHabit =
+        habits.length > 0 ? Math.ceil(targetMockTotal / habits.length) : 0;
 
       // Create dummy completion objects matching the targeted date string
       const simulatedCompletions = Array.from({

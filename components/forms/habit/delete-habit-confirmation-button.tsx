@@ -14,7 +14,6 @@ const DeleteHabitConfirmationButton = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
-  console.log("habitId", habitId);
 
   return (
     <>
@@ -22,7 +21,6 @@ const DeleteHabitConfirmationButton = ({
         variant="ghost"
         className="flex items-center gap-2 cursor-pointer justify-start hover:opacity-80 transition p-0"
         onClick={() => {
-          console.log("CLICK");
           setIsOpen(true);
         }}
       >

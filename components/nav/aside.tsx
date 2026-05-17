@@ -22,7 +22,6 @@ const Aside = ({ className }: Props) => {
             <Link
               href={item.to}
               key={item.to}
-              prefetch={false}
               className={`flex items-center gap-3 py-3 rounded-lg  transition-colors ${isActive ? "text-brand-700 bg-brand-100" : "text-slate-500"} cursor-pointer w-full px-2`}
             >
               <item.icon className="w-5 h-5 " />

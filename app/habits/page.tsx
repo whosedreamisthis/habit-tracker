@@ -4,16 +4,14 @@ import { getAllHabits } from "@/lib/actions";
 import HabitList from "@/components/habits/habit-list";
 import HabitSearch from "@/components/habits/search/habit-search";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 interface PageProps {
   searchParams: Promise<{ status?: string; q?: string; category?: string }>;
 }
 
 const HabitsPage = async ({ searchParams }: PageProps) => {
   const params = await searchParams;
-  const currentStatus = params.status || "active"; // fallback to active
+  const currentStatus: "active" | "archived" =
+    (params.status as "active" | "archived") || "active"; // fallback to active
   const searchQuery = params.q || "";
   const currentCategory = params.category || "";
 

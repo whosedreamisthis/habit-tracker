@@ -5,9 +5,6 @@ import HabitTrackerGrid from "@/components/habit-tracker-grid/habit-tracker-grid
 
 import { getAllHabits } from "@/lib/actions";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 const WeeklyPage = async () => {
   const allHabits = await getAllHabits();
   const habits = allHabits.filter((h) => h.status === "active");
