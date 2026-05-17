@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Moon, Sun, LogOut, User, Mail, Shield, Bell } from "lucide-react";
+import { Moon, Sun, LogOut, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import ResetMockDataButton from "@/components/forms/settings/reset-mock-data-button";
 import SectionHeader from "@/components/common/section-header";
@@ -54,7 +54,7 @@ export default function SettingsPage() {
         <h2 className="text-lg font-semibold mb-4 text-slate-800 dark:text-stone-100">
           Preferences
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-brand-100 dark:bg-brand-900/30 rounded-lg text-brand-600 dark:text-brand-400">
@@ -75,6 +75,37 @@ export default function SettingsPage() {
             >
               {theme === "dark" ? "Light Mode" : "Dark Mode"}
             </button>
+          </div>
+
+          <hr className="border-brand-100/20 dark:border-stone-700/50" />
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between py-2">
+              <div>
+                <p className="font-medium text-slate-900 dark:text-stone-100">
+                  Morning motivation
+                </p>
+                <p className="text-sm text-slate-500 dark:text-stone-400">
+                  Show a short personalised AI message every morning on the
+                  dashboard.
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                className="h-5 w-5 rounded border-brand-200 text-brand-600 focus:ring-brand-500"
+              />
+            </div>
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                type="button"
+                className="px-6 py-2.5 rounded-xl font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-all active:scale-[0.98]"
+              >
+                Cancel
+              </button>
+              <button className="px-6 py-2.5 bg-linear-to-r from-brand-300 to-brand-700 text-white font-semibold rounded-xl transition-all hover:opacity-90 active:scale-[0.98]">
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       </section>

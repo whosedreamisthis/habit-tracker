@@ -3,8 +3,8 @@ import DashboardSummary from "../../components/dashboard/summary/dashboard-summa
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import TodayHabits from "@/components/dashboard/today-habits/today-habits";
 import ConsistencyGrid from "@/components/dashboard/consistency-grid";
-import { getAllHabits, resetAllHabitsData } from "@/lib/actions";
-import { Button } from "@/components/ui/button";
+import { getAllHabits } from "@/lib/actions";
+import MorningMotivation from "@/components/dashboard/morning-motivation";
 
 const DashboardPage = async () => {
   const habits = await getAllHabits();
@@ -13,6 +13,7 @@ const DashboardPage = async () => {
   return (
     <section>
       <DashboardHeader />
+      <MorningMotivation />
       <DashboardSummary habits={activeHabits} />
       <TodayHabits habits={activeHabits} />
       <ConsistencyGrid />
