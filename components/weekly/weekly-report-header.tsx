@@ -3,7 +3,13 @@ import { Sparkles } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 
-const WeeklyReportHeader = ({ onRegenerate }: { onRegenerate: () => void }) => {
+const WeeklyReportHeader = ({
+  date,
+  onRegenerate,
+}: {
+  date: string;
+  onRegenerate: () => void;
+}) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex gap-3">
@@ -12,9 +18,7 @@ const WeeklyReportHeader = ({ onRegenerate }: { onRegenerate: () => void }) => {
         </div>
         <div className="flex flex-col">
           <p className="font-semibold">AI Weekly Report</p>
-          <p className="text-xs text-muted-foreground">
-            {`Generated ${format(new Date(), "M/d/yyyy, h:mm:ss a")}`}
-          </p>
+          <p className="text-xs text-muted-foreground">{`Generated ${date}`}</p>
         </div>
       </div>
       <Button
