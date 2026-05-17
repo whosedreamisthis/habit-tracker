@@ -5,7 +5,7 @@ import Modal from "../modal";
 import SettingsForm from "./settings-form";
 import { Button } from "@/components/ui/button";
 
-const SettingsButton = () => {
+const SettingsButton = ({ showLabel }: { showLabel: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
 
@@ -17,7 +17,7 @@ const SettingsButton = () => {
         onClick={() => setIsOpen(true)}
       >
         <Settings size={18} />
-        <p className="pl-1">Settings</p>
+        {showLabel && <p className="pl-1">Settings</p>}
       </Button>
 
       <Modal isOpen={isOpen} onClose={closeModal}>

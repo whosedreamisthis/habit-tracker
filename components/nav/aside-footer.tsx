@@ -19,7 +19,7 @@ const AsideFooter = () => {
       <hr className="slate-300" />
 
       <button
-        className="flex items-center justify-start gap-4 cursor-pointer hover:opacity-80 transition"
+        className="flex items-center justify-start gap-4 cursor-pointer hover:opacity-80 transition-all"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "light" ? (
@@ -34,7 +34,7 @@ const AsideFooter = () => {
           </div>
         )}
       </button>
-      <SettingsButton />
+      <SettingsButton showLabel={true} />
       <div className="flex items-center justify-between ">
         <div className="flex gap-2">
           <div className="h-10 w-10  flex items-center justify-center bg-brand-600 rounded-full">

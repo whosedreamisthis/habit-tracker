@@ -36,7 +36,7 @@ export default function RootLayout({
             <Logo />
             <hr className="slate-300" />
             <Aside className="flex-1" />
-            {/*<AsideFooter />*/}
+            <AsideFooter />
           </div>
           {/* MOBILE TABS: Only visible on small screens (below md) */}
 

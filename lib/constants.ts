@@ -53,7 +53,6 @@ export const NAV_LINKS = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/habits", label: "Habits", icon: ListChecks },
   { to: "/progress", label: "Progress", icon: TrendingUp },
-  { to: "/settings", label: "Settings", icon: Settings },
 ];
 
 export const SUMMARY = [
