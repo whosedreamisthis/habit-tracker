@@ -41,7 +41,7 @@ const StatsTopHabits = ({ habits }: { habits: Habit[] }) => {
           key={habit._id}
           habit={habit}
           currentValue={habit.completionsLast30Days}
-          total={30}
+          total={Math.ceil((30 / 7) * habit.targetDays)}
         />
       ))}
     </div>

@@ -131,7 +131,6 @@ export async function createHabit(data: NewHabit) {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     userId: "",
-    targetDays: 7,
     order: 7,
     activeStreak: 0,
     bestStreak: 0,

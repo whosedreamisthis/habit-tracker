@@ -5,6 +5,7 @@ export const newHabitSchema = z.object({
   description: z.string().min(1, "Description is required").max(200),
   category: z.string("Category is required").min(1, "Category is required"),
   frequency: z.enum(["daily", "weekly"], "Frequency is required"),
+  targetDays: z.number().min(1).max(7),
   icon: z.string(),
   color: z.string(),
 });

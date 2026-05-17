@@ -11,6 +11,7 @@ import { FormSelect } from "@/components/forms/fields/form-select";
 import { CATEGORIES } from "@/lib/constants";
 import FormIcon from "@/components/forms/fields/form-icon";
 import FormColor from "@/components/forms/fields/form-color";
+import FormTargetDays from "@/components/forms/fields/form-target-days";
 import HabitFormButtons from "../forms/habit/habit-form-buttons";
 
 interface HabitFormProps {
@@ -32,6 +33,7 @@ const HabitForm = ({
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<NewHabit>({
     resolver: zodResolver(newHabitSchema),
@@ -39,7 +41,8 @@ const HabitForm = ({
       name: "",
       description: "",
       category: "",
-      frequency: "",
+      frequency: "daily",
+      targetDays: 7,
       icon: "💪",
       color: "#6366f1",
     },
@@ -74,7 +77,7 @@ const HabitForm = ({
           {...register("description")}
         />
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Controller
             control={control}
             name="category"
@@ -105,12 +108,40 @@ const HabitForm = ({
                   { value: "weekly", label: "Weekly" },
                 ]}
                 value={field.value}
-                onChange={field.onChange}
+                onChange={(val) => {
+                  field.onChange(val);
+                  if (val === "daily") {
+                    setValue("targetDays", 7);
+                  } else if (val === "weekly") {
+                    // If switching to weekly and it was 7, set to 6
+                    setValue("targetDays", 6);
+                  }
+                }}
                 onBlur={field.onBlur}
               />
             )}
           />
         </div>
+
+        <Controller
+          control={control}
+          name="targetDays"
+          render={({ field }) => (
+            <FormTargetDays
+              label="Target Days per Week"
+              value={field.value}
+              error={errors.targetDays?.message}
+              onChange={(val) => {
+                field.onChange(val);
+                if (val === 7) {
+                  setValue("frequency", "daily");
+                } else {
+                  setValue("frequency", "weekly");
+                }
+              }}
+            />
+          )}
+        />
         <Controller
           control={control}
           name="icon"

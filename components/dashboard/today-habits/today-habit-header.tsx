@@ -6,7 +6,7 @@ const TodayHabitHeader = ({ habits }: { habits: Habit[] }) => {
   const completedHabits = habits.filter((h) => h.isCompletedToday).length;
   const totalHabits = habits.length;
   const percentage = (completedHabits / totalHabits) * 100;
-
+  const formattedPercentage = Number(percentage.toFixed(0));
   return (
     <div className="flex items-center justify-between">
       <div>
@@ -14,10 +14,10 @@ const TodayHabitHeader = ({ habits }: { habits: Habit[] }) => {
         <p className="text-sm text-muted-foreground">4 of 7 complete</p>
       </div>
       <CircularProgress
-        percentage={percentage}
+        percentage={formattedPercentage}
         size={55}
         strokeWidth={6}
-      />{" "}
+      />
     </div>
   );
 };
