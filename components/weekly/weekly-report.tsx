@@ -18,7 +18,7 @@ const WeeklyReport = ({ habits }: { habits: Habit[] }) => {
         console.log("Generating fresh weekly AI insights...");
 
         const prompt =
-          "Analyze my habit tracking data and provide a concise weekly progress report with 3 actionable insights.";
+          "Analyze my habit tracking data and provide a concise weekly progress report with 3 actionable insights. keep the result to two paragraphs.";
 
         const result = await askAI(prompt, habits);
 
