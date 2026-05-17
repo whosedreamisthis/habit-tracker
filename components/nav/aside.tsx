@@ -32,13 +32,13 @@ const Aside = ({ className }: Props) => {
           );
         })}
       </div>
-      <Button
-        onClick={async () => {
-          await resetAllHabitsData();
-        }}
-      >
-        reset
-      </Button>
+      {/*<Button*/}
+      {/*  onClick={async () => {*/}
+      {/*    await resetAllHabitsData();*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  reset*/}
+      {/*</Button>*/}
     </div>
   );
 };

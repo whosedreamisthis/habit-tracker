@@ -39,6 +39,7 @@ const WeeklySummary = async ({ habits }: { habits: Habit[] }) => {
         label="Average Streak"
         description="Across all habits"
         value={`${averageStreak} days`}
+        className="text-md line-clamp-2"
       />
 
       {/* CARD 3: All-Time Record */}
@@ -46,6 +47,7 @@ const WeeklySummary = async ({ habits }: { habits: Habit[] }) => {
         label="Best Streak"
         description="All-time record"
         value={`${bestAllTimeStreak} days`}
+        className="text-md line-clamp-2"
       />
 
       {/* CARD 4: Top Performing Habit */}

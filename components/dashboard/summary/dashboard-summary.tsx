@@ -10,8 +10,18 @@ const DashboardSummary = async ({ habits }: { habits: Habit[] }) => {
   const bestStreak = Math.max(0, ...habits.map((h) => h.bestStreak));
 
   // For "This week", let's just count total completions for now or similar metric
-  const thisWeek = habits.filter((h) => h.isCompletedToday).length;
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const limitDateStr = sevenDaysAgo.toISOString().slice(0, 10); // "2026-05-09"
 
+  // 2. Tally up the matching objects
+  const thisWeek = habits.reduce((total, h) => {
+    const completionCountThisWeek = (h.completions || []).filter(
+      (c) => c.date >= limitDateStr,
+    ).length;
+
+    return total + completionCountThisWeek;
+  }, 0);
   const stats = [totalHabits, activeStreaksCount, bestStreak, thisWeek];
 
   return (
