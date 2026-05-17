@@ -1,35 +1,55 @@
 import React from "react";
 import InsightsSummaryCard from "./insights-summary-card";
 import { Activity, TrendingUp, CalendarRange, Trophy } from "lucide-react";
+import { format, subDays } from "date-fns";
 
 import { Habit } from "@/lib/types";
 
 const InsightsSummary = async ({ habits }: { habits: Habit[] }) => {
-  const totalCompletions = habits.reduce(
-    (acc, h) => acc + (h.isCompletedToday ? 1 : 0),
+  // 1. Total Completions (All-time)
+  const allTimeCompletions = habits.reduce(
+    (acc, h) => acc + (h.completions?.length || 0),
     0,
   );
-  const completionRate =
-    habits.length > 0
-      ? Math.round((totalCompletions / habits.length) * 100)
+
+  // 2. Weekly Average Rate (Last 7 days)
+  const last7Days = Array.from({ length: 7 }).map((_, i) =>
+    format(subDays(new Date(), i), "yyyy-MM-dd"),
+  );
+
+  const weeklyCompletions = habits.reduce((acc, h) => {
+    const recent =
+      h.completions?.filter((c) => {
+        const cDate =
+          typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+        return last7Days.includes(cDate);
+      }).length || 0;
+    return acc + recent;
+  }, 0);
+
+  const totalPossibleWeekly = habits.length * 7;
+  const weeklyAverageRate =
+    totalPossibleWeekly > 0
+      ? Math.round((weeklyCompletions / totalPossibleWeekly) * 100)
       : 0;
+
   const topHabit = habits.sort((a, b) => b.activeStreak - a.activeStreak)[0];
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <InsightsSummaryCard
-        label="Completions"
+        label="Total Efforts"
         icon={Activity}
-        description="Today"
+        description="All-time completions"
       >
-        <p className="text-2xl font-medium">{totalCompletions}</p>
+        <p className="text-2xl font-medium">{allTimeCompletions}</p>
       </InsightsSummaryCard>
       <InsightsSummaryCard
-        label="Completion rate"
-        description="Today"
+        label="Weekly Avg"
+        description="Last 7 days"
         icon={TrendingUp}
       >
-        <p className="text-2xl font-medium">{completionRate}%</p>
+        <p className="text-2xl font-medium">{weeklyAverageRate}%</p>
       </InsightsSummaryCard>
       <InsightsSummaryCard
         label="Best streak"

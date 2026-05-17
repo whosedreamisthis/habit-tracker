@@ -14,7 +14,7 @@ const StatsHabitCard = ({ habit }: { habit: Habit }) => {
           <p className="text-muted-foreground text-sm"> {category}</p>
         </div>
       </div>
-      <StatsHabitCardStreaks />
+      <StatsHabitCardStreaks habit={habit} />
     </div>
   );
 };
