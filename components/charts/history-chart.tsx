@@ -9,42 +9,32 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { Habit } from "@/lib/types";
+import { format, subDays } from "date-fns";
 
-// Example data matching your image (Apr 15 - May 13)
-const data = [
-  { date: "Apr 15", completions: 4 },
-  { date: "Apr 16", completions: 7 },
-  { date: "Apr 17", completions: 4 },
-  { date: "Apr 18", completions: 4 },
-  { date: "Apr 19", completions: 4 },
-  { date: "Apr 20", completions: 5 },
-  { date: "Apr 21", completions: 5 },
-  { date: "Apr 22", completions: 5 },
-  { date: "Apr 23", completions: 6 },
-  { date: "Apr 24", completions: 2 },
-  { date: "Apr 25", completions: 4 },
-  { date: "Apr 26", completions: 5 },
-  { date: "Apr 27", completions: 6 },
-  { date: "Apr 28", completions: 6 },
-  { date: "Apr 29", completions: 7 },
-  { date: "Apr 30", completions: 6 },
-  { date: "May 1", completions: 3 },
-  { date: "May 2", completions: 4 },
-  { date: "May 3", completions: 3 },
-  { date: "May 4", completions: 4 },
-  { date: "May 5", completions: 5 },
-  { date: "May 6", completions: 5 },
-  { date: "May 7", completions: 4 },
-  { date: "May 8", completions: 4 },
-  { date: "May 9", completions: 4 },
-  { date: "May 10", completions: 4 },
-  { date: "May 11", completions: 6 },
-  { date: "May 12", completions: 4 },
-  { date: "May 13", completions: 4 },
-  { date: "May 14", completions: 4 },
-];
+interface HistoryChartProps {
+  habits: Habit[];
+}
 
-const HistoryChart = () => {
+const HistoryChart = ({ habits }: HistoryChartProps) => {
+  // Calculate completion counts for each of the last 30 days
+  const data = Array.from({ length: 30 }).map((_, i) => {
+    const d = subDays(new Date(), 29 - i);
+    const dateStr = format(d, "yyyy-MM-dd");
+    const label = format(d, "MMM d");
+
+    const completions = habits.reduce((acc, habit) => {
+      const hasCompletion = habit.completions?.some((c) => {
+        const cDate =
+          typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+        return cDate === dateStr;
+      });
+      return acc + (hasCompletion ? 1 : 0);
+    }, 0);
+
+    return { date: label, completions };
+  });
+
   return (
     <div className="h-80  w-full bg-white p-5 rounded-xl shadow-sm">
       <p className="text-sm font-bold text-slate-800">Last 30 days</p>

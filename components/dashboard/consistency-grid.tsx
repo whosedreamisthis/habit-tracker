@@ -2,13 +2,25 @@ import React from "react";
 import ConsistencyHeader from "@/components/dashboard/consistency-header";
 import { getColor } from "@/lib/utils";
 import { getAllHabits } from "@/lib/actions";
+import { format, subDays } from "date-fns";
 
 const ConsistencyGrid = async () => {
-  // const habits = await getAllHabits({ status: "active" });
+  const habits = await getAllHabits({ status: "active" });
 
-  const days = Array.from({ length: 91 }).map((_) => {
-    // Logic to count completions for each date goes here
-    return Math.floor(Math.random() * 5); // Mock data
+  const days = Array.from({ length: 91 }).map((_, i) => {
+    const dateStr = format(subDays(new Date(), 90 - i), "yyyy-MM-dd");
+
+    // Count completions for this specific date across all active habits
+    const count = habits.reduce((acc, habit) => {
+      const hasCompletion = habit.completions?.some((c) => {
+        const cDate =
+          typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+        return cDate === dateStr;
+      });
+      return acc + (hasCompletion ? 1 : 0);
+    }, 0);
+
+    return count;
   });
 
   return (

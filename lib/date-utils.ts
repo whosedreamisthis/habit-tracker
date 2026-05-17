@@ -1,4 +1,5 @@
 import { Habit } from "./types";
+import { format } from "date-fns";
 
 const getDayName = (date: Date) =>
   date.toLocaleDateString("en-US", { weekday: "short" });
@@ -15,21 +16,24 @@ export const getThisWeekData = (habits: Habit[]) => {
     const day = new Date(monday);
     day.setDate(monday.getDate() + i);
     const name = getDayName(day);
+    const dateStr = format(day, "yyyy-MM-dd");
+    const isFuture = day > now;
 
     // Count completions for this day across all habits
-    const completionsCount = habits.reduce((acc, habit) => {
-      const hasCompletion = habit.completions?.some((c) => {
-        const cDate = new Date(c.date);
-        return (
-          cDate.getDate() === day.getDate() &&
-          cDate.getMonth() === day.getMonth() &&
-          cDate.getFullYear() === day.getFullYear()
-        );
-      });
-      return acc + (hasCompletion ? 1 : 0);
-    }, 0);
+    const completionsCount = isFuture
+      ? 0
+      : habits.reduce((acc, habit) => {
+          const hasCompletion = habit.completions?.some((c) => {
+            const cDate =
+              typeof c.date === "string"
+                ? c.date
+                : format(c.date, "yyyy-MM-dd");
+            return cDate === dateStr;
+          });
+          return acc + (hasCompletion ? 1 : 0);
+        }, 0);
 
-    return { name, completions: completionsCount || 4 }; // Fallback to 4 for mock look if 0
+    return { name, completions: completionsCount };
   });
 };
 
@@ -39,20 +43,18 @@ export const getLast7DaysData = (habits: Habit[]) => {
     const day = new Date();
     day.setDate(day.getDate() - (6 - i)); // Go back 6 days and come forward
     const name = getDayName(day);
+    const dateStr = format(day, "yyyy-MM-dd");
 
     const completionsCount = habits.reduce((acc, habit) => {
       const hasCompletion = habit.completions?.some((c) => {
-        const cDate = new Date(c.date);
-        return (
-          cDate.getDate() === day.getDate() &&
-          cDate.getMonth() === day.getMonth() &&
-          cDate.getFullYear() === day.getFullYear()
-        );
+        const cDate =
+          typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+        return cDate === dateStr;
       });
       return acc + (hasCompletion ? 1 : 0);
     }, 0);
 
-    return { name, completions: completionsCount || 3 }; // Fallback to 3 for mock look
+    return { name, completions: completionsCount };
   });
 };
 
@@ -95,12 +97,14 @@ export const countCompletionsForDayRange = (
   // Find the exact date string for the day index we are counting
   const targetDate = new Date(targetMonday);
   targetDate.setDate(targetMonday.getDate() + dayIndex);
-  const targetDateString = targetDate.toDateString();
+  const targetDateString = format(targetDate, "yyyy-MM-dd");
+  const isFuture = targetDate > today;
 
   const getMockCountForDay = (
     index: number,
     range: "thisWeek" | "lastWeek",
   ) => {
+    if (range === "thisWeek" && isFuture) return 0;
     const mockValues = {
       thisWeek: [5, 6, 4, 4, 4, 0, 0], // Mon=5, Tue=6, Wed=4, Thu=4, Fri=4, Sat=0, Sun=0
       lastWeek: [3, 4, 5, 5, 4, 4, 4], // Mon=3, Tue=4, Wed=5, Thu=5, Fri=4, Sat=4, Sun=4
@@ -110,6 +114,8 @@ export const countCompletionsForDayRange = (
 
   // Count matches across all habits
   let totalCount = 0;
+  if (isFuture) return 0;
+
   habits.forEach((habit) => {
     // Safely check if completions exist and have items
     const hasRealCompletions =
@@ -118,7 +124,10 @@ export const countCompletionsForDayRange = (
     if (hasRealCompletions) {
       // Use real database data if it exists
       habit.completions?.forEach((completion) => {
-        const completionDateString = new Date(completion.date).toDateString();
+        const completionDateString =
+          typeof completion.date === "string"
+            ? completion.date
+            : format(completion.date, "yyyy-MM-dd");
         if (completionDateString === targetDateString) {
           totalCount++;
         }
@@ -136,11 +145,11 @@ export const countCompletionsForDayRange = (
         length: mockCompletionsForThisHabit,
       }).map(() => ({
         id: Math.random().toString(),
-        date: targetDate,
+        date: targetDateString,
       }));
 
       simulatedCompletions.forEach((completion) => {
-        const completionDateString = completion.date.toDateString();
+        const completionDateString = completion.date;
         if (completionDateString === targetDateString) {
           totalCount++;
         }

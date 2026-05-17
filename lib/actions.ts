@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { Completion, Habit } from "@/lib/types";
 import { NewHabit } from "@/lib/schema";
 import { nanoid } from "nanoid";
+import { format } from "date-fns";
 
 // --- FIX: Pin memory to globalThis so workers don't reset it on page switch ---
 const globalForHabits = globalThis as unknown as {
@@ -38,12 +39,32 @@ export async function toggleHabitCompletion(
   currentCompletedState: boolean,
 ) {
   const targetCompletedState = !currentCompletedState;
+  const todayStr = format(new Date(), "yyyy-MM-dd");
+
   console.log(
-    `Updating habit ${habitId} to completed: ${!targetCompletedState}`,
+    `Updating habit ${habitId} to completed: ${targetCompletedState}`,
   );
 
   globalForHabits.localHabits = globalForHabits.localHabits!.map((habit) => {
     if (habit._id === habitId) {
+      let updatedCompletions = [...(habit.completions || [])];
+
+      if (targetCompletedState) {
+        // Add completion if not already there
+        if (!updatedCompletions.some((c) => c.date === todayStr)) {
+          updatedCompletions.push({
+            _id: nanoid(),
+            date: todayStr,
+          });
+        }
+      } else {
+        // Remove completion for today
+        updatedCompletions = updatedCompletions.filter(
+          (c) => c.date !== todayStr,
+        );
+      }
+
+      // Re-calculate streaks based on updated completions
       const nextStreak = targetCompletedState
         ? habit.activeStreak + 1
         : Math.max(0, habit.activeStreak - 1);
@@ -51,16 +72,17 @@ export async function toggleHabitCompletion(
       return {
         ...habit,
         isCompletedToday: targetCompletedState,
+        completions: updatedCompletions,
         activeStreak: nextStreak,
         // Sync bestStreak if the active streak surpasses it
         bestStreak:
           nextStreak > habit.bestStreak ? nextStreak : habit.bestStreak,
-        updatedAt: new Date().toISOString(), // Keep timestamps accurate
+        updatedAt: new Date().toISOString(),
       };
     }
     return habit;
   });
-  // 2. Refresh the cached data on the dashboard so the UI updates
+
   revalidatePath("/", "layout");
 }
 

@@ -3,7 +3,8 @@ import DashboardSummary from "../../components/dashboard/summary/dashboard-summa
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import TodayHabits from "@/components/dashboard/today-habits/today-habits";
 import ConsistencyGrid from "@/components/dashboard/consistency-grid";
-import { getAllHabits } from "@/lib/actions";
+import { getAllHabits, resetAllHabitsData } from "@/lib/actions";
+import { Button } from "@/components/ui/button";
 
 const DashboardPage = async () => {
   const habits = await getAllHabits();

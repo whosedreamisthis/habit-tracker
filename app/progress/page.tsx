@@ -90,7 +90,7 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
         {activeTab === "statistics" && (
           <div className="flex flex-col gap-6">
             <StatsSummary habits={habits} />
-            <StatsCharts />
+            <StatsCharts habits={habits} />
             <StatsAllHabits habits={habits} />
           </div>
         )}

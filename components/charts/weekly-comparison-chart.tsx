@@ -29,11 +29,7 @@ const mockData: WeeklyComparisonData[] = [
   { day: "Sun", lastWeek: 4, thisWeek: 0 },
 ];
 
-const WeeklyComparisonChart = ({
-  data = mockData,
-}: {
-  data?: WeeklyComparisonData[];
-}) => {
+const WeeklyComparisonChart = ({ data }: { data: WeeklyComparisonData[] }) => {
   return (
     <div className="h-80 w-full bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col mt-5">
       <p className="text-sm font-bold text-slate-800 mb-4">
@@ -114,7 +110,7 @@ const WeeklyComparisonChart = ({
                 fontWeight: 500,
                 paddingTop: "10px",
               }}
-              formatter={(value, entry) => {
+              formatter={(value: any, entry: any) => {
                 // Apply matching colors directly to the legend text labels
                 const color =
                   entry.color === "url(#thisWeekGradient)"
