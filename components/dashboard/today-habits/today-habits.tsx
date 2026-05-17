@@ -6,7 +6,7 @@ import { Habit } from "@/lib/types";
 
 const TodayHabits = async ({ habits }: { habits: Habit[] }) => {
   return (
-    <div className="flex flex-col gap-4 mt-5 bg-gray-100 p-5 rounded-lg shadow-sm">
+    <div className="flex flex-col gap-4 mt-5 bg-gray-100 dark:bg-stone-800 p-5 rounded-lg shadow-sm">
       <TodayHabitHeader habits={habits} />
       {habits.map((habit) => (
         <TodayHabitCard

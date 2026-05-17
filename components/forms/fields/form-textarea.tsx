@@ -25,7 +25,7 @@ export const FormTextarea = React.forwardRef<
         value={value}
         ref={ref}
         placeholder={placeholder}
-        className={`focus-visible:ring-brand-500 bg-white rounded-md w-full ${className || ""}`}
+        className={`focus-visible:ring-brand-500 bg-white dark:bg-stone-900 dark:text-stone-100 dark:border-stone-700 rounded-md w-full ${className || ""}`}
         {...props}
       />
       {error && <p className="text-sm text-red-500">{error}</p>}

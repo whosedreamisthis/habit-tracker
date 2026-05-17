@@ -17,7 +17,7 @@ const FormTargetDays: React.FC<FormTargetDaysProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full mb-4">
       <Label>{label}</Label>
-      <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-lg border border-slate-200">
+      <div className="flex items-center gap-1 bg-slate-50 dark:bg-stone-900 p-1 rounded-lg border border-slate-200 dark:border-stone-700">
         {[1, 2, 3, 4, 5, 6, 7].map((day) => (
           <button
             key={day}
@@ -26,7 +26,7 @@ const FormTargetDays: React.FC<FormTargetDaysProps> = ({
             className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
               value === day
                 ? "bg-brand-600 text-white shadow-sm"
-                : "text-slate-600 hover:bg-slate-200"
+                : "text-slate-600 dark:text-stone-400 hover:bg-slate-200 dark:hover:bg-stone-700"
             }`}
           >
             {day}

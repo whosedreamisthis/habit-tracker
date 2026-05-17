@@ -73,13 +73,13 @@ const TodayHabitActions = ({
     <div className="flex gap-4">
       <div className="flex gap-0.5 items-center">
         <Flame size={16} className="text-red-500/80" />
-        <p className="text-sm">{activeStreak}</p>
+        <p className="text-sm dark:text-stone-300">{activeStreak}</p>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="hover:bg-transparent active:bg-transparent"
+            className="hover:bg-transparent active:bg-transparent dark:text-stone-100"
           >
             <Ellipsis className="mt-2" />
           </Button>
@@ -137,7 +137,7 @@ const TodayHabitActions = ({
         />
       </Modal>
       <button
-        className={`flex items-center bg-linear-to-r ${optimisticCompleted ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-500/60 border-amber-500/60 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
+        className={`flex items-center bg-linear-to-r ${optimisticCompleted ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-400 border-amber-400 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
         onClick={handleToggle}
         disabled={isPending}
       >

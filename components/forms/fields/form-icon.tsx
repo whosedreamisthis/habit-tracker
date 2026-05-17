@@ -26,7 +26,7 @@ const FormIcon = ({
               onChange(icon);
             }}
             key={index}
-            className={`${selectedIcon === icon ? "border-2 border-brand-500 bg-brand-500/20" : "bg-white"} h-10 w-10 flex items-center justify-center  rounded-lg`}
+            className={`${selectedIcon === icon ? "border-2 border-brand-500 bg-brand-500/20" : "bg-white dark:bg-stone-900"} h-10 w-10 flex items-center justify-center  rounded-lg`}
           >
             <p className="text-xl">{icon}</p>
           </Button>

@@ -10,8 +10,10 @@ const TodayHabitHeader = ({ habits }: { habits: Habit[] }) => {
   return (
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-md">Today&apos;s habits</p>
-        <p className="text-sm text-muted-foreground">4 of 7 complete</p>
+        <p className="text-md dark:text-stone-100">Today&apos;s habits</p>
+        <p className="text-sm text-muted-foreground dark:text-stone-400">
+          4 of 7 complete
+        </p>
       </div>
       <CircularProgress
         percentage={formattedPercentage}

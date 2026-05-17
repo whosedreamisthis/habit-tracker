@@ -5,9 +5,9 @@ const ConsistencyHeader = () => {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-center">
-        <p className="text-md">Consistency</p>
+        <p className="text-md dark:text-stone-100">Consistency</p>
 
-        <div className="flex gap-2 text-muted-foreground text-xs">
+        <div className="flex gap-2 text-muted-foreground dark:text-stone-400 text-xs">
           <p>Less</p>
           <div className="flex gap-1">
             {[0, 1, 2, 3, 4].map((count, i) => (
@@ -20,7 +20,7 @@ const ConsistencyHeader = () => {
           <p>More</p>
         </div>
       </div>
-      <p className="text-xs md pb-3 text-muted-foreground">
+      <p className="text-xs md pb-3 text-muted-foreground dark:text-stone-400">
         438 completions in the last 90 days
       </p>
     </div>

@@ -47,7 +47,8 @@ const CircularProgress = ({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="rgb(220,220,220)" // gray-100
+          stroke="currentColor"
+          className="text-slate-200 dark:text-stone-700"
           strokeOpacity="1"
           strokeWidth={strokeWidth}
           fill="transparent"
@@ -72,7 +73,7 @@ const CircularProgress = ({
 
       {/* Centered Text */}
       <div className="absolute flex flex-col items-center justify-center">
-        <span className="font-bold text-slate-800 leading-none text-sm">
+        <span className="font-bold text-slate-800 dark:text-stone-100 leading-none text-sm">
           {clampedValue}%
         </span>
       </div>

@@ -17,7 +17,7 @@ const DashboardSummaryCard = ({
   value,
 }: SummaryCardProps) => {
   return (
-    <Card className="bg-white p-3 rounded-lg border-none">
+    <Card className="bg-white dark:bg-stone-800 p-3 rounded-lg border-none">
       <div className="flex gap-3 justify-center items-center">
         <div
           className={`flex items-center justify-center w-10 h-10 rounded-md shrink-0`}
@@ -26,8 +26,8 @@ const DashboardSummaryCard = ({
           <Icon />
         </div>
         <div className="flex flex-col justify-start items-start">
-          <p className="text-xs`">{label}</p>
-          <p className="text-xl font-semibold">{value}</p>
+          <p className="text-xs dark:text-stone-400">{label}</p>
+          <p className="text-xl font-semibold dark:text-stone-100">{value}</p>
         </div>
       </div>
     </Card>

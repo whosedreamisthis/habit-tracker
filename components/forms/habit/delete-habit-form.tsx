@@ -20,14 +20,14 @@ const DeleteHabitForm = ({
   return (
     <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
       <FormHeader title="Delete habit?" onClose={onClose} />
-      <p>
+      <p className="dark:text-stone-300">
         This will permanently delete{" "}
-        <span className="font-semibold">{`${habit.name} `}</span> and all
-        it&apos;s history. This can&apos;t be undone.
+        <span className="font-semibold dark:text-stone-100">{`${habit.name} `}</span>{" "}
+        and all it&apos;s history. This can&apos;t be undone.
       </p>
       <div className="flex gap-2 justify-end items-center">
         <Button
-          className="min-w-[100px] bg-white text-black py-5 "
+          className="min-w-[100px] bg-white dark:bg-stone-900 dark:text-stone-100 py-5 "
           onClick={onClose}
         >
           Cancel

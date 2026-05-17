@@ -38,7 +38,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
         <SelectTrigger
           id={id}
           onBlur={onBlur}
-          className={`focus-visible:ring-brand-500 bg-white rounded-md w-full ${className || ""}`}
+          className={`focus-visible:ring-brand-500 bg-white dark:bg-stone-900 dark:text-stone-100 dark:border-stone-700 rounded-md w-full ${className || ""}`}
         >
           <SelectValue placeholder={placeholder || "Select an option"} />
         </SelectTrigger>
