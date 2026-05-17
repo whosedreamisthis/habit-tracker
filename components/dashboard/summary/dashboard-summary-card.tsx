@@ -9,7 +9,7 @@ type SummaryCardProps = {
   label: string;
   value: string | number;
 };
-const SummaryCard = ({
+const DashboardSummaryCard = ({
   icon: Icon,
   iconFg,
   iconBg,
@@ -34,4 +34,4 @@ const SummaryCard = ({
   );
 };
 
-export default SummaryCard;
+export default DashboardSummaryCard;

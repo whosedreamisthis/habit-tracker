@@ -1,5 +1,5 @@
 import React from "react";
-import Summary from "@/components/dashboard/summary/summary";
+import DashboardSummary from "../../components/dashboard/summary/dashboard-summary";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import TodayHabits from "@/components/dashboard/today-habits/today-habits";
 import HabitTrackerGrid from "../../components/habit-tracker-grid/habit-tracker-grid";
@@ -13,7 +13,7 @@ const DashboardPage = async () => {
   return (
     <section>
       <DashboardHeader />
-      <Summary habits={activeHabits} />
+      <DashboardSummary habits={activeHabits} />
       <TodayHabits habits={activeHabits} />
       <HabitTrackerGrid habits={activeHabits} />
       <ConsistencyGrid />

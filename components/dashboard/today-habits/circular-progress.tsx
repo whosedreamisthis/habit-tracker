@@ -7,7 +7,7 @@ interface CircularProgressProps {
 }
 
 const CircularProgress = ({
-  percentage = 57,
+  percentage,
   size = 120,
   strokeWidth = 10,
 }: CircularProgressProps) => {

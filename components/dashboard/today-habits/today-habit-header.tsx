@@ -1,14 +1,23 @@
 import React from "react";
 import CircularProgress from "./circular-progress";
+import { Habit } from "@/lib/types";
 
-const TodayHabitHeader = () => {
+const TodayHabitHeader = ({ habits }: { habits: Habit[] }) => {
+  const completedHabits = habits.filter((h) => h.isCompletedToday).length;
+  const totalHabits = habits.length;
+  const percentage = (completedHabits / totalHabits) * 100;
+
   return (
     <div className="flex items-center justify-between">
       <div>
         <p className="text-md">Today&apos;s habits</p>
         <p className="text-sm text-muted-foreground">4 of 7 complete</p>
       </div>
-      <CircularProgress percentage={30} size={55} strokeWidth={6} />{" "}
+      <CircularProgress
+        percentage={percentage}
+        size={55}
+        strokeWidth={6}
+      />{" "}
     </div>
   );
 };
