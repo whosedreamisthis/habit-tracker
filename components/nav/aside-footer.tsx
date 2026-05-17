@@ -19,16 +19,16 @@ const AsideFooter = () => {
       <hr className="slate-300" />
 
       <button
-        className="flex items-center justify-start gap-4 cursor-pointer"
+        className="flex items-center justify-start gap-4 cursor-pointer hover:opacity-80 transition"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "light" ? (
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <Moon size={18} />
             <p>Dark mode</p>
           </div>
         ) : (
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <Sun size={18} />
             <p>Light mode</p>
           </div>

@@ -9,18 +9,20 @@ const Tabs = () => {
   const pathname = usePathname();
 
   return (
-    <div className="sticky bottom-0 glass w-full flex justify-around items-center py-4 px-10 bg-brand-50/70 dark:bg-stone-800 safe-area-bottom">
+    <div className="sticky bottom-0 glass w-full flex justify-around items-center py-3 px-4 bg-brand-50/70 dark:bg-stone-800 safe-area-bottom border-t border-brand-100/20">
       {NAV_LINKS.map((link) => {
         const isActive = pathname === link.to;
         return (
           <Link
             key={link.to}
             href={link.to}
-            className={`flex flex-col justify-center items-center ${isActive ? "text-brand-800 dark:text-stone-100" : "text-slate-500/80 dark:text-stone-400"}`}
+            className={`flex flex-col justify-center items-center gap-1 transition-colors ${isActive ? "text-brand-800 dark:text-stone-100" : "text-slate-500/80 dark:text-stone-400"}`}
           >
-            <link.icon className="w-5 h-5" />
+            <link.icon
+              className={`w-5 h-5 ${isActive ? "text-brand-600 dark:text-brand-400" : ""}`}
+            />
 
-            <p className="text-xs sm:text-sm">{link.label}</p>
+            <p className="text-[10px] sm:text-xs font-medium">{link.label}</p>
           </Link>
         );
       })}
