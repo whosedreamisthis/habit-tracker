@@ -69,8 +69,6 @@ const TodayHabitActions = ({
     });
   };
 
-  const handleDelete = () => {};
-
   return (
     <div className="flex gap-4">
       <div className="flex gap-0.5 items-center">
@@ -133,7 +131,10 @@ const TodayHabitActions = ({
         isOpen={isDeleteConfirmationOpen}
         onClose={() => setIsDeleteConfirmationOpen(false)}
       >
-        <DeleteHabitForm onClose={() => setIsDeleteConfirmationOpen(false)} />
+        <DeleteHabitForm
+          habit={habit}
+          onClose={() => setIsDeleteConfirmationOpen(false)}
+        />
       </Modal>
       <button
         className={`flex items-center bg-linear-to-r ${optimisticCompleted ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-500/60 border-amber-500/60 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}

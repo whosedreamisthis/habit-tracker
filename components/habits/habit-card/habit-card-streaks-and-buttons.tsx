@@ -1,12 +1,11 @@
 "use client";
 
-import { Trophy, Flame, Trash2, Archive, ArchiveRestore } from "lucide-react";
+import { Trophy, Flame, Archive, ArchiveRestore } from "lucide-react";
 import EditHabitButton from "@/components/forms/habit/edit-habit-button";
 import { Habit } from "@/lib/types";
 import { useTransition } from "react";
 import { archiveHabit, restoreHabit } from "@/lib/actions";
 import { useRouter } from "next/navigation";
-import DeleteHabitButton from "../../forms/habit/delete-habit-confirmation-button";
 import DeleteHabitConfirmationButton from "../../forms/habit/delete-habit-confirmation-button";
 
 const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
@@ -58,7 +57,7 @@ const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
             <ArchiveRestore className="text-slate-500" size={16} />
           )}
         </button>
-        <DeleteHabitConfirmationButton habitId={habit._id} />
+        <DeleteHabitConfirmationButton habit={habit} />
       </div>
     </div>
   );

@@ -4,12 +4,13 @@ import { Trash2 } from "lucide-react";
 import Modal from "../modal";
 import DeleteHabitForm from "./delete-habit-form";
 import { Button } from "@/components/ui/button";
+import { Habit } from "@/lib/types";
 
 const DeleteHabitConfirmationButton = ({
-  habitId,
+  habit,
   label = "",
 }: {
-  habitId: string;
+  habit: Habit;
   label?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ const DeleteHabitConfirmationButton = ({
       </Button>
 
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <DeleteHabitForm onClose={closeModal} />
+        <DeleteHabitForm onClose={closeModal} habit={habit} />
       </Modal>
     </>
   );
