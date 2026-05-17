@@ -79,12 +79,10 @@ const WeeklyReport = ({ habits }: { habits: Habit[] }) => {
   return (
     <div className="flex flex-col gap-5 bg-white dark:bg-stone-800 p-5 rounded-lg position-relative">
       <div className="flex flex-col gap-1">
-        <WeeklyReportHeader onRegenerate={fetchWeeklyReport} />
-        {generatedDateStr && !isPending && (
-          <span className="text-xs text-slate-400 dark:text-stone-500 self-end -mt-2">
-            Generated {generatedDateStr}
-          </span>
-        )}
+        <WeeklyReportHeader
+          onRegenerate={fetchWeeklyReport}
+          date={generatedDateStr}
+        />
       </div>
 
       <div className="mt-2">
@@ -96,7 +94,23 @@ const WeeklyReport = ({ habits }: { habits: Habit[] }) => {
           </div>
         ) : (
           <p className="text-sm leading-relaxed text-slate-600 dark:text-stone-300 whitespace-pre-wrap">
-            {report || "No insights compiled yet."}
+            {report
+              ? report.split(/(\*\*.*?\*\*)/g).map((part, index) => {
+                  // Check if this part of the split text starts and ends with '**'
+                  if (part.startsWith("**") && part.endsWith("**")) {
+                    // Remove the asterisks and wrap the string in a strong tag
+                    return (
+                      <strong
+                        key={index}
+                        className="font-bold text-slate-900 dark:text-stone-100"
+                      >
+                        {part.slice(2, -2)}
+                      </strong>
+                    );
+                  }
+                  return part;
+                })
+              : "Analyzing your habits..."}
           </p>
         )}
       </div>
