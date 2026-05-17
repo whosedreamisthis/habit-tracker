@@ -56,9 +56,12 @@ const HabitCardStreaksAndButtons = ({ habit }: { habit: Habit }) => {
           disabled={isPending}
         >
           {status === "active" ? (
-            <Archive className="text-slate-500" size={16} />
+            <Archive className="text-slate-600 dark:text-slate-300" size={16} />
           ) : (
-            <ArchiveRestore className="text-slate-500" size={16} />
+            <ArchiveRestore
+              className="text-slate-600 dark:text-slate-300"
+              size={16}
+            />
           )}
         </button>
         <DeleteHabitConfirmationButton habit={habit} />

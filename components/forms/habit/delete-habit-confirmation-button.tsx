@@ -25,7 +25,7 @@ const DeleteHabitConfirmationButton = ({
           setIsOpen(true);
         }}
       >
-        <Trash2 size={18} />
+        <Trash2 size={18} className="text-red-500 dark:text-red-300" />
         {label}
       </Button>
 

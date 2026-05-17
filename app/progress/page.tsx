@@ -48,7 +48,7 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <SectionHeader title="Progress & Insights" description={range} />
 
-        <div className="flex bg-slate-100 p-1 rounded-lg">
+        <div className="flex bg-slate-100 dark:bg-stone-800 p-1 rounded-lg">
           {tabs.map((tab) => (
             <Link
               key={tab.id}
@@ -56,8 +56,8 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
               className={cn(
                 "px-4 py-1.5 rounded-md text-sm font-medium transition-all",
                 activeTab === tab.id
-                  ? "bg-white text-brand-700 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700",
+                  ? "bg-white dark:bg-stone-700 text-brand-700 dark:text-brand-400 shadow-sm"
+                  : "text-slate-500 dark:text-stone-400 hover:text-slate-700 dark:hover:text-stone-200",
               )}
             >
               {tab.label}

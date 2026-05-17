@@ -24,7 +24,7 @@ const EditHabitButton = ({ habit }: { habit: Habit }) => {
         className="hover:opacity-70 transition-opacity bg-transparent p-0"
         onClick={() => setIsOpen(true)}
       >
-        <Pencil className="text-slate-500" size={16} />
+        <Pencil className="text-slate-600 dark:text-slate-300" size={16} />
       </Button>
 
       <Modal isOpen={isOpen} onClose={closeModal}>
