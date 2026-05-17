@@ -19,7 +19,7 @@ const StatsSummaryCard = ({
   valueIcon,
 }: StatsSummaryCardProps) => {
   return (
-    <Card className="bg-white p-3 rounded-lg border-none flex flex-col gap-3">
+    <Card className="bg-white dark:bg-stone-800 p-3 rounded-lg border-none flex flex-col gap-3">
       <div className="flex items-center justify-start">
         <Icon className="w-4 h-4 mr-2 text-brand-600" />
         <p className={`text-xs ${titleColor}`}>{title}</p>

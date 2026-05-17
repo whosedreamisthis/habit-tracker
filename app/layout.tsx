@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         {/* 1. ASIDE: Fixed width, glass style, stays on the left */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-300">
+          <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
             <Logo />
             <hr className="slate-300" />
             <Aside className="flex-1" />
@@ -40,7 +40,7 @@ export default function RootLayout({
           </div>
           {/* MOBILE TABS: Only visible on small screens (below md) */}
 
-          <main className="bg-brand-100/50 flex-1 h-full overflow-y-auto">
+          <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto">
             <div className="p-8">{children} </div>
           </main>
 

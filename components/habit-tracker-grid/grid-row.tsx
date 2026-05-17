@@ -14,12 +14,14 @@ const GridRow = ({ habit }: { habit: Habit }) => {
 
   return (
     /* Must match Header: grid-cols-[1fr_repeat(7,40px)] and gap-2 */
-    <div className="grid grid-cols-[1fr_repeat(7,40px)] gap-2 items-center py-3 border-b border-slate-50 last:border-0 shrink-0">
+    <div className="grid grid-cols-[1fr_repeat(7,40px)] gap-2 items-center py-3 border-b border-slate-50 dark:border-stone-700 last:border-0 shrink-0">
       {/* 1. Habit Name Column (takes up the 1fr space) */}
       <div className="flex items-center gap-2 min-w-0">
         <HabitIcon icon={icon} color={color} size="small" />
         {/* truncate is vital to keep long names from pushing the squares */}
-        <p className="truncate text-sm font-medium text-slate-700">{name}</p>
+        <p className="truncate text-sm font-medium text-slate-700 dark:text-stone-300">
+          {name}
+        </p>
       </div>
 
       {/* 2. Seven Day Columns (each takes up exactly 40px) */}

@@ -15,7 +15,7 @@ const InsightsSummaryCard = ({
   icon: Icon,
 }: Props) => {
   return (
-    <Card className="bg-white px-3 rounded-lg border-none flex flex-col">
+    <Card className="bg-white dark:bg-stone-800 px-3 rounded-lg border-none flex flex-col">
       <div className="flex items-center">
         {Icon && <Icon className="mr-2 text-muted-foreground" size={15} />}
         <p className="text-xs text-muted-foreground">{label}</p>

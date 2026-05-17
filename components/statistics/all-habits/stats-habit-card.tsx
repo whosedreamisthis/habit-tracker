@@ -6,7 +6,7 @@ import { Habit } from "@/lib/types";
 const StatsHabitCard = ({ habit }: { habit: Habit }) => {
   const { category, name, icon, color } = habit;
   return (
-    <div className="flex justify-between items-center shadow-sm rounded-md bg-white p-4">
+    <div className="flex justify-between items-center shadow-sm rounded-md bg-white dark:bg-stone-800 p-4">
       <div className="flex gap-3 items-center">
         <HabitIcon icon={icon} color={color} size="large" />
         <div>

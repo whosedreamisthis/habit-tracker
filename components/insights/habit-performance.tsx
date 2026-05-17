@@ -16,8 +16,10 @@ const HabitPerformance = async ({ habits }: { habits: Habit[] }) => {
   });
 
   return (
-    <div className="h-full w-full flex flex-col gap-1 bg-white p-5 rounded-lg mt-5">
-      <p className="text-sm font-bold text-slate-800 mb-2">Habit performance</p>
+    <div className="h-full w-full flex flex-col gap-1 bg-white dark:bg-stone-800 p-5 rounded-lg mt-5">
+      <p className="text-sm font-bold text-slate-800 dark:text-stone-200 mb-2">
+        Habit performance
+      </p>
       {habits.map((habit) => {
         const completionsThisWeek =
           habit.completions?.filter((completion) => {

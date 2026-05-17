@@ -31,7 +31,7 @@ const mockData: WeeklyComparisonData[] = [
 
 const WeeklyComparisonChart = ({ data }: { data: WeeklyComparisonData[] }) => {
   return (
-    <div className="h-80 w-full bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col mt-5">
+    <div className="dark:bg-stone-800 h-80 w-full bg-white p-6 rounded-2xl shadow-sm flex flex-col mt-5">
       <p className="text-sm font-bold text-slate-800 mb-4">
         This week vs last week
       </p>

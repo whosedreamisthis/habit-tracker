@@ -11,7 +11,7 @@ interface CategoryData {
 
 const CategoryChart = ({ data }: { data: CategoryData[] }) => {
   return (
-    <div className="h-80 w-full bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+    <div className="dark:bg-stone-800 h-80 w-full bg-white p-6 rounded-2xl shadow-sm">
       <p className="text-sm font-bold text-slate-800 mb-2">
         Completions by category
       </p>

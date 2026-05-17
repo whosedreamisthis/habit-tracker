@@ -15,7 +15,7 @@ const AsideFooter = () => {
 
   if (!mounted) return null;
   return (
-    <div className="bg-brand-50/40 flex flex-col gap-3 pb-3 px-5 w-full text-slate-600 text-sm">
+    <div className="bg-brand-50/40 dark:bg-stone-800 flex flex-col gap-3 pb-3 px-5 w-full text-slate-600 dark:text-slate-300 text-sm">
       <hr className="slate-300" />
 
       <button
@@ -41,7 +41,9 @@ const AsideFooter = () => {
             <p className="text-xl text-white ">A</p>
           </div>
           <div className="flex flex-col">
-            <p className="text-md text-black font-semibold">Username</p>
+            <p className="text-md text-black dark:text-white font-semibold">
+              Username
+            </p>
             <p className="text-xs text-muted-foreground">email@example.com</p>
           </div>
         </div>

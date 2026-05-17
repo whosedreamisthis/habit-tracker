@@ -5,9 +5,11 @@ import { Habit } from "@/lib/types";
 
 const ActiveStreaks = async ({ habits }: { habits: Habit[] }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mt-5">
+    <div className="bg-white dark:bg-stone-800 rounded-lg shadow-md p-4 mt-5">
       <div className="flex items-center justify-between mb-5">
-        <p className="text-sm font-bold text-slate-800 ">Active streaks</p>
+        <p className="text-sm font-bold text-slate-800 dark:text-stone-200 ">
+          Active streaks
+        </p>
         <p className="text-xs text-slate-500">
           {habits.filter((h) => h.activeStreak > 0).length} of {habits.length}
         </p>
