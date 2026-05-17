@@ -9,8 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import React, { useState, useTransition, useOptimistic } from "react";
-import { archiveHabit, editHabit, toggleHabitCompletion } from "@/lib/actions";
+import React, { useState, useTransition } from "react";
+import { archiveHabit, editHabit } from "@/lib/actions";
 import { Habit } from "@/lib/types";
 import Modal from "@/components/forms/modal";
 import HabitForm from "@/components/common/habit-form";
@@ -21,37 +21,21 @@ const TodayHabitActions = ({
   habit,
   completed,
   activeStreak,
+  onToggle,
+  isPending,
 }: {
   habit: Habit;
   completed: boolean;
   activeStreak: number;
+  onToggle: () => void;
+  isPending: boolean;
 }) => {
   const [isEditOpen, setIsEditOpen] = useState(false); // 1. Locally control
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
     useState(false); // 1. Locally control layout visibility
   // layout visibility
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
-    completed,
-    (state, newCompletedValue: boolean) => newCompletedValue,
-  );
-  useState(completed);
-
-  const handleToggle = () => {
-    startTransition(async () => {
-      try {
-        // 2. Instantly flip the state visually before the network request goes out
-        setOptimisticCompleted(!completed);
-
-        // 3. Fire off the backend mutation
-        await toggleHabitCompletion(habit._id, completed);
-        router.refresh();
-      } catch (error) {
-        console.error("Failed to update habit:", error);
-      }
-    });
-  };
+  const [, startTransition] = useTransition();
 
   const handleSave = async (data: NewHabit) => {
     await editHabit(habit._id, data);
@@ -137,8 +121,10 @@ const TodayHabitActions = ({
         />
       </Modal>
       <button
-        className={`flex items-center bg-linear-to-r ${optimisticCompleted ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-400 border-amber-400 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
-        onClick={handleToggle}
+        className={`flex items-center bg-linear-to-r ${completed ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-400 border-amber-400 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
+        onClick={() => {
+          onToggle();
+        }}
         disabled={isPending}
       >
         <Check strokeWidth={3} size={22} />

@@ -2,7 +2,7 @@
 
 import React from "react";
 import SectionHeader from "../common/section-header";
-import { Moon, Sun, User, Settings } from "lucide-react";
+import { Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import SettingsButton from "@/components/forms/settings/settings-button";
 
