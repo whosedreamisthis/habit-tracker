@@ -35,7 +35,7 @@ const MorningMotivation = () => {
           <p className="text-md dark:text-stone-100 font-semibold">
             Morning motivation
           </p>
-          <p className="text-sm text-muted-foreground dark:text-stone-100">
+          <p className="text-sm text-muted-foreground dark:text-stone-400">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi
             delectus dolores ex ipsam itaque iure molestiae mollitia, nobis non
             nulla officiis porro praesentium quod quos sequi sint tempore totam
