@@ -1,15 +1,24 @@
 import React from "react";
 import { Flame, Trophy, Target } from "lucide-react";
 import { Habit } from "@/lib/types";
+import { format, startOfWeek } from "date-fns";
 
 const StatsHabitCardStreaks = ({ habit }: { habit: Habit }) => {
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const limitDateStr = sevenDaysAgo.toISOString().slice(0, 10);
+  // We show progress for the current calendar week (Mon-Sun)
+  const start = startOfWeek(new Date(), { weekStartsOn: 1 });
+  const weekDays = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    return format(d, "yyyy-MM-dd");
+  });
 
-  const completionsThisWeek = (habit.completions || []).filter(
-    (c) => c.date >= limitDateStr,
-  ).length;
+  const completionsThisWeek = (habit.completions || []).filter((c) => {
+    const dateStr =
+      typeof c.date === "string"
+        ? c.date.slice(0, 10)
+        : format(c.date, "yyyy-MM-dd");
+    return weekDays.includes(dateStr);
+  }).length;
 
   return (
     <div className="flex items-center gap-4">
