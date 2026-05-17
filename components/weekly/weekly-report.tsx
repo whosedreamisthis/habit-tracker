@@ -7,10 +7,30 @@ import { Habit } from "@/lib/types";
 import { format, differenceInDays, parseISO } from "date-fns";
 
 const WeeklyReport = ({ habits }: { habits: Habit[] }) => {
-  const [mounted, setMounted] = useState(false); // <-- Track browser mount state
-  const [report, setReport] = useState<string>("");
-  const [generatedDateStr, setGeneratedDateStr] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+
+  // Synchronously initialize all cache layers together on the exact first render tick
+  const [reportState, setReportState] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cachedReport = localStorage.getItem("weekly_report_text");
+      const cachedTimestamp = localStorage.getItem("weekly_report_timestamp");
+
+      if (cachedReport && cachedTimestamp) {
+        const today = new Date();
+        const lastGeneratedDate = parseISO(cachedTimestamp);
+        const daysSinceGeneration = differenceInDays(today, lastGeneratedDate);
+
+        if (daysSinceGeneration < 7) {
+          return {
+            text: cachedReport,
+            dateStr: format(lastGeneratedDate, "M/d/yyyy, h:mm:ss a"),
+            needsGeneration: false,
+          };
+        }
+      }
+    }
+    return { text: "", dateStr: "", needsGeneration: true };
+  });
 
   const generateFreshReport = useCallback(() => {
     startTransition(async () => {
@@ -37,59 +57,41 @@ CRITICAL FORMATTING RULES:
           localStorage.setItem("weekly_report_text", result);
           localStorage.setItem("weekly_report_timestamp", nowStr);
 
-          setReport(result);
-          setGeneratedDateStr(format(today, "M/d/yyyy, h:mm:ss a"));
+          setReportState({
+            text: result,
+            dateStr: format(today, "M/d/yyyy, h:mm:ss a"),
+            needsGeneration: false,
+          });
         }
       } catch (err) {
         console.error("Could not fetch weekly report:", err);
-        setReport("Failed to generate report. Please try again later.");
+        setReportState((prev) => ({
+          ...prev,
+          text: "Failed to generate report. Please try again later.",
+          needsGeneration: false,
+        }));
       }
     });
   }, [habits]);
 
-  // Handle caching logic strictly after mount
+  // Fires the generation workflow strictly if the lazy initializer signals a cache miss
   useEffect(() => {
-    setMounted(true); // Signal that we are safely on the client side
-
-    const cachedReport = localStorage.getItem("weekly_report_text");
-    const cachedTimestamp = localStorage.getItem("weekly_report_timestamp");
-
-    if (cachedReport && cachedTimestamp) {
-      const today = new Date();
-      const lastGeneratedDate = parseISO(cachedTimestamp);
-      const daysSinceGeneration = differenceInDays(today, lastGeneratedDate);
-
-      if (daysSinceGeneration < 7) {
-        setReport(cachedReport);
-        setGeneratedDateStr(format(lastGeneratedDate, "M/d/yyyy, h:mm:ss a"));
-        return;
-      }
+    if (reportState.needsGeneration) {
+      generateFreshReport();
     }
-
-    generateFreshReport();
-  }, [generateFreshReport]);
+  }, [reportState.needsGeneration, generateFreshReport]);
 
   const fetchWeeklyReport = () => {
     if (isPending) return;
     generateFreshReport();
   };
 
-  // Prevent rendering stateful cache elements until browser hydration is complete
-  if (!mounted) {
-    return (
-      <div className="flex flex-col gap-5 bg-white dark:bg-stone-800 p-5 rounded-lg animate-pulse">
-        <div className="h-6 bg-slate-100 dark:bg-stone-700 rounded w-1/4"></div>
-        <div className="h-4 bg-slate-100 dark:bg-stone-700 rounded w-3/4 mt-4"></div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col gap-5 bg-white dark:bg-stone-800 p-5 rounded-lg position-relative">
       <div className="flex flex-col gap-1">
         <WeeklyReportHeader
           onRegenerate={fetchWeeklyReport}
-          date={generatedDateStr}
+          date={reportState.dateStr}
         />
       </div>
 
@@ -102,11 +104,9 @@ CRITICAL FORMATTING RULES:
           </div>
         ) : (
           <p className="text-sm leading-relaxed text-slate-600 dark:text-stone-300 whitespace-pre-wrap">
-            {report
-              ? report.split(/(\*\*.*?\*\*)/g).map((part, index) => {
-                  // Check if this part of the split text starts and ends with '**'
+            {reportState.text
+              ? reportState.text.split(/(\*\*.*?\*\*)/g).map((part, index) => {
                   if (part.startsWith("**") && part.endsWith("**")) {
-                    // Remove the asterisks and wrap the string in a strong tag
                     return (
                       <strong
                         key={index}
