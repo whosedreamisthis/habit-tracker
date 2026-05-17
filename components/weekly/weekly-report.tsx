@@ -17,8 +17,16 @@ const WeeklyReport = ({ habits }: { habits: Habit[] }) => {
       try {
         console.log("Generating fresh weekly AI insights...");
 
-        const prompt =
-          "Analyze my habit tracking data and provide a concise weekly progress report with 3 actionable insights. keep the result to two paragraphs.";
+        const prompt = `
+Analyze my habit tracking data and provide a concise weekly progress report. 
+
+CRITICAL FORMATTING RULES:
+1. Keep the entire response strictly to two main sections/paragraphs.
+2. The first paragraph must be a cohesive prose summary analyzing my data trends and streaks.
+3. The second section must contain exactly 3 actionable insights structured as a numbered list.
+4. Each list item must start with a descriptive, bold heading (e.g., "1. **Target Reading Friction:** Analyze...").
+5. DO NOT include any introductory greetings, conversational headers, or dates (e.g., do not say "Here is your report"). Get straight to the analysis on the very first word.
+`.trim();
 
         const result = await askAI(prompt, habits);
 

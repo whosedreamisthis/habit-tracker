@@ -3,53 +3,68 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { Card } from "@/components/ui/card";
 import { askAI } from "@/lib/gemini";
-import { format } from "date-fns";
 import { Habit } from "@/lib/types";
+import { format } from "date-fns";
+import { X } from "lucide-react";
 
 const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
-  const [isMotivationChecked, setIsMotivationChecked] = useState(false);
+  const [isMotivationEnabled, setIsMotivationEnabled] = useState(false);
+  const [isDismissedToday, setIsDismissedToday] = useState(false);
   const [motivationText, setMotivationText] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
-  // Helper function to handle visibility toggles
   const checkVisibilitySettings = () => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("morning_motivation_enabled");
-      setIsMotivationChecked(saved === "true");
+      const savedEnabled = localStorage.getItem("morning_motivation_enabled");
+      setIsMotivationEnabled(savedEnabled === "true");
     }
   };
 
   useEffect(() => {
-    // 1. Establish layout visibility rules
     checkVisibilitySettings();
     window.addEventListener("storage", checkVisibilitySettings);
     window.addEventListener("local-storage-update", checkVisibilitySettings);
 
-    // 2. Daily Cache Check Logic
-    const todayStr = format(new Date(), "yyyy-MM-dd"); // e.g., "2026-05-17"
+    const todayStr = format(new Date(), "yyyy-MM-dd");
+
+    // 1. SYNC CACHE FIRST: Ensure local state gets its value regardless of dismissal status
     const cachedText = localStorage.getItem("morning_motivation_text");
     const cachedDate = localStorage.getItem("morning_motivation_date");
 
     if (cachedText && cachedDate === todayStr) {
-      // It's the same day! Load the cached motivation text straight away
       setMotivationText(cachedText);
-    } else {
-      // First boot or past midnight! Hit the server boundary to fetch a fresh statement
+    }
+
+    // 2. DISMISSAL CHECK SECOND: Track hidden status safely without blocking cache parsing
+    const dismissedDate = localStorage.getItem(
+      "morning_motivation_dismissed_date",
+    );
+    if (dismissedDate === todayStr) {
+      setIsDismissedToday(true);
+      return;
+    }
+
+    // 3. GENERATION LAYER: Only run if the cache is expired or missing entirely
+    if (cachedDate !== todayStr) {
       startTransition(async () => {
         try {
-          const prompt =
-            "You are an elite performance coach and a supportive, insightful companion for a habit tracker app. \n" +
-            "Write a single, highly energetic sentence of morning motivation tailored specifically to the user's current habits.\n" +
-            "\n" +
-            "Here is the user's current habit data:\n" +
-            "${habitsSummary}\n" +
-            "\n" +
-            "CRITICAL RULES:\n" +
-            "1. Output exactly ONE sentence. No more, no less.\n" +
-            "2. Do not wrap the sentence in quotation marks or markdown styling.\n" +
-            "3. Be specific to their habits: if they are doing great, call out their momentum; if they are slipping, provide a grounded, encouraging push. Do not sound generic.\n" +
-            "4. Keep the tone sharp, inspiring, and free of cheesy clichés.";
-          const freshMotivation = await askAI(prompt, habits);
+          const habitsSummary = habits
+            .map(
+              (h) =>
+                `- "${h.name}" (${h.category}): Streak of ${h.activeStreak} days.`,
+            )
+            .join("\n");
+
+          const prompt = `
+            You are an elite performance coach for a habit tracker app. 
+            Write exactly ONE energetic sentence of morning motivation tailored to the user's current habits.
+            Do not use quotes or asterisks.
+            
+            User's Habit Context:
+            ${habitsSummary}
+          `.trim();
+
+          const freshMotivation = await askAI(prompt);
 
           if (freshMotivation) {
             const cleanText = freshMotivation.trim();
@@ -73,25 +88,40 @@ const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
         checkVisibilitySettings,
       );
     };
-  }, []);
+  }, [habits]);
 
-  // Don't render the card if the feature is disabled in settings
-  if (!isMotivationChecked) return null;
+  const handleDismiss = () => {
+    const todayStr = format(new Date(), "yyyy-MM-dd");
+    localStorage.setItem("morning_motivation_dismissed_date", todayStr);
+    setIsDismissedToday(true);
+  };
+
+  if (!isMotivationEnabled || isDismissedToday) return null;
 
   return (
-    <Card className="glass dark:bg-stone-800 p-4 rounded-lg border-none my-5 transition-all duration-300">
-      <p className="text-md dark:text-stone-100 font-semibold mb-1">
-        Morning Motivation
-      </p>
-      {isPending ? (
-        <div className="space-y-2 animate-pulse mt-2">
-          <div className="h-3 bg-slate-200 dark:bg-stone-700 rounded w-5/6"></div>
-        </div>
-      ) : (
-        <p className="text-sm text-muted-foreground dark:text-stone-400">
-          {motivationText || "Loading your daily spark..."}
+    <Card className="glass dark:bg-stone-800 p-4 rounded-lg border-none my-5 relative group transition-all duration-300">
+      <button
+        onClick={handleDismiss}
+        className="absolute top-3 right-3 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors rounded-md p-1 focus:outline-hidden"
+        aria-label="Dismiss morning motivation for today"
+      >
+        <X size={16} />
+      </button>
+
+      <div className="pr-6">
+        <p className="text-md dark:text-stone-100 font-semibold mb-1">
+          Morning Motivation
         </p>
-      )}
+        {isPending ? (
+          <div className="space-y-2 animate-pulse mt-2">
+            <div className="h-3 bg-slate-100 dark:bg-stone-700 rounded w-5/6"></div>
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground dark:text-stone-400 italic leading-relaxed">
+            {motivationText || "Loading your daily spark..."}
+          </p>
+        )}
+      </div>
     </Card>
   );
 };
