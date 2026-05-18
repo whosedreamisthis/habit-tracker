@@ -3,6 +3,7 @@ import ConsistencyHeader from "@/components/dashboard/consistency-header";
 import { getColor } from "@/lib/utils";
 import { getAllHabits } from "@/lib/actions";
 import { format, subDays } from "date-fns";
+import { Habit } from "@/lib/types";
 
 const ConsistencyGrid = async () => {
   const habits = await getAllHabits({ status: "active" });
@@ -11,7 +12,7 @@ const ConsistencyGrid = async () => {
     const dateStr = format(subDays(new Date(), 90 - i), "yyyy-MM-dd");
 
     // Count completions for this specific date across all active habits
-    const count = habits.reduce((acc, habit) => {
+    return habits.reduce((acc: number, habit: Habit) => {
       const hasCompletion = habit.completions?.some((c) => {
         const cDate =
           typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
@@ -19,12 +20,10 @@ const ConsistencyGrid = async () => {
       });
       return acc + (hasCompletion ? 1 : 0);
     }, 0);
-
-    return count;
   });
 
   const totalCompletions = habits.reduce(
-    (acc, h) => acc + (h.completions?.length || 0),
+    (acc: number, habit: Habit) => acc + (habit.completions?.length || 0),
     0,
   );
 

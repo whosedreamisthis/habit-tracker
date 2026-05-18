@@ -23,6 +23,7 @@ import StatsCharts from "@/components/charts/stats-charts";
 import StatsAllHabits from "@/components/statistics/all-habits/stats-all-habits";
 import WeeklyReport from "../../components/weekly/weekly-report";
 import { auth } from "@clerk/nextjs/server";
+import { Habit } from "@/lib/types";
 
 interface PageProps {
   searchParams: Promise<{ tab?: string }>;
@@ -34,7 +35,7 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
   const activeTab = params.tab || "weekly";
 
   const allHabits = await getAllHabits();
-  const habits = allHabits.filter((h) => h.status === "active");
+  const habits = allHabits.filter((h: Habit) => h.status === "active");
 
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const end = endOfWeek(new Date(), { weekStartsOn: 1 });
