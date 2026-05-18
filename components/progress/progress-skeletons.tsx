@@ -60,3 +60,18 @@ export const ChartSkeleton = ({
 export const WeeklyReportSkeleton = () => (
   <Skeleton className="h-[250px] w-full rounded-2xl" />
 );
+
+export const NavIconSkeleton = () => (
+  <Skeleton className="h-8 w-8 rounded-full" />
+);
+
+export const NavButtonSkeleton = () => (
+  <Skeleton className="h-9 w-full rounded-lg" />
+);
+
+export const UserMenuSkeleton = () => (
+  <div className="flex items-center gap-3 px-3 py-2">
+    <Skeleton className="h-8 w-8 rounded-full" />
+    <Skeleton className="h-4 w-24" />
+  </div>
+);

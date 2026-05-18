@@ -4,26 +4,51 @@ import React from "react";
 import { LogIn, UserPlus, LogOut } from "lucide-react";
 import dynamic from "next/dynamic";
 import { logoutDemo } from "@/lib/actions";
+import {
+  NavButtonSkeleton,
+  NavIconSkeleton,
+  UserMenuSkeleton,
+} from "@/components/progress/progress-skeletons";
 
-const ThemeToggle = dynamic(() => import("./theme-toggle"), { ssr: false });
+const ThemeToggle = dynamic(() => import("./theme-toggle"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center gap-4">
+      <NavIconSkeleton />
+      <span className="h-4 w-12 bg-slate-100 dark:bg-stone-700 animate-pulse rounded" />
+    </div>
+  ),
+});
 const SettingsButton = dynamic(
   () => import("../forms/settings/settings-button"),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <NavButtonSkeleton />,
+  },
 );
 const Show = dynamic(() => import("@clerk/nextjs").then((mod) => mod.Show), {
   ssr: false,
 });
 const UserButton = dynamic(
   () => import("@clerk/nextjs").then((mod) => mod.UserButton),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <UserMenuSkeleton />,
+  },
 );
 const SignInButton = dynamic(
   () => import("@clerk/nextjs").then((mod) => mod.SignInButton),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <NavButtonSkeleton />,
+  },
 );
 const SignUpButton = dynamic(
   () => import("@clerk/nextjs").then((mod) => mod.SignUpButton),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <NavButtonSkeleton />,
+  },
 );
 
 interface AsideFooterProps {

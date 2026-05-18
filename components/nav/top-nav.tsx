@@ -6,6 +6,10 @@ import dynamic from "next/dynamic";
 import Logo from "@/components/nav/logo";
 import { logoutDemo } from "@/lib/actions";
 import {
+  NavButtonSkeleton,
+  NavIconSkeleton,
+} from "@/components/progress/progress-skeletons";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -14,21 +18,33 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const ThemeToggle = dynamic(() => import("./theme-toggle"), { ssr: false });
+const ThemeToggle = dynamic(() => import("./theme-toggle"), {
+  ssr: false,
+  loading: () => <NavIconSkeleton />,
+});
 const SettingsButton = dynamic(
   () => import("@/components/forms/settings/settings-button"),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <NavIconSkeleton />,
+  },
 );
 const Show = dynamic(() => import("@clerk/nextjs").then((mod) => mod.Show), {
   ssr: false,
 });
 const UserButton = dynamic(
   () => import("@clerk/nextjs").then((mod) => mod.UserButton),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <NavIconSkeleton />,
+  },
 );
 const SignInButton = dynamic(
   () => import("@clerk/nextjs").then((mod) => mod.SignInButton),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <NavIconSkeleton />,
+  },
 );
 
 interface TopNavProps {
