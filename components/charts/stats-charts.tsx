@@ -5,20 +5,25 @@ import dynamic from "next/dynamic";
 import { getLast7DaysData } from "@/lib/date-utils";
 import StatsTopHabits from "@/components/statistics/top-habits/stats-top-habits";
 import { Habit } from "@/lib/types";
+import { ChartSkeleton } from "@/components/progress/progress-skeletons";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CompletionChart = dynamic(() => import("./completion-chart"), {
   ssr: false,
+  loading: () => <ChartSkeleton />,
 });
 const HistoryChart = dynamic(
   () => import("@/components/charts/history-chart"),
   {
     ssr: false,
+    loading: () => <ChartSkeleton />,
   },
 );
 const CategoryChart = dynamic(
   () => import("@/components/charts/category-chart"),
   {
     ssr: false,
+    loading: () => <ChartSkeleton />,
   },
 );
 
