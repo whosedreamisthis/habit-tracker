@@ -16,7 +16,7 @@ const SettingsForm = ({ onClose }: { onClose: () => void }) => {
         const saved = localStorage.getItem(
           getUserKey(userId, "morning_motivation_enabled"),
         );
-        return saved === "true";
+        return saved === null ? true : saved === "true";
       }
       return false;
     },

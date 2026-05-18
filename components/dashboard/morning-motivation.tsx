@@ -25,7 +25,10 @@ const MorningMotivation = ({
       const savedEnabled = localStorage.getItem(
         getUserKey(userId, "morning_motivation_enabled"),
       );
-      setIsMotivationEnabled(savedEnabled === "true");
+      // Default to true if not set
+      setIsMotivationEnabled(
+        savedEnabled === null ? true : savedEnabled === "true",
+      );
     }
   };
 
