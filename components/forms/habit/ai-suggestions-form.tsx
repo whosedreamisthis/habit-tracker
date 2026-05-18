@@ -67,7 +67,11 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
 
         const response = await askAI(prompt);
         // Remove markdown formatting if present
-        const cleanResponse = response.replace(/```json|```/g, "").trim();
+        const cleanResponse = response?.replace(/```json|```/g, "").trim();
+        if (!cleanResponse) {
+          console.error("AI response is empty or invalid");
+          return;
+        }
         const parsed = JSON.parse(cleanResponse);
         setSuggestions(parsed);
         setStep(4);
@@ -126,14 +130,13 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
           </div>
           <div className="flex justify-end gap-3 mt-2">
             <Button
-              variant="outline"
               onClick={onClose}
-              className="bg-white dark:bg-stone-900"
+              className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-white text-black border border-slate-200"
             >
               Cancel
             </Button>
             <Button
-              className="bg-linear-to-r from-brand-300 to-brand-700 text-white"
+              className="px-7 py-5 transition-all hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
               disabled={!goals.trim()}
               onClick={handleNext}
             >
@@ -168,14 +171,13 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
             </Button>
             <div className="flex gap-3">
               <Button
-                variant="outline"
                 onClick={onClose}
-                className="bg-white dark:bg-stone-900"
+                className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-white text-black border border-slate-200"
               >
                 Cancel
               </Button>
               <Button
-                className="bg-linear-to-r from-brand-300 to-brand-700 text-white"
+                className="px-7 py-5 transition-all hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
                 disabled={!productivity.trim()}
                 onClick={handleNext}
               >
@@ -211,14 +213,13 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
             </Button>
             <div className="flex gap-3">
               <Button
-                variant="outline"
                 onClick={onClose}
-                className="bg-white dark:bg-stone-900"
+                className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-white text-black border border-slate-200"
               >
                 Cancel
               </Button>
               <Button
-                className="bg-linear-to-r from-brand-300 to-brand-700 text-white"
+                className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
                 disabled={!struggles.trim() || isPending}
                 onClick={getSuggestions}
               >
