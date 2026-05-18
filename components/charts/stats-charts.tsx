@@ -1,11 +1,26 @@
-import React from "react";
+"use client";
 
-import CompletionChart from "./completion-chart";
-import HistoryChart from "@/components/charts/history-chart";
+import React from "react";
+import dynamic from "next/dynamic";
 import { getLast7DaysData } from "@/lib/date-utils";
 import StatsTopHabits from "@/components/statistics/top-habits/stats-top-habits";
-import CategoryChart from "@/components/charts/category-chart";
 import { Habit } from "@/lib/types";
+
+const CompletionChart = dynamic(() => import("./completion-chart"), {
+  ssr: false,
+});
+const HistoryChart = dynamic(
+  () => import("@/components/charts/history-chart"),
+  {
+    ssr: false,
+  },
+);
+const CategoryChart = dynamic(
+  () => import("@/components/charts/category-chart"),
+  {
+    ssr: false,
+  },
+);
 
 export const getCategoryData = (habits: Habit[]) => {
   const categoryCounts: Record<string, number> = {};
