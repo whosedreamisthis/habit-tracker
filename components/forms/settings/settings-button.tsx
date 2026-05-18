@@ -15,7 +15,7 @@ const SettingsButton = ({ showLabel }: { showLabel: boolean }) => {
     <>
       <Button
         variant="ghost"
-        className={`flex items-center gap-3 cursor-pointer justify-start hover:bg-stone-100 dark:hover:bg-white/5 transition p-2 rounded-lg w-fit ${
+        className={`flex items-center gap-3 cursor-pointer justify-start hover:bg-stone-100 dark:hover:bg-white/5  p-2 duration-0 rounded-lg w-fit ${
           showLabel ? "-ml-2" : "rounded-full"
         }`}
         onClick={() => setIsOpen(true)}
@@ -23,7 +23,7 @@ const SettingsButton = ({ showLabel }: { showLabel: boolean }) => {
       >
         <Settings size={20} />
         {showLabel && (
-          <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          <p className="text-xs font-medium uppercase tracking-wider text-slate-400 duration-0">
             Settings
           </p>
         )}

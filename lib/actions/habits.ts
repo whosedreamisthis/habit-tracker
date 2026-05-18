@@ -3,7 +3,7 @@
 import connectDB from "@/lib/mongodb";
 import { Habit } from "@/lib/models";
 import { Completion } from "@/lib/types";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag, unstable_cache } from "next/cache";
 import { cache } from "react";
 import { NewHabit } from "@/lib/schema";
 import { format } from "date-fns";
@@ -58,6 +58,7 @@ export async function toggleHabitCompletion(
     { new: true },
   );
 
+  updateTag("habits");
   revalidatePath("/", "layout");
   return JSON.parse(JSON.stringify(updatedHabit));
 }
@@ -68,6 +69,7 @@ export async function archiveHabit(habitId: string) {
 
   await connectDB();
   await Habit.updateOne({ _id: habitId, userId }, { status: "archived" });
+  updateTag("habits");
   revalidatePath("/", "layout");
 }
 
@@ -101,6 +103,7 @@ export async function editHabit(habitId: string, data: NewHabit) {
     },
   );
 
+  updateTag("habits");
   revalidatePath("/", "layout");
 }
 
@@ -120,6 +123,7 @@ export async function createHabit(data: NewHabit) {
     completions: [],
   });
 
+  updateTag("habits");
   revalidatePath("/", "layout");
 }
 
@@ -129,6 +133,7 @@ export async function deleteHabit(habitId: string) {
 
   await connectDB();
   await Habit.deleteOne({ _id: habitId, userId });
+  updateTag("habits");
   revalidatePath("/", "layout");
 }
 
@@ -138,44 +143,68 @@ export async function restoreHabit(habitId: string) {
 
   await connectDB();
   await Habit.updateOne({ _id: habitId, userId }, { status: "active" });
+  updateTag("habits");
   revalidatePath("/", "layout");
 }
+
+const getCachedHabits = unstable_cache(
+  async (userId: string) => {
+    await connectDB();
+    const habits = await Habit.find({ userId }).sort({
+      order: 1,
+      createdAt: -1,
+    });
+    return JSON.parse(JSON.stringify(habits));
+  },
+  ["habits-list"],
+  { tags: ["habits"] },
+);
 
 export const getAllHabits = cache(
   async (filters?: { status?: string; search?: string; category?: string }) => {
     const userId = await getUserId();
     if (!userId) return [];
 
-    await connectDB();
+    const allHabits = await getCachedHabits(userId);
 
-    const query: any = { userId };
-    if (filters?.status) query.status = filters.status;
-    if (filters?.category && filters.category !== "All categories")
-      query.category = filters.category;
-    if (filters?.search) {
-      query.$or = [
-        { name: { $regex: filters.search, $options: "i" } },
-        { description: { $regex: filters.search, $options: "i" } },
-      ];
+    let filteredHabits = allHabits;
+
+    if (filters?.status) {
+      filteredHabits = filteredHabits.filter(
+        (h: any) => h.status === filters.status,
+      );
     }
 
-    const habits = await Habit.find(query).sort({ order: 1, createdAt: -1 });
+    if (filters?.category && filters.category !== "All categories") {
+      filteredHabits = filteredHabits.filter(
+        (h: any) => h.category === filters.category,
+      );
+    }
+
+    if (filters?.search) {
+      const search = filters.search.toLowerCase();
+      filteredHabits = filteredHabits.filter(
+        (h: any) =>
+          h.name.toLowerCase().includes(search) ||
+          (h.description && h.description.toLowerCase().includes(search)),
+      );
+    }
+
     const todayStr = format(new Date(), "yyyy-MM-dd");
 
-    const habitsWithSync = habits.map((habit) => {
-      const habitObj = habit.toObject();
-      const isCompletedToday = habitObj.completions.some((c: Completion) => {
+    const habitsWithSync = filteredHabits.map((habit: any) => {
+      const isCompletedToday = habit.completions.some((c: Completion) => {
         const cDate =
           typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
         return cDate === todayStr;
       });
 
       return {
-        ...habitObj,
+        ...habit,
         isCompletedToday,
       };
     });
 
-    return JSON.parse(JSON.stringify(habitsWithSync));
+    return habitsWithSync;
   },
 );
