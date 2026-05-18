@@ -27,7 +27,7 @@ const DeleteHabitForm = ({
       </p>
       <div className="flex gap-2 justify-end items-center">
         <Button
-          className="min-w-[100px] bg-white dark:bg-stone-900 dark:text-stone-100 py-5 "
+          className="min-w-25 text text-stone-900 bg-white dark:bg-stone-900 dark:text-stone-100 py-5 "
           onClick={onClose}
         >
           Cancel

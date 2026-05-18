@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { X, ArrowLeft, Loader2, Plus } from "lucide-react";
+import { ArrowLeft, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { askAI } from "@/lib/gemini";
 import { createHabit } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { Habit } from "@/lib/types";
 import FormHeader from "../form-header";
+import { CATEGORIES, COLORS, ICONS } from "@/lib/constants";
 
 interface AISuggestionsFormProps {
   onClose: () => void;
@@ -20,6 +21,7 @@ interface SuggestedHabit {
   category: string;
   icon: string;
   color: string;
+  targetDays: number;
 }
 
 const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
@@ -39,6 +41,10 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
     startTransition(async () => {
       try {
         const currentHabitNames = habits.map((h) => h.name).join(", ");
+        const allowedCategories = CATEGORIES.map((c) => c.value).join(", ");
+        const allowedIcons = ICONS.join(" ");
+        const allowedColors = COLORS.join(", ");
+
         const prompt = `
           Suggest 3 personalized habits based on the following information:
           - Goals: ${goals}
@@ -48,8 +54,14 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
           The user already has these habits: ${currentHabitNames}. 
           Do not suggest any of these existing habits.
 
+          For each habit, you MUST choose from these specific options:
+          - category: MUST be one of [${allowedCategories}]
+          - icon: MUST be one of [${allowedIcons}]
+          - color: MUST be one of [${allowedColors}]
+          - targetDays: MUST be an integer between 1 and 7 representing how many days per week the habit should be performed.
+
           Return only a valid JSON array of 3 objects with these keys: 
-          "name" (string), "description" (string, max 100 chars), "category" (string), "icon" (emoji), "color" (hex).
+          "name" (string), "description" (string, max 100 chars), "category" (string), "icon" (emoji from list), "color" (hex from list), "targetDays" (number).
           Do not include any other text or markdown formatting.
         `.trim();
 
@@ -73,7 +85,7 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
         description: habit.description,
         category: habit.category,
         frequency: "daily",
-        targetDays: 7,
+        targetDays: habit.targetDays,
         icon: habit.icon,
         color: habit.color,
       });
@@ -93,7 +105,7 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
       <FormHeader title="AI Habit Suggestions" onClose={onClose} />
       {step <= 3 && (
         <p className="text-sm text-slate-500 dark:text-stone-400">
-          Answer 3 quick questions and I'll suggest 3 personalized habits.
+          Answer 3 quick questions and I&apos;ll suggest 3 personalized habits.
         </p>
       )}
 
