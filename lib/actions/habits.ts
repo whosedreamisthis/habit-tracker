@@ -4,6 +4,7 @@ import connectDB from "@/lib/mongodb";
 import { Habit } from "@/lib/models";
 import { Completion } from "@/lib/types";
 import { revalidatePath } from "next/cache";
+import { cache } from "react";
 import { NewHabit } from "@/lib/schema";
 import { format } from "date-fns";
 import { getUserId } from "./auth";
@@ -140,43 +141,41 @@ export async function restoreHabit(habitId: string) {
   revalidatePath("/", "layout");
 }
 
-export async function getAllHabits(filters?: {
-  status?: string;
-  search?: string;
-  category?: string;
-}) {
-  const userId = await getUserId();
-  if (!userId) return [];
+export const getAllHabits = cache(
+  async (filters?: { status?: string; search?: string; category?: string }) => {
+    const userId = await getUserId();
+    if (!userId) return [];
 
-  await connectDB();
+    await connectDB();
 
-  const query: any = { userId };
-  if (filters?.status) query.status = filters.status;
-  if (filters?.category && filters.category !== "All categories")
-    query.category = filters.category;
-  if (filters?.search) {
-    query.$or = [
-      { name: { $regex: filters.search, $options: "i" } },
-      { description: { $regex: filters.search, $options: "i" } },
-    ];
-  }
+    const query: any = { userId };
+    if (filters?.status) query.status = filters.status;
+    if (filters?.category && filters.category !== "All categories")
+      query.category = filters.category;
+    if (filters?.search) {
+      query.$or = [
+        { name: { $regex: filters.search, $options: "i" } },
+        { description: { $regex: filters.search, $options: "i" } },
+      ];
+    }
 
-  const habits = await Habit.find(query).sort({ order: 1, createdAt: -1 });
-  const todayStr = format(new Date(), "yyyy-MM-dd");
+    const habits = await Habit.find(query).sort({ order: 1, createdAt: -1 });
+    const todayStr = format(new Date(), "yyyy-MM-dd");
 
-  const habitsWithSync = habits.map((habit) => {
-    const habitObj = habit.toObject();
-    const isCompletedToday = habitObj.completions.some((c: Completion) => {
-      const cDate =
-        typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
-      return cDate === todayStr;
+    const habitsWithSync = habits.map((habit) => {
+      const habitObj = habit.toObject();
+      const isCompletedToday = habitObj.completions.some((c: Completion) => {
+        const cDate =
+          typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+        return cDate === todayStr;
+      });
+
+      return {
+        ...habitObj,
+        isCompletedToday,
+      };
     });
 
-    return {
-      ...habitObj,
-      isCompletedToday,
-    };
-  });
-
-  return JSON.parse(JSON.stringify(habitsWithSync));
-}
+    return JSON.parse(JSON.stringify(habitsWithSync));
+  },
+);

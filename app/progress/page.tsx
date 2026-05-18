@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { getAllHabits } from "@/lib/actions";
 import SectionHeader from "@/components/common/section-header";
 import { format, startOfWeek, endOfWeek } from "date-fns";
@@ -12,13 +12,19 @@ interface PageProps {
   searchParams: Promise<{ tab?: string }>;
 }
 
-const ProgressPage = async ({ searchParams }: PageProps) => {
+const ProgressData = async ({ activeTab }: { activeTab: string }) => {
   const { userId } = await auth();
-  const params = await searchParams;
-  const activeTab = params.tab || "weekly";
-
   const allHabits = await getAllHabits();
   const habits = allHabits.filter((h: Habit) => h.status === "active");
+
+  return (
+    <ProgressContent activeTab={activeTab} habits={habits} userId={userId} />
+  );
+};
+
+const ProgressPage = async ({ searchParams }: PageProps) => {
+  const params = await searchParams;
+  const activeTab = params.tab || "weekly";
 
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const end = endOfWeek(new Date(), { weekStartsOn: 1 });
@@ -53,7 +59,23 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      <ProgressContent activeTab={activeTab} habits={habits} userId={userId} />
+      <Suspense
+        fallback={
+          <div className="space-y-6 animate-pulse">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="h-32 bg-slate-100 dark:bg-stone-800 rounded-xl"
+                />
+              ))}
+            </div>
+            <div className="h-96 bg-slate-100 dark:bg-stone-800 rounded-xl" />
+          </div>
+        }
+      >
+        <ProgressData activeTab={activeTab} />
+      </Suspense>
     </section>
   );
 };

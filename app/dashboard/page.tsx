@@ -19,17 +19,41 @@ const ConsistencyGridSkeleton = () => (
   </div>
 );
 
-const DashboardPage = async () => {
-  const { userId } = await auth();
+const UserHeader = async () => {
   const user = await currentUser();
+  return <DashboardHeader firstName={user?.firstName || "Friend"} />;
+};
+
+const DashboardData = async () => {
+  const { userId } = await auth();
   const activeHabits = await getAllHabits({ status: "active" });
 
   return (
-    <section>
-      <DashboardHeader firstName={user?.firstName || "Friend"} />
+    <>
       <DashboardContent activeHabits={activeHabits} userId={userId} />
       <Suspense fallback={<ConsistencyGridSkeleton />}>
         <ConsistencyGrid habits={activeHabits} />
+      </Suspense>
+    </>
+  );
+};
+
+const DashboardPage = () => {
+  return (
+    <section>
+      <Suspense fallback={<DashboardHeader firstName="Friend" />}>
+        <UserHeader />
+      </Suspense>
+      <Suspense
+        fallback={
+          <div className="space-y-4 animate-pulse mt-4">
+            <div className="h-48 bg-slate-100 dark:bg-stone-800 rounded-lg" />
+            <div className="h-64 bg-slate-100 dark:bg-stone-800 rounded-lg" />
+            <ConsistencyGridSkeleton />
+          </div>
+        }
+      >
+        <DashboardData />
       </Suspense>
     </section>
   );
