@@ -32,8 +32,7 @@ const SettingsForm = ({ onClose }: { onClose: () => void }) => {
         );
 
         // Dispatch a custom event so components on the same page catch the update instantly
-        window.dispatchEvent(new Event("local-storage-update"));
-        console.log("Setting saved successfully!");
+        // window.dispatchEvent(new Event("local-storage-update"));
       } catch (error) {
         console.error("Failed to save setting to localStorage:", error);
       }

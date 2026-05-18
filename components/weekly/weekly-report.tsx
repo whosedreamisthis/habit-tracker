@@ -46,8 +46,6 @@ const WeeklyReport = ({
   const generateFreshReport = useCallback(() => {
     startTransition(async () => {
       try {
-        console.log("Generating fresh weekly AI insights...");
-
         const prompt = `
 Analyze my habit tracking data and provide a concise weekly progress report. 
 
