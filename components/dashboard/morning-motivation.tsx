@@ -7,6 +7,7 @@ import { Habit } from "@/lib/types";
 import { format } from "date-fns";
 import { X } from "lucide-react";
 import { getUserKey } from "@/lib/utils";
+import { MOCK_MORNING_MOTIVATIONS } from "@/lib/mock-ai-data";
 
 const MorningMotivation = ({
   habits,
@@ -94,11 +95,25 @@ const MorningMotivation = ({
             );
             setMotivationText(cleanText);
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error("Failed to fetch morning insight:", error);
-          setMotivationText(
-            "Make today count and build something amazing, one commit at a time!",
-          );
+
+          let fallbackText =
+            "Small steps lead to big changes—keep up the great work with your habits today!";
+
+          // Use a random mock motivation if quota is hit
+          if (
+            error?.status === 429 ||
+            error?.message?.includes("429") ||
+            error?.message?.includes("quota")
+          ) {
+            const randomIndex = Math.floor(
+              Math.random() * MOCK_MORNING_MOTIVATIONS.length,
+            );
+            fallbackText = MOCK_MORNING_MOTIVATIONS[randomIndex];
+          }
+
+          setMotivationText(fallbackText);
         }
       });
     }

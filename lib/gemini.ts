@@ -13,8 +13,15 @@ export async function askAI(prompt: string, habits?: Habit[]) {
       contents: `${prompt}\n\nHabits: ${habits ? JSON.stringify(habits) : ""} `,
     });
     return response.text; // Return the text so the calling component can read it
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini API Error:", error);
+    if (
+      error?.status === 429 ||
+      error?.message?.includes("429") ||
+      error?.message?.includes("quota")
+    ) {
+      throw error; // Re-throw to be handled by the caller with fallback data
+    }
     throw new Error("Failed to generate content");
   }
 }

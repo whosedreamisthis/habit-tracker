@@ -6,6 +6,7 @@ import { askAI } from "@/lib/gemini";
 import { Habit } from "@/lib/types";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { getUserKey } from "@/lib/utils";
+import { MOCK_WEEKLY_REPORT } from "@/lib/mock-ai-data";
 
 const WeeklyReport = ({
   habits,
@@ -78,11 +79,23 @@ CRITICAL FORMATTING RULES:
             needsGeneration: false,
           });
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Could not fetch weekly report:", err);
+
+        let fallbackText = "Failed to generate report. Please try again later.";
+
+        // Use mock weekly report if quota is hit
+        if (
+          err?.status === 429 ||
+          err?.message?.includes("429") ||
+          err?.message?.includes("quota")
+        ) {
+          fallbackText = MOCK_WEEKLY_REPORT;
+        }
+
         setReportState((prev) => ({
           ...prev,
-          text: "Failed to generate report. Please try again later.",
+          text: fallbackText,
           needsGeneration: false,
         }));
       }

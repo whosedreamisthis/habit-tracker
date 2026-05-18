@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Habit } from "@/lib/types";
 import FormHeader from "../form-header";
 import { CATEGORIES, COLORS, ICONS } from "@/lib/constants";
+import { MOCK_HABIT_SUGGESTIONS } from "@/lib/mock-ai-data";
 
 interface AISuggestionsFormProps {
   onClose: () => void;
@@ -75,8 +76,28 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
         const parsed = JSON.parse(cleanResponse);
         setSuggestions(parsed);
         setStep(4);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to get suggestions:", error);
+
+        // Use mock suggestions if quota is hit
+        if (
+          error?.status === 429 ||
+          error?.message?.includes("429") ||
+          error?.message?.includes("quota")
+        ) {
+          // Filter out suggestions that the user already has
+          const currentHabitNames = habits.map((h) => h.name.toLowerCase());
+          const filteredSuggestions = MOCK_HABIT_SUGGESTIONS.filter(
+            (s) => !currentHabitNames.includes(s.name.toLowerCase()),
+          );
+
+          setSuggestions(
+            filteredSuggestions.length > 0
+              ? filteredSuggestions
+              : MOCK_HABIT_SUGGESTIONS,
+          );
+          setStep(4);
+        }
       }
     });
   };
