@@ -1,9 +1,11 @@
+"use client";
+
 import React from "react";
 import StatsHabitCard from "./stats-habit-card";
 
 import { Habit } from "@/lib/types";
 
-const StatsAllHabits = async ({ habits }: { habits: Habit[] }) => {
+const StatsAllHabits = ({ habits }: { habits: Habit[] }) => {
   return (
     <div>
       <p className="text-md pb-3 mt-5">All habits</p>

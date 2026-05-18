@@ -1,10 +1,12 @@
+"use client";
+
 import React from "react";
 import HabitLeaderboardRow from "@/components/common/habit-leaderboard-row";
 
 import { Habit } from "@/lib/types";
 import { format, startOfWeek, endOfWeek, isWithinInterval } from "date-fns";
 
-const HabitPerformance = async ({ habits }: { habits: Habit[] }) => {
+const HabitPerformance = ({ habits }: { habits: Habit[] }) => {
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const end = endOfWeek(new Date(), { weekStartsOn: 1 });
 

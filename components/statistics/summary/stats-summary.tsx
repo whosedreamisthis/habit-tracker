@@ -1,10 +1,12 @@
+"use client";
+
 import React from "react";
 import StatsSummaryCard from "./stats-summary-card";
 import { Flame, Trophy, TrendingDown } from "lucide-react";
 
 import { Habit } from "@/lib/types";
 
-const Summary = async ({ habits }: { habits: Habit[] }) => {
+const Summary = ({ habits }: { habits: Habit[] }) => {
   const bestStreakHabit = habits.sort(
     (a, b) => b.activeStreak - a.activeStreak,
   )[0];

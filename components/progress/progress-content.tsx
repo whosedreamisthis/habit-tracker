@@ -5,14 +5,6 @@ import dynamic from "next/dynamic";
 import { Habit } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import WeeklySummary from "@/components/weekly/summary/weekly-summary";
-import HabitTrackerGrid from "@/components/habit-tracker-grid/habit-tracker-grid";
-import InsightsSummary from "@/components/insights/summary/insights-summary";
-import HabitPerformance from "@/components/insights/habit-performance";
-import ActiveStreaks from "@/components/insights/active-streaks";
-import StatsSummary from "@/components/statistics/summary/stats-summary";
-import StatsCharts from "@/components/charts/stats-charts";
-import StatsAllHabits from "@/components/statistics/all-habits/stats-all-habits";
 import { getThisWeekData, getWeeklyComparisonData } from "@/lib/date-utils";
 
 const WeeklyReport = dynamic(() => import("../weekly/weekly-report"), {
@@ -23,6 +15,37 @@ const CompletionChart = dynamic(() => import("../charts/completion-chart"), {
 });
 const WeeklyComparisonChart = dynamic(
   () => import("../charts/weekly-comparison-chart"),
+  { ssr: false },
+);
+const InsightsSummary = dynamic(
+  () => import("@/components/insights/summary/insights-summary"),
+  { ssr: false },
+);
+const HabitPerformance = dynamic(
+  () => import("@/components/insights/habit-performance"),
+  { ssr: false },
+);
+const ActiveStreaks = dynamic(
+  () => import("@/components/insights/active-streaks"),
+  { ssr: false },
+);
+const WeeklySummary = dynamic(
+  () => import("@/components/weekly/summary/weekly-summary"),
+  { ssr: false },
+);
+const HabitTrackerGrid = dynamic(
+  () => import("@/components/habit-tracker-grid/habit-tracker-grid"),
+  { ssr: false },
+);
+const StatsSummary = dynamic(
+  () => import("@/components/statistics/summary/stats-summary"),
+  { ssr: false },
+);
+const StatsCharts = dynamic(() => import("@/components/charts/stats-charts"), {
+  ssr: false,
+});
+const StatsAllHabits = dynamic(
+  () => import("@/components/statistics/all-habits/stats-all-habits"),
   { ssr: false },
 );
 

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import InsightsSummaryCard from "./insights-summary-card";
 import { Activity, TrendingUp, CalendarRange, Trophy } from "lucide-react";
@@ -5,7 +7,7 @@ import { format, subDays } from "date-fns";
 
 import { Habit } from "@/lib/types";
 
-const InsightsSummary = async ({ habits }: { habits: Habit[] }) => {
+const InsightsSummary = ({ habits }: { habits: Habit[] }) => {
   // 1. Total Completions (All-time)
   const allTimeCompletions = habits.reduce(
     (acc, h) => acc + (h.completions?.length || 0),

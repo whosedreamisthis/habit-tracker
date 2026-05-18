@@ -1,8 +1,10 @@
+"use client";
+
 import React from "react";
 import WeeklyStatsCard from "./weekly-summary-card";
 import { Habit } from "@/lib/types";
 
-const WeeklySummary = async ({ habits }: { habits: Habit[] }) => {
+const WeeklySummary = ({ habits }: { habits: Habit[] }) => {
   // 1. Calculate Today's Progress
   const completedToday = habits.filter((h) => h.isCompletedToday).length;
   const totalActiveHabits = habits.length;
