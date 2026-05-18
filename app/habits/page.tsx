@@ -21,17 +21,10 @@ const HabitsPage = async ({ searchParams }: PageProps) => {
     (h) => h.status === "archived",
   ).length;
 
-  const habits = allHabitsRaw.filter((habit) => {
-    const matchesStatus = habit.status === currentStatus;
-    const matchesSearch =
-      habit.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      habit.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      !currentCategory || currentCategory === "All categories"
-        ? true
-        : habit.category === currentCategory;
-
-    return matchesStatus && matchesSearch && matchesCategory;
+  const habits = await getAllHabits({
+    status: currentStatus,
+    search: searchQuery,
+    category: currentCategory,
   });
 
   return (

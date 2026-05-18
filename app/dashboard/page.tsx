@@ -7,8 +7,7 @@ import { getAllHabits } from "@/lib/actions";
 import MorningMotivation from "@/components/dashboard/morning-motivation";
 
 const DashboardPage = async () => {
-  const habits = await getAllHabits();
-  const activeHabits = habits.filter((h) => h.status === "active");
+  const activeHabits = await getAllHabits({ status: "active" });
 
   return (
     <section>

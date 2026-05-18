@@ -1,36 +1,236 @@
 "use server";
 
-import { mockHabits as initialMockHabits } from "@/lib/mock-data";
+import connectDB from "@/lib/mongodb";
+import { Habit } from "@/lib/models";
 import { revalidatePath } from "next/cache";
-import { Habit } from "@/lib/types";
+import { auth } from "@clerk/nextjs/server";
 import { NewHabit } from "@/lib/schema";
-import { nanoid } from "nanoid";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, subDays } from "date-fns";
 
-// --- FIX: Pin memory to globalThis so workers don't reset it on page switch ---
-const globalForHabits = globalThis as unknown as {
-  localHabits: Habit[] | undefined;
+// --- UTILITY: Calculate Streaks ---
+const calculateStreaks = (
+  completions: { date: string | Date }[],
+  targetDays: number = 7,
+) => {
+  const completedDates = completions
+    .map((c) =>
+      typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd"),
+    )
+    .sort();
+
+  if (completedDates.length === 0) return { activeStreak: 0, bestStreak: 0 };
+
+  if (targetDays === 7) {
+    let currentStreak = 0;
+    let bestStreak = 0;
+    let activeStreak = 0;
+    const maxGap = 1;
+
+    for (let i = 0; i < completedDates.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prevDate = parseISO(completedDates[i - 1]);
+        const currDate = parseISO(completedDates[i]);
+        const diffTime = Math.abs(currDate.getTime() - prevDate.getTime());
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays <= maxGap) {
+          currentStreak++;
+        } else {
+          if (currentStreak > bestStreak) bestStreak = currentStreak;
+          currentStreak = 1;
+        }
+      }
+    }
+    if (currentStreak > bestStreak) bestStreak = currentStreak;
+
+    const lastCompletion = parseISO(completedDates[completedDates.length - 1]);
+    const today = new Date();
+    const diffTime = Math.abs(today.getTime() - lastCompletion.getTime());
+    const diffDaysFromToday = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDaysFromToday <= maxGap) {
+      activeStreak = currentStreak;
+    }
+
+    return { activeStreak, bestStreak };
+  } else {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const currentWeekMonday = new Date(today);
+    currentWeekMonday.setDate(today.getDate() - diffToMonday);
+    currentWeekMonday.setHours(0, 0, 0, 0);
+
+    const completionsByWeek: Record<string, number> = {};
+    completedDates.forEach((dateStr) => {
+      const date = parseISO(dateStr);
+      const dOW = date.getDay();
+      const dTM = dOW === 0 ? 6 : dOW - 1;
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - dTM);
+      monday.setHours(0, 0, 0, 0);
+      const weekKey = format(monday, "yyyy-MM-dd");
+      completionsByWeek[weekKey] = (completionsByWeek[weekKey] || 0) + 1;
+    });
+
+    const sortedWeeks = Object.keys(completionsByWeek).sort();
+    if (sortedWeeks.length === 0) return { activeStreak: 0, bestStreak: 0 };
+
+    let currentWeeklyStreak = 0;
+    let bestWeeklyStreak = 0;
+    let activeWeeklyStreak = 0;
+
+    const firstWeek = parseISO(sortedWeeks[0]);
+    const weeks: string[] = [];
+    const iterWeek = new Date(firstWeek);
+    while (iterWeek <= currentWeekMonday) {
+      weeks.push(format(iterWeek, "yyyy-MM-dd"));
+      iterWeek.setDate(iterWeek.getDate() + 7);
+    }
+
+    for (const weekKey of weeks) {
+      const count = completionsByWeek[weekKey] || 0;
+      if (count >= targetDays) {
+        currentWeeklyStreak++;
+      } else {
+        if (weekKey !== format(currentWeekMonday, "yyyy-MM-dd")) {
+          if (currentWeeklyStreak > bestWeeklyStreak)
+            bestWeeklyStreak = currentWeeklyStreak;
+          currentWeeklyStreak = 0;
+        }
+      }
+    }
+    if (currentWeeklyStreak > bestWeeklyStreak)
+      bestWeeklyStreak = currentWeeklyStreak;
+
+    const currentWeekKey = format(currentWeekMonday, "yyyy-MM-dd");
+    const lastWeekMonday = new Date(currentWeekMonday);
+    lastWeekMonday.setDate(lastWeekMonday.getDate() - 7);
+    const lastWeekKey = format(lastWeekMonday, "yyyy-MM-dd");
+
+    if ((completionsByWeek[currentWeekKey] || 0) >= targetDays) {
+      activeWeeklyStreak = currentWeeklyStreak;
+    } else {
+      if ((completionsByWeek[lastWeekKey] || 0) >= targetDays) {
+        activeWeeklyStreak = currentWeeklyStreak;
+      } else {
+        activeWeeklyStreak = 0;
+      }
+    }
+
+    return { activeStreak: activeWeeklyStreak, bestStreak: bestWeeklyStreak };
+  }
 };
 
-if (!globalForHabits.localHabits) {
-  globalForHabits.localHabits = [...initialMockHabits];
-}
-// -----------------------------------------------------------------------------
-
-// 1. Define the input parameters interface
-interface GetHabitsFilters {
-  status?: string;
-  search?: string;
-  category?: string;
-}
+// --- DATABASE ACTIONS ---
 
 export async function resetAllHabitsData() {
-  console.log("Resetting application state back to default mock data...");
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-  // Re-clone to global storage
-  globalForHabits.localHabits = [...initialMockHabits] as Habit[];
+  console.log(`Resetting data for user ${userId}...`);
+  await connectDB();
 
-  // Clear the Next.js cache so the UI updates instantly everywhere
+  // Clear existing habits for this user
+  await Habit.deleteMany({ userId });
+
+  // Re-seed for this user
+  const baseHabitsBlueprints = [
+    {
+      name: "Drink 2L of water",
+      description: "Stay hydrated throughout the day.",
+      category: "health",
+      color: "#0ea5e9",
+      icon: "💧",
+      order: 0,
+      status: "active",
+      targetDays: 7,
+      frequency: "daily",
+      _streakProb: 0.95,
+    },
+    {
+      name: "Morning run",
+      description: "30-minute run before breakfast.",
+      category: "fitness",
+      targetDays: 7,
+      color: "#ef4444",
+      icon: "🏃",
+      order: 1,
+      status: "active",
+      frequency: "daily",
+      _streakProb: 0.7,
+    },
+    {
+      name: "Read 20 minutes",
+      description: "Fiction or non-fiction, no phone.",
+      category: "learning",
+      color: "#6366f1",
+      icon: "📚",
+      order: 2,
+      status: "active",
+      targetDays: 7,
+      frequency: "daily",
+      _streakProb: 0.82,
+    },
+    {
+      name: "Journal",
+      description: "Write 3 things I'm grateful for.",
+      category: "mindfulness",
+      targetDays: 7,
+      color: "#ec4899",
+      icon: "✍️",
+      order: 4,
+      status: "active",
+      frequency: "daily",
+      _streakProb: 0.75,
+    },
+    {
+      name: "Strength training",
+      description: "Push/pull/legs split.",
+      category: "fitness",
+      frequency: "weekly",
+      targetDays: 3,
+      color: "#f59e0b",
+      icon: "💪",
+      order: 5,
+      status: "active",
+      _streakProb: 0.55,
+    },
+  ];
+
+  const today = new Date();
+  const todayKey = format(today, "yyyy-MM-dd");
+
+  for (const h of baseHabitsBlueprints) {
+    const completions = [];
+    for (let i = 0; i < 90; i++) {
+      const d = subDays(today, i);
+      const key = format(d, "yyyy-MM-dd");
+      let p = h._streakProb;
+      if (i < 14) p = Math.max(p, 0.85);
+      const seed = Math.sin(i * 9301 + h.name.length * 49297) * 233280;
+      const rnd = seed - Math.floor(seed);
+      if (rnd < p) completions.push({ date: key });
+    }
+
+    const { activeStreak, bestStreak } = calculateStreaks(
+      completions,
+      h.targetDays,
+    );
+    const isCompletedToday = completions.some((c) => c.date === todayKey);
+
+    await Habit.create({
+      ...h,
+      userId,
+      completions,
+      activeStreak,
+      bestStreak,
+      isCompletedToday,
+    });
+  }
+
   revalidatePath("/", "layout");
 }
 
@@ -38,262 +238,140 @@ export async function toggleHabitCompletion(
   habitId: string,
   currentCompletedState: boolean,
 ) {
-  const targetCompletedState = !currentCompletedState;
-  const todayStr = format(new Date(), "yyyy-MM-dd");
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-  console.log(
-    `Updating habit ${habitId} to completed: ${targetCompletedState}`,
+  await connectDB();
+  const habit = await Habit.findOne({ _id: habitId, userId });
+  if (!habit) throw new Error("Habit not found");
+
+  const todayStr = format(new Date(), "yyyy-MM-dd");
+  const targetCompletedState = !currentCompletedState;
+
+  let updatedCompletions = habit.completions.map((c: any) => ({
+    date: typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd"),
+  }));
+
+  if (targetCompletedState) {
+    if (!updatedCompletions.some((c: any) => c.date === todayStr)) {
+      updatedCompletions.push({ date: todayStr });
+    }
+  } else {
+    updatedCompletions = updatedCompletions.filter(
+      (c: any) => c.date !== todayStr,
+    );
+  }
+
+  const { activeStreak, bestStreak } = calculateStreaks(
+    updatedCompletions,
+    habit.targetDays,
   );
 
-  globalForHabits.localHabits = globalForHabits.localHabits!.map((habit) => {
-    if (habit._id === habitId) {
-      let updatedCompletions = [...(habit.completions || [])];
-
-      if (targetCompletedState) {
-        // Add completion if not already there
-        if (!updatedCompletions.some((c) => c.date === todayStr)) {
-          updatedCompletions.push({
-            _id: nanoid(),
-            date: todayStr,
-          });
-        }
-      } else {
-        // Remove completion for today
-        updatedCompletions = updatedCompletions.filter(
-          (c) => c.date !== todayStr,
-        );
-      }
-
-      // Re-calculate streaks based on updated completions
-      const today = new Date();
-
-      // Sort completions to find the most recent ones
-      const sortedCompletions = [...updatedCompletions].sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      );
-
-      // --- RE-CALCULATE STREAK ---
-      const targetDays = habit.targetDays || 7;
-      let nextStreak = 0;
-
-      if (targetDays === 7) {
-        // Daily Streak Logic
-        let currentStreak = 0;
-        const maxGap = 1;
-
-        for (let i = 0; i < sortedCompletions.length; i++) {
-          if (i === 0) {
-            currentStreak = 1;
-          } else {
-            const prevDate = parseISO(sortedCompletions[i - 1].date);
-            const currDate = parseISO(sortedCompletions[i].date);
-            const diffTime = Math.abs(currDate.getTime() - prevDate.getTime());
-            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-            if (diffDays <= maxGap) {
-              currentStreak++;
-            } else {
-              currentStreak = 1;
-            }
-          }
-        }
-
-        if (sortedCompletions.length > 0) {
-          const lastCompletionDate =
-            sortedCompletions[sortedCompletions.length - 1].date;
-          const lastDate = parseISO(lastCompletionDate);
-          const diffTime = Math.abs(today.getTime() - lastDate.getTime());
-          const diffDaysFromToday = Math.floor(
-            diffTime / (1000 * 60 * 60 * 24),
-          );
-
-          if (diffDaysFromToday <= maxGap) {
-            nextStreak = currentStreak;
-          }
-        }
-      } else {
-        // Weekly Streak Logic
-        const dayOfWeek = today.getDay();
-        const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-        const currentWeekMonday = new Date(today);
-        currentWeekMonday.setDate(today.getDate() - diffToMonday);
-        currentWeekMonday.setHours(0, 0, 0, 0);
-
-        const completionsByWeek: Record<string, number> = {};
-        sortedCompletions.forEach((c) => {
-          const date = parseISO(c.date as string);
-          const dOW = date.getDay();
-          const dTM = dOW === 0 ? 6 : dOW - 1;
-          const monday = new Date(date);
-          monday.setDate(date.getDate() - dTM);
-          monday.setHours(0, 0, 0, 0);
-          const weekKey = format(monday, "yyyy-MM-dd");
-          completionsByWeek[weekKey] = (completionsByWeek[weekKey] || 0) + 1;
-        });
-
-        const sortedWeeks = Object.keys(completionsByWeek).sort();
-        if (sortedWeeks.length > 0) {
-          const firstWeek = parseISO(sortedWeeks[0]);
-          const weeks: string[] = [];
-          const iterWeek = new Date(firstWeek);
-          while (iterWeek <= currentWeekMonday) {
-            weeks.push(format(iterWeek, "yyyy-MM-dd"));
-            iterWeek.setDate(iterWeek.getDate() + 7);
-          }
-
-          let currentWeeklyStreak = 0;
-          for (const weekKey of weeks) {
-            const count = completionsByWeek[weekKey] || 0;
-            if (count >= targetDays) {
-              currentWeeklyStreak++;
-            } else {
-              if (weekKey !== format(currentWeekMonday, "yyyy-MM-dd")) {
-                currentWeeklyStreak = 0;
-              }
-            }
-          }
-
-          const currentWeekKey = format(currentWeekMonday, "yyyy-MM-dd");
-          const lastWeekMonday = new Date(currentWeekMonday);
-          lastWeekMonday.setDate(lastWeekMonday.getDate() - 7);
-          const lastWeekKey = format(lastWeekMonday, "yyyy-MM-dd");
-
-          if ((completionsByWeek[currentWeekKey] || 0) >= targetDays) {
-            nextStreak = currentWeeklyStreak;
-          } else if ((completionsByWeek[lastWeekKey] || 0) >= targetDays) {
-            nextStreak = currentWeeklyStreak;
-          } else {
-            nextStreak = 0;
-          }
-        }
-      }
-
-      return {
-        ...habit,
-        isCompletedToday: targetCompletedState,
-        completions: updatedCompletions,
-        activeStreak: nextStreak,
-        // Sync bestStreak if the active streak surpasses it
-        bestStreak:
-          nextStreak > habit.bestStreak ? nextStreak : habit.bestStreak,
-        updatedAt: new Date().toISOString(),
-      };
-    }
-    return habit;
-  });
+  await Habit.updateOne(
+    { _id: habitId, userId },
+    {
+      completions: updatedCompletions,
+      activeStreak,
+      bestStreak: Math.max(bestStreak, habit.bestStreak),
+      isCompletedToday: targetCompletedState,
+    },
+  );
 
   revalidatePath("/", "layout");
 }
 
 export async function archiveHabit(habitId: string) {
-  console.log(`Archiving habit ${habitId}`);
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-  globalForHabits.localHabits = globalForHabits.localHabits!.map((habit) => {
-    if (habit._id === habitId) {
-      return {
-        ...habit,
-        status: "archived",
-        updatedAt: new Date().toISOString(),
-      };
-    }
-    return habit;
-  });
-
-  // Revalidate everything to ensure all pages are updated
+  await connectDB();
+  await Habit.updateOne({ _id: habitId, userId }, { status: "archived" });
   revalidatePath("/", "layout");
 }
 
 export async function editHabit(habitId: string, data: NewHabit) {
-  console.log(`Editing habit ${data}`);
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-  globalForHabits.localHabits = globalForHabits.localHabits!.map((habit) => {
-    if (habit._id === habitId) {
-      return {
-        ...habit,
-        ...data,
-        updatedAt: new Date().toISOString(),
-      };
-    }
-    return habit;
-  });
+  await connectDB();
+  const habit = await Habit.findOne({ _id: habitId, userId });
+  if (!habit) throw new Error("Habit not found");
 
-  // Revalidate everything to ensure all pages are updated
+  const { activeStreak, bestStreak } = calculateStreaks(
+    habit.completions,
+    data.targetDays,
+  );
+
+  await Habit.updateOne(
+    { _id: habitId, userId },
+    {
+      ...data,
+      activeStreak,
+      bestStreak: Math.max(bestStreak, habit.bestStreak),
+    },
+  );
+
   revalidatePath("/", "layout");
 }
 
 export async function createHabit(data: NewHabit) {
-  console.log(`Creating habit ${data}`);
-  const newHabit = {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  await connectDB();
+  await Habit.create({
     ...data,
-    _id: nanoid(),
-    status: "active" as const,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    userId: "",
-    order: 7,
+    userId,
+    status: "active",
     activeStreak: 0,
     bestStreak: 0,
     isCompletedToday: false,
-    _streakProb: 0.82,
-  };
+    order: 0,
+    completions: [],
+  });
 
-  const currentHabits = globalForHabits.localHabits || [];
-  globalForHabits.localHabits = [...currentHabits, newHabit];
-
-  // Revalidate everything to ensure all pages are updated
   revalidatePath("/", "layout");
 }
 
 export async function deleteHabit(habitId: string) {
-  console.log(`[SERVER] Deleting habit ${habitId}`);
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-  globalForHabits.localHabits = globalForHabits.localHabits!.filter(
-    (habit) => habit._id !== habitId,
-  );
-
-  // Revalidate layout caches to drop the element everywhere instantly
+  await connectDB();
+  await Habit.deleteOne({ _id: habitId, userId });
   revalidatePath("/", "layout");
 }
 
 export async function restoreHabit(habitId: string) {
-  console.log(`Restoring habit ${habitId}`);
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-  globalForHabits.localHabits = globalForHabits.localHabits!.map((habit) => {
-    if (habit._id === habitId) {
-      return {
-        ...habit,
-        status: "active",
-        updatedAt: new Date().toISOString(),
-      };
-    }
-    return habit;
-  });
-
-  // Revalidate everything to ensure all pages are updated
+  await connectDB();
+  await Habit.updateOne({ _id: habitId, userId }, { status: "active" });
   revalidatePath("/", "layout");
 }
 
-export async function getAllHabits(filters?: GetHabitsFilters) {
-  // Fallback to defaults if no filters object is passed
-  const statusFilter = filters?.status;
-  const searchFilter = filters?.search?.toLowerCase() || "";
-  const categoryFilter = filters?.category;
+export async function getAllHabits(filters?: {
+  status?: string;
+  search?: string;
+  category?: string;
+}) {
+  const { userId } = await auth();
+  if (!userId) return [];
 
-  // 2. Filter the mock array down dynamically from global storage
-  return globalForHabits.localHabits!.filter((habit) => {
-    // Check Status Match (matches "active" or "archived")
-    const matchesStatus = statusFilter ? habit.status === statusFilter : true;
+  await connectDB();
 
-    // Check Search Query Match (checks if title or description contains the string)
-    const matchesSearch =
-      habit.name.toLowerCase().includes(searchFilter) ||
-      habit.description.toLowerCase().includes(searchFilter);
+  const query: any = { userId };
+  if (filters?.status) query.status = filters.status;
+  if (filters?.category && filters.category !== "All categories")
+    query.category = filters.category;
+  if (filters?.search) {
+    query.$or = [
+      { name: { $regex: filters.search, $options: "i" } },
+      { description: { $regex: filters.search, $options: "i" } },
+    ];
+  }
 
-    const matchesCategory =
-      !categoryFilter || categoryFilter === "All categories"
-        ? true
-        : habit.category === categoryFilter;
-
-    return matchesStatus && matchesSearch && matchesCategory;
-  });
+  const habits = await Habit.find(query).sort({ order: 1, createdAt: -1 });
+  return JSON.parse(JSON.stringify(habits));
 }

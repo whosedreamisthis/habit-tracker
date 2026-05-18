@@ -13,7 +13,7 @@ export default function ResetMockDataButton() {
   const handleReset = () => {
     if (
       confirm(
-        "Are you sure you want to restore all original mock habits? This will reset your progress.",
+        "Are you sure you want to re-seed your habits from the database blueprints? This will clear your current progress.",
       )
     ) {
       startTransition(async () => {
@@ -35,7 +35,7 @@ export default function ResetMockDataButton() {
       className="flex items-center gap-2 w-full justify-start text-amber-700 bg-amber-50 hover:bg-amber-100 border-amber-200"
     >
       <RotateCcw size={16} className={isPending ? "animate-spin" : ""} />
-      {isPending ? "Resetting..." : "Reset to Mock Data"}
+      {isPending ? "Resetting..." : "Re-seed Database Data"}
     </Button>
   );
 }
