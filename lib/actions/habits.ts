@@ -3,7 +3,7 @@
 import connectDB from "@/lib/mongodb";
 import { Habit } from "@/lib/models";
 import { Completion } from "@/lib/types";
-import { revalidatePath, updateTag, unstable_cache } from "next/cache";
+import { updateTag, unstable_cache } from "next/cache";
 import { cache } from "react";
 import { NewHabit } from "@/lib/schema";
 import { format } from "date-fns";
@@ -59,7 +59,6 @@ export async function toggleHabitCompletion(
   );
 
   updateTag("habits");
-  revalidatePath("/", "layout");
   return JSON.parse(JSON.stringify(updatedHabit));
 }
 
@@ -70,7 +69,6 @@ export async function archiveHabit(habitId: string) {
   await connectDB();
   await Habit.updateOne({ _id: habitId, userId }, { status: "archived" });
   updateTag("habits");
-  revalidatePath("/", "layout");
 }
 
 export async function editHabit(habitId: string, data: NewHabit) {
@@ -104,7 +102,6 @@ export async function editHabit(habitId: string, data: NewHabit) {
   );
 
   updateTag("habits");
-  revalidatePath("/", "layout");
 }
 
 export async function createHabit(data: NewHabit) {
@@ -124,7 +121,6 @@ export async function createHabit(data: NewHabit) {
   });
 
   updateTag("habits");
-  revalidatePath("/", "layout");
 }
 
 export async function deleteHabit(habitId: string) {
@@ -134,7 +130,6 @@ export async function deleteHabit(habitId: string) {
   await connectDB();
   await Habit.deleteOne({ _id: habitId, userId });
   updateTag("habits");
-  revalidatePath("/", "layout");
 }
 
 export async function restoreHabit(habitId: string) {
@@ -144,7 +139,6 @@ export async function restoreHabit(habitId: string) {
   await connectDB();
   await Habit.updateOne({ _id: habitId, userId }, { status: "active" });
   updateTag("habits");
-  revalidatePath("/", "layout");
 }
 
 const getCachedHabits = unstable_cache(

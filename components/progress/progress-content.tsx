@@ -18,64 +18,64 @@ import {
 } from "./progress-skeletons";
 
 const WeeklyReport = dynamic(() => import("../weekly/weekly-report"), {
-  ssr: false,
+  ssr: true,
   loading: () => <WeeklyReportSkeleton />,
 });
 const CompletionChart = dynamic(() => import("../charts/completion-chart"), {
-  ssr: false,
+  ssr: true,
   loading: () => <ChartSkeleton />,
 });
 const WeeklyComparisonChart = dynamic(
   () => import("../charts/weekly-comparison-chart"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <ChartSkeleton />,
   },
 );
 const InsightsSummary = dynamic(
   () => import("@/components/insights/summary/insights-summary"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <SummarySkeleton />,
   },
 );
 const HabitPerformance = dynamic(
   () => import("@/components/insights/habit-performance"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <HabitPerformanceSkeleton />,
   },
 );
 const ActiveStreaks = dynamic(
   () => import("@/components/insights/active-streaks"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <ActiveStreaksSkeleton />,
   },
 );
 const WeeklySummary = dynamic(
   () => import("@/components/weekly/summary/weekly-summary"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <SummarySkeleton />,
   },
 );
 const HabitTrackerGrid = dynamic(
   () => import("@/components/habit-tracker-grid/habit-tracker-grid"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <HabitTrackerGridSkeleton />,
   },
 );
 const StatsSummary = dynamic(
   () => import("@/components/statistics/summary/stats-summary"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <StatsSummarySkeleton />,
   },
 );
 const StatsCharts = dynamic(() => import("@/components/charts/stats-charts"), {
-  ssr: false,
+  ssr: true,
   loading: () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <ChartSkeleton />
@@ -88,7 +88,7 @@ const StatsCharts = dynamic(() => import("@/components/charts/stats-charts"), {
 const StatsAllHabits = dynamic(
   () => import("@/components/statistics/all-habits/stats-all-habits"),
   {
-    ssr: false,
+    ssr: true,
     loading: () => (
       <div className="space-y-4 mt-5">
         <Skeleton className="h-5 w-32" />

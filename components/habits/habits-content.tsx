@@ -6,7 +6,7 @@ import { HabitListSkeleton } from "@/components/progress/progress-skeletons";
 import { Habit } from "@/lib/types";
 
 const HabitList = dynamic(() => import("@/components/habits/habit-list"), {
-  ssr: false,
+  ssr: true,
   loading: () => <HabitListSkeleton />,
 });
 

@@ -11,15 +11,15 @@ import {
 
 const MorningMotivation = dynamic(
   () => import("@/components/dashboard/morning-motivation"),
-  { ssr: false, loading: () => <MorningMotivationSkeleton /> },
+  { ssr: true, loading: () => <MorningMotivationSkeleton /> },
 );
 const DashboardSummary = dynamic(
   () => import("../../components/dashboard/summary/dashboard-summary"),
-  { ssr: false, loading: () => <DashboardSummarySkeleton /> },
+  { ssr: true, loading: () => <DashboardSummarySkeleton /> },
 );
 const TodayHabits = dynamic(
   () => import("@/components/dashboard/today-habits/today-habits"),
-  { ssr: false, loading: () => <TodayHabitsSkeleton /> },
+  { ssr: true, loading: () => <TodayHabitsSkeleton /> },
 );
 
 interface DashboardContentProps {
