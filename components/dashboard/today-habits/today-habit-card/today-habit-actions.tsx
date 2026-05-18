@@ -66,7 +66,7 @@ const TodayHabitActions = ({
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="hover:bg-transparent active:bg-transparent dark:text-stone-100"
+            className="hover:bg-transparent active:bg-transparent dark:text-stone-100 duration-0"
             aria-label="Habit options"
           >
             <Ellipsis className="mt-2" />
@@ -126,7 +126,7 @@ const TodayHabitActions = ({
         />
       </Modal>
       <button
-        className={`flex items-center bg-linear-to-r ${completed ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-400 border-amber-400 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 transition-transform duration-300`}
+        className={`flex items-center bg-linear-to-r ${completed ? "from-amber-500 to-amber-700 text-white shadow-md border-2" : "bg-amber-200/50 text-amber-400 border-amber-400 border-2"}  rounded-full p-2.5  ${isPending ? "pointer-events-none" : ""} active:scale-85 `}
         onClick={() => {
           onToggle();
         }}

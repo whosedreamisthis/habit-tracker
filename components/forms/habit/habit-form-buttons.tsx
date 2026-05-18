@@ -12,14 +12,14 @@ const HabitFormButtons = ({
     <div className="flex justify-end gap-2">
       <Button
         type="button"
-        className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-white text-black"
+        className="px-3 py-5  hover:-translate-y-0.5 bg-white text-black"
         onClick={onCancel}
       >
         Cancel
       </Button>
       <Button
         type="submit"
-        className=" px-3 py-5 transition-all hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700"
+        className=" px-3 py-5  hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700"
       >
         {buttonLabel}
       </Button>

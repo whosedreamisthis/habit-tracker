@@ -142,7 +142,7 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
               What are your goals right now?
             </label>
             <textarea
-              className="w-full p-3 rounded-lg border border-slate-200 dark:border-stone-700 bg-white dark:bg-stone-900 focus:ring-2 focus:ring-brand-500 outline-none transition-all"
+              className="w-full p-3 rounded-lg border border-slate-200 dark:border-stone-700 bg-white dark:bg-stone-900 focus:ring-2 focus:ring-brand-500 outline-none "
               placeholder="e.g. get fitter, read more, reduce phone time..."
               rows={3}
               value={goals}
@@ -152,12 +152,12 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
           <div className="flex justify-end gap-3 mt-2">
             <Button
               onClick={onClose}
-              className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-white text-black border border-slate-200"
+              className="px-3 py-5 hover:-translate-y-0.5 bg-white text-black border border-slate-200"
             >
               Cancel
             </Button>
             <Button
-              className="px-7 py-5 transition-all hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
+              className="px-7 py-5  hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
               disabled={!goals.trim()}
               onClick={handleNext}
             >
@@ -175,7 +175,7 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
               When are you most productive during the day?
             </label>
             <textarea
-              className="w-full p-3 rounded-lg border border-slate-200 dark:border-stone-700 bg-white dark:bg-stone-900 focus:ring-2 focus:ring-brand-500 outline-none transition-all"
+              className="w-full p-3 rounded-lg border border-slate-200 dark:border-stone-700 bg-white dark:bg-stone-900 focus:ring-2 focus:ring-brand-500 outline-none"
               placeholder="e.g. Early morning, late evenings..."
               rows={3}
               value={productivity}
@@ -193,12 +193,12 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
             <div className="flex gap-3">
               <Button
                 onClick={onClose}
-                className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-white text-black border border-slate-200"
+                className="px-3 py-5 hover:-translate-y-0.5 bg-white text-black border border-slate-200"
               >
                 Cancel
               </Button>
               <Button
-                className="px-7 py-5 transition-all hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
+                className="px-7 py-5  hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
                 disabled={!productivity.trim()}
                 onClick={handleNext}
               >
@@ -217,7 +217,7 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
               What habits have you struggled with?
             </label>
             <textarea
-              className="w-full p-3 rounded-lg border border-slate-200 dark:border-stone-700 bg-white dark:bg-stone-900 focus:ring-2 focus:ring-brand-500 outline-none transition-all"
+              className="w-full p-3 rounded-lg border border-slate-200 dark:border-stone-700 bg-white dark:bg-stone-900 focus:ring-2 focus:ring-brand-500 outline-none "
               placeholder="e.g. Gym in the morning, journaling at night..."
               rows={3}
               value={struggles}
@@ -235,12 +235,12 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
             <div className="flex gap-3">
               <Button
                 onClick={onClose}
-                className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-white text-black border border-slate-200"
+                className="px-3 py-5  hover:-translate-y-0.5 bg-white text-black border border-slate-200"
               >
                 Cancel
               </Button>
               <Button
-                className="px-3 py-5 transition-all hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
+                className="px-3 py-5  hover:-translate-y-0.5 bg-linear-to-r from-brand-300 to-brand-700 text-white"
                 disabled={!struggles.trim() || isPending}
                 onClick={getSuggestions}
               >

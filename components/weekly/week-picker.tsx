@@ -21,7 +21,7 @@ const WeekPicker = () => {
       {/* Navigation Buttons */}
       <button
         onClick={handlePrevWeek}
-        className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+        className="p-2 hover:bg-slate-100 rounded-full "
       >
         <ChevronLeft size={18} className="text-slate-600" />
       </button>
@@ -36,7 +36,7 @@ const WeekPicker = () => {
 
       <button
         onClick={handleNextWeek}
-        className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+        className="p-2 hover:bg-slate-100 rounded-full"
       >
         <ChevronRight size={18} className="text-slate-600" />
       </button>

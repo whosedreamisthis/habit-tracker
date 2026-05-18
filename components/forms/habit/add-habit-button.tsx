@@ -18,7 +18,7 @@ const AddHabitButton = () => {
   return (
     <>
       <Button
-        className="bg-linear-to-r from-brand-300 to-brand-700 px-3 py-5 transition-all hover:-translate-y-0.5"
+        className="bg-linear-to-r from-brand-300 to-brand-700 px-3 py-5  hover:-translate-y-0.5 duration-0"
         onClick={() => setIsOpen(true)}
       >
         <Plus size={18} />

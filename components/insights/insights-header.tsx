@@ -14,7 +14,7 @@ const InsightsHeader = () => {
     <div className="flex justify-between items-center pb-5">
       <SectionHeader title="Weekly insights" description={range} />
 
-      <Button className="flex gap-1.5 py-5 bg-white text-black">
+      <Button className="flex gap-1.5 py-5 bg-white text-black duration-0">
         <RefreshCcw />
         <p>Regenerate report</p>
       </Button>

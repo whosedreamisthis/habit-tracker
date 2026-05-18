@@ -22,7 +22,7 @@ const WeeklyReportHeader = ({
         </div>
       </div>
       <Button
-        className="px-4 py-4 bg-linear-to-r from-brand-300 to-brand-700"
+        className="px-4 py-4 bg-linear-to-r from-brand-300 to-brand-700 duration-0"
         onClick={onRegenerate}
       >
         Regenerate report

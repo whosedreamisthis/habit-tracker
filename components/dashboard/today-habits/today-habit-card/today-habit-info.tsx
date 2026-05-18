@@ -13,7 +13,7 @@ const TodayHabitInfo = ({ name, description, category }: Props) => {
       <div className="flex flex-col  justify-start items-start">
         <div className="flex gap-2">
           <p className="line-clamp-1 text-start dark:text-stone-100">{name}</p>
-          <Badge className="text-slate-900 bg-slate-200/70 dark:bg-stone-700 dark:text-stone-200">
+          <Badge className="text-slate-900 bg-slate-200/70 dark:bg-stone-700 dark:text-stone-200 transition-colors hover:bg-slate-200/50 duration-0 dark:hover:bg-stone-700/50">
             {category}
           </Badge>
         </div>

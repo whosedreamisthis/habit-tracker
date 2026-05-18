@@ -23,7 +23,7 @@ const FormTargetDays: React.FC<FormTargetDaysProps> = ({
             key={day}
             type="button"
             onClick={() => onChange(day)}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
+            className={`flex-1 py-2 text-sm font-medium rounded-md  ${
               value === day
                 ? "bg-brand-600 text-white shadow-sm"
                 : "text-slate-600 dark:text-stone-400 hover:bg-slate-200 dark:hover:bg-stone-700"

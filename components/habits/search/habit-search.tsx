@@ -65,17 +65,17 @@ const HabitSearch = ({
 
   return (
     /* flex-wrap is the secret sauce here */
-    <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 w-full p-5 bg-white dark:bg-stone-800 mb-5 rounded-lg">
+    <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 w-full p-5 bg-white dark:bg-stone-800 mb-5 rounded-lg duration-0">
       {/* Search + Dropdown Group */}
-      <div className="flex flex-wrap items-center justify-center gap-4 flex-1 min-w-[320px]">
+      <div className="flex flex-wrap items-center justify-center gap-4 flex-1 min-w-[320px] duration-0 ">
         <Input
           placeholder="Search habits..."
           /* min-w ensures the input doesn't get squashed to 0px */
-          className="flex-1 min-w-25 p-5 text-left focus-visible:ring-brand-500/50"
+          className="flex-1 min-w-25 p-5 text-left focus-visible:ring-brand-500/50 duration-0"
           value={searchTerm} // 👈 Turn input into a controlled field
           onChange={(e) => handleSearchChange(e.target.value)}
         />
-        <div className="shrink-0">
+        <div className="shrink-0 duration-0">
           <HabitCategoryDropdown
             value={searchParams.get("category") || "All categories"}
             onChange={handleCategoryChange}

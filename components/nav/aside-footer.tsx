@@ -34,7 +34,7 @@ const AsideFooter = () => {
       <hr className="slate-300" />
 
       <button
-        className="flex items-center justify-start gap-4 cursor-pointer hover:opacity-80 transition-all"
+        className="flex items-center justify-start gap-4 cursor-pointer hover:opacity-80"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
@@ -63,7 +63,7 @@ const AsideFooter = () => {
           <form action={logoutDemo}>
             <button
               type="submit"
-              className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg w-full text-left transition-colors"
+              className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg w-full text-left "
             >
               <LogOut size={18} />
               <span>Logout Demo</span>
@@ -88,13 +88,13 @@ const AsideFooter = () => {
           <Show when="signed-out">
             <div className="flex flex-col gap-2">
               <SignInButton mode="modal">
-                <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg w-full text-left">
+                <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium  hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg w-full text-left">
                   <LogIn size={18} />
                   <span>Sign In</span>
                 </button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium bg-brand-600 text-white transition-opacity hover:opacity-90 rounded-lg w-full text-left">
+                <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium bg-brand-600 text-white hover:opacity-90 rounded-lg w-full text-left">
                   <UserPlus size={18} />
                   <span>Sign Up</span>
                 </button>

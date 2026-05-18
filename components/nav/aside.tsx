@@ -29,7 +29,7 @@ const Aside = ({ className }: Props) => {
             <Link
               href={item.to}
               key={item.to}
-              className={`flex items-center gap-3 py-3 rounded-lg  transition-colors ${isActive ? "text-brand-700 bg-brand-100 dark:bg-brand-900/40 dark:text-brand-300" : "text-slate-500 dark:text-slate-400"} cursor-pointer w-full px-2`}
+              className={`flex items-center gap-3 py-3 rounded-lg   ${isActive ? "text-brand-700 bg-brand-100 dark:bg-brand-900/40 dark:text-brand-300" : "text-slate-500 dark:text-slate-400"} cursor-pointer w-full px-2`}
             >
               <Icon className="w-5 h-5 " />
               <span className="">{item.label}</span>

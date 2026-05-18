@@ -58,7 +58,7 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
               key={tab.id}
               href={`/progress?tab=${tab.id}`}
               className={cn(
-                "px-4 py-1.5 rounded-md text-sm font-medium transition-all",
+                "px-4 py-1.5 rounded-md text-sm font-medium ",
                 activeTab === tab.id
                   ? "bg-white dark:bg-stone-700 text-brand-700 dark:text-brand-400 shadow-sm"
                   : "text-slate-500 dark:text-stone-400 hover:text-slate-700 dark:hover:text-stone-200",
