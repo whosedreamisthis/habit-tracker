@@ -27,3 +27,8 @@ export const getComparisonData = (habits: Partial<Habit>[]) => {
     };
   });
 };
+
+export function getUserKey(userId: string | null | undefined, key: string) {
+  if (!userId) return key;
+  return `${userId}_${key}`;
+}

@@ -3,14 +3,19 @@
 import React, { useState, useTransition } from "react";
 import FormHeader from "../form-header";
 import ResetMockDataButton from "./reset-mock-data-button";
+import { getUserKey } from "@/lib/utils";
+import { useAuth } from "@clerk/nextjs";
 
 const SettingsForm = ({ onClose }: { onClose: () => void }) => {
   const [isPending, startTransition] = useTransition();
+  const { userId } = useAuth();
 
   const [isMotivationEnabled, setIsMotivationEnabled] = useState<boolean>(
     () => {
       if (typeof window !== "undefined") {
-        const saved = localStorage.getItem("morning_motivation_enabled");
+        const saved = localStorage.getItem(
+          getUserKey(userId, "morning_motivation_enabled"),
+        );
         return saved === "true";
       }
       return false;
@@ -22,7 +27,7 @@ const SettingsForm = ({ onClose }: { onClose: () => void }) => {
     startTransition(() => {
       try {
         localStorage.setItem(
-          "morning_motivation_enabled",
+          getUserKey(userId, "morning_motivation_enabled"),
           String(isMotivationEnabled),
         );
 

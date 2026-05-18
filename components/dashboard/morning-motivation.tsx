@@ -6,8 +6,15 @@ import { askAI } from "@/lib/gemini";
 import { Habit } from "@/lib/types";
 import { format } from "date-fns";
 import { X } from "lucide-react";
+import { getUserKey } from "@/lib/utils";
 
-const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
+const MorningMotivation = ({
+  habits,
+  userId,
+}: {
+  habits: Habit[];
+  userId: string | null | undefined;
+}) => {
   const [isMotivationEnabled, setIsMotivationEnabled] = useState(false);
   const [isDismissedToday, setIsDismissedToday] = useState(false);
   const [motivationText, setMotivationText] = useState<string>("");
@@ -15,7 +22,9 @@ const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
 
   const checkVisibilitySettings = () => {
     if (typeof window !== "undefined") {
-      const savedEnabled = localStorage.getItem("morning_motivation_enabled");
+      const savedEnabled = localStorage.getItem(
+        getUserKey(userId, "morning_motivation_enabled"),
+      );
       setIsMotivationEnabled(savedEnabled === "true");
     }
   };
@@ -28,8 +37,12 @@ const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
     const todayStr = format(new Date(), "yyyy-MM-dd");
 
     // 1. SYNC CACHE FIRST: Ensure local state gets its value regardless of dismissal status
-    const cachedText = localStorage.getItem("morning_motivation_text");
-    const cachedDate = localStorage.getItem("morning_motivation_date");
+    const cachedText = localStorage.getItem(
+      getUserKey(userId, "morning_motivation_text"),
+    );
+    const cachedDate = localStorage.getItem(
+      getUserKey(userId, "morning_motivation_date"),
+    );
 
     if (cachedText && cachedDate === todayStr) {
       setMotivationText(cachedText);
@@ -37,7 +50,7 @@ const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
 
     // 2. DISMISSAL CHECK SECOND: Track hidden status safely without blocking cache parsing
     const dismissedDate = localStorage.getItem(
-      "morning_motivation_dismissed_date",
+      getUserKey(userId, "morning_motivation_dismissed_date"),
     );
     if (dismissedDate === todayStr) {
       setIsDismissedToday(true);
@@ -68,8 +81,14 @@ const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
 
           if (freshMotivation) {
             const cleanText = freshMotivation.trim();
-            localStorage.setItem("morning_motivation_text", cleanText);
-            localStorage.setItem("morning_motivation_date", todayStr);
+            localStorage.setItem(
+              getUserKey(userId, "morning_motivation_text"),
+              cleanText,
+            );
+            localStorage.setItem(
+              getUserKey(userId, "morning_motivation_date"),
+              todayStr,
+            );
             setMotivationText(cleanText);
           }
         } catch (error) {
@@ -88,11 +107,14 @@ const MorningMotivation = ({ habits }: { habits: Habit[] }) => {
         checkVisibilitySettings,
       );
     };
-  }, [habits]);
+  }, [habits, userId]);
 
   const handleDismiss = () => {
     const todayStr = format(new Date(), "yyyy-MM-dd");
-    localStorage.setItem("morning_motivation_dismissed_date", todayStr);
+    localStorage.setItem(
+      getUserKey(userId, "morning_motivation_dismissed_date"),
+      todayStr,
+    );
     setIsDismissedToday(true);
   };
 

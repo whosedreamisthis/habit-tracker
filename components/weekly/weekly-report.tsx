@@ -5,15 +5,26 @@ import WeeklyReportHeader from "@/components/weekly/weekly-report-header";
 import { askAI } from "@/lib/gemini";
 import { Habit } from "@/lib/types";
 import { format, differenceInDays, parseISO } from "date-fns";
+import { getUserKey } from "@/lib/utils";
 
-const WeeklyReport = ({ habits }: { habits: Habit[] }) => {
+const WeeklyReport = ({
+  habits,
+  userId,
+}: {
+  habits: Habit[];
+  userId: string | null | undefined;
+}) => {
   const [isPending, startTransition] = useTransition();
 
   // Synchronously initialize all cache layers together on the exact first render tick
   const [reportState, setReportState] = useState(() => {
     if (typeof window !== "undefined") {
-      const cachedReport = localStorage.getItem("weekly_report_text");
-      const cachedTimestamp = localStorage.getItem("weekly_report_timestamp");
+      const cachedReport = localStorage.getItem(
+        getUserKey(userId, "weekly_report_text"),
+      );
+      const cachedTimestamp = localStorage.getItem(
+        getUserKey(userId, "weekly_report_timestamp"),
+      );
 
       if (cachedReport && cachedTimestamp) {
         const today = new Date();
@@ -54,8 +65,14 @@ CRITICAL FORMATTING RULES:
           const today = new Date();
           const nowStr = today.toISOString();
 
-          localStorage.setItem("weekly_report_text", result);
-          localStorage.setItem("weekly_report_timestamp", nowStr);
+          localStorage.setItem(
+            getUserKey(userId, "weekly_report_text"),
+            result,
+          );
+          localStorage.setItem(
+            getUserKey(userId, "weekly_report_timestamp"),
+            nowStr,
+          );
 
           setReportState({
             text: result,
@@ -72,17 +89,17 @@ CRITICAL FORMATTING RULES:
         }));
       }
     });
-  }, [habits]);
+  }, [habits, userId]);
 
   // Fires the generation workflow strictly if the lazy initializer signals a cache miss
   useEffect(() => {
-    if (reportState.needsGeneration) {
+    if (habits.length > 0 && reportState.needsGeneration) {
       generateFreshReport();
     }
-  }, [reportState.needsGeneration, generateFreshReport]);
+  }, [reportState.needsGeneration, generateFreshReport, habits.length]);
 
   const fetchWeeklyReport = () => {
-    if (isPending) return;
+    if (isPending || habits.length === 0) return;
     generateFreshReport();
   };
 
@@ -96,7 +113,11 @@ CRITICAL FORMATTING RULES:
       </div>
 
       <div className="mt-2">
-        {isPending ? (
+        {habits.length === 0 ? (
+          <p className="text-sm italic text-muted-foreground dark:text-stone-400">
+            Start tracking habits for this to populate.
+          </p>
+        ) : isPending ? (
           <div className="flex flex-col gap-2 animate-pulse">
             <div className="h-4 bg-slate-200 dark:bg-stone-700 rounded-sm w-3/4"></div>
             <div className="h-4 bg-slate-200 dark:bg-stone-700 rounded-sm w-5/6"></div>
