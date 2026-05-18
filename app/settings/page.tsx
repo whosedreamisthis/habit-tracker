@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Moon, Sun, LogOut, User } from "lucide-react";
 import { useTheme } from "next-themes";
-import ResetMockDataButton from "@/components/forms/settings/reset-mock-data-button";
 import SectionHeader from "@/components/common/section-header";
 
 export default function SettingsPage() {
@@ -121,7 +120,6 @@ export default function SettingsPage() {
               Resetting will restore the application to its original state. All
               custom habits and completions will be lost.
             </p>
-            <ResetMockDataButton />
           </div>
         </div>
       </section>

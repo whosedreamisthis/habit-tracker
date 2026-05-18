@@ -6,7 +6,11 @@ import { RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-export default function ResetMockDataButton() {
+export default function ResetMockDataButton({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -20,6 +24,7 @@ export default function ResetMockDataButton() {
         try {
           await resetAllHabitsData();
           router.refresh();
+          onClose();
         } catch (error) {
           console.error("Failed to reset data:", error);
         }

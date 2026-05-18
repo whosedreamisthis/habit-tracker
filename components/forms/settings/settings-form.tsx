@@ -101,7 +101,7 @@ const SettingsForm = ({ onClose }: { onClose: () => void }) => {
           <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
             Data Management
           </h3>
-          <ResetMockDataButton />
+          <ResetMockDataButton onClose={onClose} />
           <p className="text-xs text-slate-400">
             Resetting will restore the application to its original state. All
             custom habits and completions will be lost.
