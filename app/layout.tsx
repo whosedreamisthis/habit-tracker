@@ -6,6 +6,7 @@ import Aside from "@/components/nav/aside";
 import Logo from "@/components/nav/logo";
 import Tabs from "@/components/nav/tabs";
 import AsideFooter from "@/components/nav/aside-footer";
+import TopNav from "@/components/nav/top-nav";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -35,15 +36,18 @@ export default function RootLayout({
         <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
-              <Logo />
+              <div className="bg-white dark:bg-stone-800">
+                <Logo />
+              </div>
               <hr className="slate-300" />
               <Aside className="flex-1" />
               <AsideFooter />
             </div>
             {/* MOBILE TABS: Only visible on small screens (below md) */}
 
-            <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto">
-              <div className="p-8">{children} </div>
+            <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto flex flex-col">
+              <TopNav />
+              <div className="p-8 flex-1">{children}</div>
             </main>
 
             <div className="md:hidden w-full">

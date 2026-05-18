@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 
 const Logo = () => {
   return (
-    <div className="bg-white dark:bg-stone-800 flex items-center gap-3 justify-start py-6 px-6">
+    <div className=" flex items-center gap-3 justify-start py-6 px-6">
       <div className="h-10 w-10 rounded-md flex items-center justify-center bg-brand-600">
         <Sparkles className="text-white" />
       </div>

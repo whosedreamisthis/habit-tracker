@@ -4,8 +4,6 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
-import { resetAllHabitsData } from "@/lib/actions";
 
 type Props = {
   className?: string;
@@ -32,13 +30,6 @@ const Aside = ({ className }: Props) => {
           );
         })}
       </div>
-      {/*<Button*/}
-      {/*  onClick={async () => {*/}
-      {/*    await resetAllHabitsData();*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  reset*/}
-      {/*</Button>*/}
     </div>
   );
 };
