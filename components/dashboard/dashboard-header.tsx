@@ -20,7 +20,7 @@ const DashboardHeader = () => {
     typeof document !== "undefined" &&
     document.cookie.includes("demo_mode=true")
   ) {
-    firstName = "Demo User";
+    firstName = "Friend";
   }
 
   return (
