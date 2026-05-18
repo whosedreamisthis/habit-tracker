@@ -71,8 +71,8 @@ const TodayHabitActions = ({
             <Ellipsis className="mt-2" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent dropDownMenuAlign="end">
-          <DropdownMenuGroup>
+        <DropdownMenuContent align="end">
+          <DropdownMenuGroup className="flex flex-col justify-start gap-2">
             <DropdownMenuItem
               onSelect={() => {
                 setTimeout(() => setIsEditOpen(true), 150);
@@ -82,7 +82,7 @@ const TodayHabitActions = ({
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={handleArchive}>
-              <Archive />
+              <Archive className="mr-2" />
               Archive
             </DropdownMenuItem>
             <DropdownMenuItem
