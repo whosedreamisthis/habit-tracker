@@ -4,8 +4,11 @@ import connectDB from "@/lib/mongodb";
 import { Habit } from "@/lib/models";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { NewHabit } from "@/lib/schema";
 import { format, parseISO, subDays } from "date-fns";
+import { DEMO_USER_ID } from "@/lib/constants";
 
 // --- UTILITY: Calculate Streaks ---
 const calculateStreaks = (
@@ -124,10 +127,34 @@ const calculateStreaks = (
   }
 };
 
+export async function loginAsDemo() {
+  const cookieStore = await cookies();
+  cookieStore.set("demo_mode", "true", { path: "/", maxAge: 60 * 60 * 24 }); // 24 hours
+  redirect("/dashboard");
+}
+
+export async function logoutDemo() {
+  const cookieStore = await cookies();
+  cookieStore.delete("demo_mode");
+  redirect("/");
+}
+
+async function getUserId() {
+  const { userId } = await auth();
+  if (userId) return userId;
+
+  const cookieStore = await cookies();
+  if (cookieStore.get("demo_mode")?.value === "true") {
+    return DEMO_USER_ID;
+  }
+
+  return null;
+}
+
 // --- DATABASE ACTIONS ---
 
 export async function resetAllHabitsData() {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   console.log(`Resetting data for user ${userId}...`);
@@ -238,7 +265,7 @@ export async function toggleHabitCompletion(
   habitId: string,
   currentCompletedState: boolean,
 ) {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await connectDB();
@@ -281,7 +308,7 @@ export async function toggleHabitCompletion(
 }
 
 export async function archiveHabit(habitId: string) {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await connectDB();
@@ -290,7 +317,7 @@ export async function archiveHabit(habitId: string) {
 }
 
 export async function editHabit(habitId: string, data: NewHabit) {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await connectDB();
@@ -315,7 +342,7 @@ export async function editHabit(habitId: string, data: NewHabit) {
 }
 
 export async function createHabit(data: NewHabit) {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await connectDB();
@@ -334,7 +361,7 @@ export async function createHabit(data: NewHabit) {
 }
 
 export async function deleteHabit(habitId: string) {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await connectDB();
@@ -343,7 +370,7 @@ export async function deleteHabit(habitId: string) {
 }
 
 export async function restoreHabit(habitId: string) {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await connectDB();
@@ -356,7 +383,7 @@ export async function getAllHabits(filters?: {
   search?: string;
   category?: string;
 }) {
-  const { userId } = await auth();
+  const userId = await getUserId();
   if (!userId) return [];
 
   await connectDB();

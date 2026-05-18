@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { User, Habit } from "./models";
 import { format, subDays, parseISO } from "date-fns";
 import * as dotenv from "dotenv";
+import { DEMO_USER_ID } from "./constants";
 
 dotenv.config({ path: ".env" });
 
@@ -20,6 +21,14 @@ const mockUser = {
   name: "Alex Rivera",
   email: "alex@example.com",
   avatar: "A",
+  morningMotivation: true,
+};
+
+const demoUser = {
+  _id: DEMO_USER_ID,
+  name: "Demo User",
+  email: "demo@example.com",
+  avatar: "D",
   morningMotivation: true,
 };
 
@@ -227,73 +236,82 @@ const calculateStreaks = (
   }
 };
 
+async function seedForUser(userId: string, userObj: any) {
+  // Clear existing data for the user
+  await User.deleteOne({ _id: userId });
+  await Habit.deleteMany({ userId });
+  console.log("Cleared existing data for user:", userId);
+
+  // Create user
+  await User.create(userObj);
+  console.log("Created user:", userObj.name);
+
+  const today = new Date();
+  const todayKey = format(today, "yyyy-MM-dd");
+
+  // Create habits with completions
+  for (const habitData of baseHabits) {
+    const completions = [];
+
+    // Generate completions for the past 90 days
+    for (let i = 0; i < 90; i++) {
+      const d = subDays(today, i);
+      const key = format(d, "yyyy-MM-dd");
+      let p = habitData._streakProb;
+
+      // Boost probability for the last 14 days
+      if (i < 14) p = Math.max(p, 0.85);
+
+      const seed =
+        Math.sin(i * 9301 + habitData.name.length * 49297 + userId.length) *
+        233280;
+      const rnd = seed - Math.floor(seed);
+
+      if (rnd < p) {
+        completions.push({ date: key });
+      }
+    }
+
+    // Ensure some completions today for the first 4 habits
+    const habitIdx = baseHabits.indexOf(habitData);
+    if (habitIdx < 4) {
+      if (!completions.some((c) => c.date === todayKey)) {
+        completions.push({ date: todayKey });
+      }
+    }
+
+    // Calculate streaks
+    const { activeStreak, bestStreak } = calculateStreaks(
+      completions,
+      habitData.targetDays,
+    );
+
+    const habit = new Habit({
+      ...habitData,
+      userId: userId,
+      completions: completions,
+      activeStreak,
+      bestStreak,
+      isCompletedToday: completions.some((c) => c.date === todayKey),
+    });
+
+    await habit.save();
+    console.log(
+      `User ${userId} - Created habit: ${habit.name} with ${completions.length} completions. Streak: ${activeStreak}/${bestStreak}`,
+    );
+  }
+}
+
 async function seed() {
   try {
     await mongoose.connect(MONGO_URI!);
     console.log("Connected to MongoDB...");
 
-    // Clear existing data for the target user
-    await User.deleteOne({ _id: TARGET_USER_ID });
-    await Habit.deleteMany({ userId: TARGET_USER_ID });
-    console.log("Cleared existing data for user:", TARGET_USER_ID);
+    // Seed target user
+    await seedForUser(TARGET_USER_ID, mockUser);
 
-    // Create user
-    await User.create(mockUser);
-    console.log("Created user:", mockUser.name);
-
-    const today = new Date();
-    const todayKey = format(today, "yyyy-MM-dd");
-
-    // Create habits with completions
-    for (const habitData of baseHabits) {
-      const completions = [];
-
-      // Generate completions for the past 90 days
-      for (let i = 0; i < 90; i++) {
-        const d = subDays(today, i);
-        const key = format(d, "yyyy-MM-dd");
-        let p = habitData._streakProb;
-
-        // Boost probability for the last 14 days
-        if (i < 14) p = Math.max(p, 0.85);
-
-        const seed =
-          Math.sin(i * 9301 + habitData.name.length * 49297) * 233280;
-        const rnd = seed - Math.floor(seed);
-
-        if (rnd < p) {
-          completions.push({ date: key });
-        }
-      }
-
-      // Ensure some completions today for the first 4 habits to match mock behavior
-      const habitIdx = baseHabits.indexOf(habitData);
-      if (habitIdx < 4) {
-        if (!completions.some((c) => c.date === todayKey)) {
-          completions.push({ date: todayKey });
-        }
-      }
-
-      // Calculate streaks
-      const { activeStreak, bestStreak } = calculateStreaks(
-        completions,
-        habitData.targetDays,
-      );
-
-      const habit = new Habit({
-        ...habitData,
-        userId: TARGET_USER_ID,
-        completions: completions,
-        activeStreak,
-        bestStreak,
-        isCompletedToday: completions.some((c) => c.date === todayKey),
-      });
-
-      await habit.save();
-      console.log(
-        `Created habit: ${habit.name} with ${completions.length} completions. Streak: ${activeStreak}/${bestStreak}`,
-      );
-    }
+    // Seed demo user
+    await seedForUser(DEMO_USER_ID, demoUser);
 
     console.log("Seeding completed successfully!");
     process.exit(0);
