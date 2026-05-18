@@ -45,7 +45,7 @@ export async function toggleHabitCompletion(
     (c: any) => c.date === todayStr,
   );
 
-  await Habit.updateOne(
+  const updatedHabit = await Habit.findOneAndUpdate(
     { _id: habitId, userId },
     {
       completions: updatedCompletions,
@@ -53,9 +53,11 @@ export async function toggleHabitCompletion(
       bestStreak: Math.max(bestStreak, habit.bestStreak),
       isCompletedToday: isCompletedToday,
     },
+    { new: true },
   );
 
   revalidatePath("/", "layout");
+  return JSON.parse(JSON.stringify(updatedHabit));
 }
 
 export async function archiveHabit(habitId: string) {
