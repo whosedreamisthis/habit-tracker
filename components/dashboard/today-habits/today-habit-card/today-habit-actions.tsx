@@ -59,7 +59,7 @@ const TodayHabitActions = ({
         <Flame size={16} className="text-red-400/80" />
         <p className="text-sm dark:text-stone-300">
           {activeStreak}
-          {habit.targetDays < 7 ? "w" : "d"}
+          {habit.frequency === "daily" ? "d" : "w"}
         </p>
       </div>
       <DropdownMenu>
@@ -71,7 +71,7 @@ const TodayHabitActions = ({
             <Ellipsis className="mt-2" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent dropDownMenuAlign="end">
           <DropdownMenuGroup>
             <DropdownMenuItem
               onSelect={() => {
@@ -109,6 +109,7 @@ const TodayHabitActions = ({
             description: habit.description,
             category: habit.category,
             frequency: habit.frequency,
+            targetDays: habit.targetDays,
             color: habit.color,
             icon: habit.icon,
           }}

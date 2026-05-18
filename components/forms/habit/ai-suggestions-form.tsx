@@ -88,7 +88,7 @@ const AISuggestionsForm = ({ onClose, habits }: AISuggestionsFormProps) => {
         name: habit.name,
         description: habit.description,
         category: habit.category,
-        frequency: "daily",
+        frequency: habit.targetDays === 7 ? "daily" : "weekly",
         targetDays: habit.targetDays,
         icon: habit.icon,
         color: habit.color,
