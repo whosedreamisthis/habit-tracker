@@ -1,11 +1,9 @@
 import React, { Suspense } from "react";
-import DashboardSummary from "../../components/dashboard/summary/dashboard-summary";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
-import TodayHabits from "@/components/dashboard/today-habits/today-habits";
 import ConsistencyGrid from "@/components/dashboard/consistency-grid";
 import { getAllHabits } from "@/lib/actions";
-import MorningMotivation from "@/components/dashboard/morning-motivation";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import DashboardContent from "@/components/dashboard/dashboard-content";
 
 const ConsistencyGridSkeleton = () => (
   <div className="mt-5 bg-white dark:bg-stone-800 p-6 rounded-2xl border border-slate-100 dark:border-stone-700 shadow-sm w-full h-[180px] animate-pulse">
@@ -29,9 +27,7 @@ const DashboardPage = async () => {
   return (
     <section>
       <DashboardHeader firstName={user?.firstName || "Friend"} />
-      <MorningMotivation habits={activeHabits} userId={userId} />
-      <DashboardSummary habits={activeHabits} />
-      <TodayHabits habits={activeHabits} />
+      <DashboardContent activeHabits={activeHabits} userId={userId} />
       <Suspense fallback={<ConsistencyGridSkeleton />}>
         <ConsistencyGrid habits={activeHabits} />
       </Suspense>

@@ -1,9 +1,9 @@
 import React from "react";
 import HabitsHeader from "@/components/habits/habits-header";
 import { getAllHabits } from "@/lib/actions";
-import HabitList from "@/components/habits/habit-list";
 import HabitSearch from "@/components/habits/search/habit-search";
 import { Habit } from "@/lib/types";
+import HabitsContent from "@/components/habits/habits-content";
 
 interface PageProps {
   searchParams: Promise<{ status?: string; q?: string; category?: string }>;
@@ -38,7 +38,7 @@ const HabitsPage = async ({ searchParams }: PageProps) => {
         activeCount={activeCount}
         archivedCount={archivedCount}
       />
-      <HabitList habits={habits} />
+      <HabitsContent habits={habits} />
     </section>
   );
 };

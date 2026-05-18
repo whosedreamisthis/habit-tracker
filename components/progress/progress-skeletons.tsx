@@ -75,3 +75,38 @@ export const UserMenuSkeleton = () => (
     <Skeleton className="h-4 w-24" />
   </div>
 );
+
+export const MorningMotivationSkeleton = () => (
+  <div className="glass dark:bg-stone-800 p-4 rounded-lg my-5 h-24 w-full">
+    <Skeleton className="h-4 w-40 mb-3" />
+    <Skeleton className="h-3 w-5/6" />
+  </div>
+);
+
+export const DashboardSummarySkeleton = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-4 justify-between gap-3 mx-auto w-full mb-5">
+    {Array.from({ length: 4 }).map((_, i) => (
+      <Skeleton key={i} className="h-20 w-full rounded-lg" />
+    ))}
+  </div>
+);
+
+export const TodayHabitsSkeleton = () => (
+  <div className="flex flex-col gap-4 mt-5 bg-gray-100 dark:bg-stone-800 p-5 rounded-lg shadow-sm w-full">
+    <div className="flex justify-between items-center mb-2">
+      <Skeleton className="h-6 w-32" />
+      <Skeleton className="h-6 w-24" />
+    </div>
+    {Array.from({ length: 3 }).map((_, i) => (
+      <Skeleton key={i} className="h-20 w-full rounded-xl" />
+    ))}
+  </div>
+);
+
+export const HabitListSkeleton = () => (
+  <div className="flex flex-col gap-4 w-full">
+    {Array.from({ length: 4 }).map((_, i) => (
+      <Skeleton key={i} className="h-24 w-full rounded-xl" />
+    ))}
+  </div>
+);
