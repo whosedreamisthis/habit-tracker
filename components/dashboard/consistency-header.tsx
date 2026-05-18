@@ -1,7 +1,11 @@
 import React from "react";
 import { getColor } from "@/lib/utils";
 
-const ConsistencyHeader = () => {
+const ConsistencyHeader = ({
+  totalCompletions,
+}: {
+  totalCompletions: number;
+}) => {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-center">
@@ -21,7 +25,7 @@ const ConsistencyHeader = () => {
         </div>
       </div>
       <p className="text-xs md pb-3 text-muted-foreground dark:text-stone-400">
-        438 completions in the last 90 days
+        {totalCompletions} completions in the last 90 days
       </p>
     </div>
   );

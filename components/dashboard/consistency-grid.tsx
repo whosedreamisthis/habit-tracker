@@ -23,10 +23,15 @@ const ConsistencyGrid = async () => {
     return count;
   });
 
+  const totalCompletions = habits.reduce(
+    (acc, h) => acc + (h.completions?.length || 0),
+    0,
+  );
+
   return (
     <div className="mt-5 bg-white dark:bg-stone-800 p-6 rounded-2xl border border-slate-100 dark:border-stone-700 shadow-sm w-full">
       {/* Labels & Legend omitted for brevity */}
-      <ConsistencyHeader />
+      <ConsistencyHeader totalCompletions={totalCompletions} />
       <div className="grid grid-flow-col grid-rows-7 gap-1 w-fit">
         {days.map((count, i) => (
           <div

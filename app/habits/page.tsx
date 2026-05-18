@@ -3,6 +3,7 @@ import HabitsHeader from "@/components/habits/habits-header";
 import { getAllHabits } from "@/lib/actions";
 import HabitList from "@/components/habits/habit-list";
 import HabitSearch from "@/components/habits/search/habit-search";
+import { Habit } from "@/lib/types";
 
 interface PageProps {
   searchParams: Promise<{ status?: string; q?: string; category?: string }>;
@@ -16,9 +17,11 @@ const HabitsPage = async ({ searchParams }: PageProps) => {
   const currentCategory = params.category || "";
 
   const allHabitsRaw = await getAllHabits();
-  const activeCount = allHabitsRaw.filter((h) => h.status === "active").length;
+  const activeCount = allHabitsRaw.filter(
+    (h: Habit) => h.status === "active",
+  ).length;
   const archivedCount = allHabitsRaw.filter(
-    (h) => h.status === "archived",
+    (h: Habit) => h.status === "archived",
   ).length;
 
   const habits = await getAllHabits({

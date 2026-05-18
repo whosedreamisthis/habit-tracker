@@ -1,11 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SectionHeader from "../common/section-header";
 import { useUser } from "@clerk/nextjs";
 
 const DashboardHeader = () => {
   const { user, isLoaded } = useUser();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -25,7 +30,10 @@ const DashboardHeader = () => {
 
   return (
     <div className="flex justify-between items-center pb-5 gap-2">
-      <SectionHeader title={`Hey ${firstName} 👋`} description={today} />
+      <SectionHeader
+        title={`Hey ${firstName} 👋`}
+        description={mounted ? today : ""}
+      />
     </div>
   );
 };
