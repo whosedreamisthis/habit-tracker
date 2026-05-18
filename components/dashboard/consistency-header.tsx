@@ -25,7 +25,7 @@ const ConsistencyHeader = ({
         </div>
       </div>
       <p className="text-xs md pb-3 text-muted-foreground dark:text-stone-400">
-        {totalCompletions} completions in the last 90 days
+        {totalCompletions} completions in the last 14 weeks
       </p>
     </div>
   );

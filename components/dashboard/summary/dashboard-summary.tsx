@@ -4,6 +4,8 @@ import DashboardSummaryCard from "./dashboard-summary-card";
 
 import { Habit } from "@/lib/types";
 
+import { format } from "date-fns";
+
 const DashboardSummary = async ({ habits }: { habits: Habit[] }) => {
   const totalHabits = habits.length;
   const activeStreaksCount = habits.filter((h) => h.activeStreak > 0).length;
@@ -16,9 +18,11 @@ const DashboardSummary = async ({ habits }: { habits: Habit[] }) => {
 
   // 2. Tally up the matching objects
   const thisWeek = habits.reduce((total, h) => {
-    const completionCountThisWeek = (h.completions || []).filter(
-      (c) => c.date >= limitDateStr,
-    ).length;
+    const completionCountThisWeek = (h.completions || []).filter((c) => {
+      const cDate =
+        typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+      return cDate >= limitDateStr;
+    }).length;
 
     return total + completionCountThisWeek;
   }, 0);

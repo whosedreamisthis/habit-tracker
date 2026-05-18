@@ -13,7 +13,8 @@ import { cookies } from "next/headers";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter", // Keep it simple
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
