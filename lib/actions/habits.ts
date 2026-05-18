@@ -2,6 +2,7 @@
 
 import connectDB from "@/lib/mongodb";
 import { Habit } from "@/lib/models";
+import { Completion } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { NewHabit } from "@/lib/schema";
 import { format } from "date-fns";
@@ -22,17 +23,17 @@ export async function toggleHabitCompletion(
   const todayStr = format(new Date(), "yyyy-MM-dd");
   const targetCompletedState = !currentCompletedState;
 
-  let updatedCompletions = habit.completions.map((c: any) => ({
+  let updatedCompletions = habit.completions.map((c: Completion) => ({
     date: typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd"),
   }));
 
   if (targetCompletedState) {
-    if (!updatedCompletions.some((c: any) => c.date === todayStr)) {
-      updatedCompletions.push({ date: todayStr });
+    if (!updatedCompletions.some((c: Completion) => c.date === todayStr)) {
+      updatedCompletions.push({ date: todayStr } as Completion);
     }
   } else {
     updatedCompletions = updatedCompletions.filter(
-      (c: any) => c.date !== todayStr,
+      (c: Completion) => c.date !== todayStr,
     );
   }
 
@@ -42,7 +43,7 @@ export async function toggleHabitCompletion(
   );
 
   const isCompletedToday = updatedCompletions.some(
-    (c: any) => c.date === todayStr,
+    (c: Completion) => c.date === todayStr,
   );
 
   const updatedHabit = await Habit.findOneAndUpdate(
@@ -83,7 +84,7 @@ export async function editHabit(habitId: string, data: NewHabit) {
   );
 
   const todayStr = format(new Date(), "yyyy-MM-dd");
-  const isCompletedToday = habit.completions.some((c: any) => {
+  const isCompletedToday = habit.completions.some((c: Completion) => {
     const cDate =
       typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
     return cDate === todayStr;
@@ -165,7 +166,7 @@ export async function getAllHabits(filters?: {
 
   const habitsWithSync = habits.map((habit) => {
     const habitObj = habit.toObject();
-    const isCompletedToday = habitObj.completions.some((c: any) => {
+    const isCompletedToday = habitObj.completions.some((c: Completion) => {
       const cDate =
         typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
       return cDate === todayStr;
