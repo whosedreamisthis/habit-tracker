@@ -1,12 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Moon, Sun, LogIn } from "lucide-react";
+import { Moon, Sun, LogIn, LogOut } from "lucide-react";
 import { Show, UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import SettingsButton from "@/components/forms/settings/settings-button";
 import Logo from "@/components/nav/logo";
 import { logoutDemo } from "@/lib/actions";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const TopNav = () => {
   const { theme, setTheme } = useTheme();
@@ -39,15 +47,31 @@ const TopNav = () => {
           <SettingsButton showLabel={false} />
 
           {isDemo ? (
-            <form action={logoutDemo} className="flex items-center">
-              <button
-                type="submit"
-                className="h-8 w-8 rounded-full bg-brand-600 flex items-center justify-center text-white font-bold text-xs"
-                title="Logout Demo"
-              >
-                D
-              </button>
-            </form>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="h-8 w-8 rounded-full bg-brand-600 flex items-center justify-center text-white font-bold text-xs outline-none"
+                  aria-label="Demo User Menu"
+                >
+                  D
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel>Demo User</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <form action={logoutDemo}>
+                  <DropdownMenuItem asChild>
+                    <button
+                      type="submit"
+                      className="w-full cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/20"
+                    >
+                      <LogOut size={16} />
+                      <span>Logout Demo</span>
+                    </button>
+                  </DropdownMenuItem>
+                </form>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <>
               <Show when="signed-in">

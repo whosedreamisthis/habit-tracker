@@ -7,6 +7,7 @@ import { format, subDays, parseISO } from "date-fns";
 import { Habit } from "@/lib/types";
 import { toggleHabitCompletion } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+import confetti from "canvas-confetti";
 
 type Props = {
   habit: Habit;
@@ -32,7 +33,7 @@ const TodayHabitCard = ({ habit, completed }: Props) => {
   const handleToggle = () => {
     startTransition(async () => {
       try {
-        const nextCompleted = !completed;
+        const nextCompleted = !optimisticHabit.completed;
 
         // Calculate next streak optimistically
         const today = new Date();
@@ -42,6 +43,12 @@ const TodayHabitCard = ({ habit, completed }: Props) => {
         const updatedCompletions = [...(habit.completions || [])];
         if (nextCompleted) {
           updatedCompletions.push({ _id: "temp", date: todayStr });
+          confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ["#f59e0b", "#fbbf24", "#d97706", "#b45309"],
+          });
         } else {
           const index = updatedCompletions.findIndex((c) => {
             const d =
