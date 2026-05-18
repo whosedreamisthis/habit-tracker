@@ -11,7 +11,7 @@ const Tabs = () => {
   const pathname = usePathname();
 
   return (
-    <div className="sticky bottom-0 glass w-full flex justify-around items-center py-3 px-4 bg-brand-50/70 dark:bg-stone-800 safe-area-bottom border-t border-brand-100/20">
+    <div className="sticky bottom-0 w-full flex justify-around items-center py-3 px-4 bg-white dark:bg-stone-900 border-t border-slate-200 dark:border-stone-800 safe-area-bottom">
       {NAV_LINKS.map((link) => {
         const isActive = pathname === link.to;
         const Icon =
@@ -24,6 +24,7 @@ const Tabs = () => {
           <Link
             key={link.to}
             href={link.to}
+            prefetch={false}
             className={`flex flex-col justify-center items-center gap-1 transition-colors ${isActive ? "text-brand-800 dark:text-stone-100" : "text-slate-500/80 dark:text-stone-400"}`}
           >
             <Icon

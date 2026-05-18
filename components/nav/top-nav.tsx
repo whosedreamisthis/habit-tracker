@@ -53,7 +53,7 @@ interface TopNavProps {
 
 const TopNav = ({ isDemo }: TopNavProps) => {
   return (
-    <nav className="sticky top-0 z-40 w-full glass bg-brand-50/70 border-b border-brand-100/20 dark:bg-stone-800 md:hidden">
+    <nav className="sticky top-0 z-40 w-full bg-brand-50 border-b border-brand-100/20 dark:bg-stone-800 md:hidden">
       <div className="flex items-center justify-between h-16 px-4">
         <Logo />
         <div className="flex items-center gap-2">

@@ -9,7 +9,7 @@ import AsideFooter from "@/components/nav/aside-footer";
 import TopNav from "@/components/nav/top-nav";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider, Show } from "@clerk/nextjs";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,6 +33,13 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const isDemo = cookieStore.get("demo_mode")?.value === "true";
 
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent,
+    );
+
   return (
     <html lang="en" className={` h-full`} suppressHydrationWarning>
       {/* h-full here is critical to ensure the body can fill the screen */}
@@ -48,28 +55,31 @@ export default async function RootLayout({
           }}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {isDemo ? (
-              <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
-                <div className="bg-white dark:bg-stone-800">
-                  <Logo />
-                </div>
-                <hr className="slate-300" />
-                <Aside className="flex-1" />
-                <AsideFooter isDemo={isDemo} />
-              </div>
-            ) : (
-              <Show when="signed-in">
-                <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
-                  <div className="bg-white dark:bg-stone-800">
-                    <Logo />
+            {!isMobile && (
+              <>
+                {isDemo ? (
+                  <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
+                    <div className="bg-white dark:bg-stone-800">
+                      <Logo />
+                    </div>
+                    <hr className="slate-300" />
+                    <Aside className="flex-1" />
+                    <AsideFooter isDemo={isDemo} />
                   </div>
-                  <hr className="slate-300" />
-                  <Aside className="flex-1" />
-                  <AsideFooter isDemo={isDemo} />
-                </div>
-              </Show>
+                ) : (
+                  <Show when="signed-in">
+                    <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
+                      <div className="bg-white dark:bg-stone-800">
+                        <Logo />
+                      </div>
+                      <hr className="slate-300" />
+                      <Aside className="flex-1" />
+                      <AsideFooter isDemo={isDemo} />
+                    </div>
+                  </Show>
+                )}
+              </>
             )}
-            {/* MOBILE TABS: Only visible on small screens (below md) */}
 
             <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto flex flex-col">
               {isDemo ? (
@@ -82,16 +92,20 @@ export default async function RootLayout({
               <div className="p-8 flex-1">{children}</div>
             </main>
 
-            {isDemo ? (
-              <div className="md:hidden w-full">
-                <Tabs />
-              </div>
-            ) : (
-              <Show when="signed-in">
-                <div className="md:hidden w-full">
-                  <Tabs />
-                </div>
-              </Show>
+            {isMobile && (
+              <>
+                {isDemo ? (
+                  <div className="md:hidden w-full">
+                    <Tabs />
+                  </div>
+                ) : (
+                  <Show when="signed-in">
+                    <div className="md:hidden w-full">
+                      <Tabs />
+                    </div>
+                  </Show>
+                )}
+              </>
             )}
           </ThemeProvider>
         </ClerkProvider>
