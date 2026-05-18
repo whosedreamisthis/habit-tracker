@@ -40,43 +40,39 @@ export const COLORS = [
 import {
   LayoutDashboard,
   ListChecks,
-  CalendarDays,
-  Brain,
-  BarChart3,
   Flame,
   Trophy,
   TrendingUp,
-  Settings,
 } from "lucide-react";
 
 export const NAV_LINKS = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/habits", label: "Habits", icon: ListChecks },
-  { to: "/progress", label: "Progress", icon: TrendingUp },
+  { to: "/dashboard", label: "Dashboard", icon: "LayoutDashboard" },
+  { to: "/habits", label: "Habits", icon: "ListChecks" },
+  { to: "/progress", label: "Progress", icon: "TrendingUp" },
 ];
 
 export const SUMMARY = [
   {
-    icon: ListChecks,
+    icon: "ListChecks",
     iconBg: "rgba(99,102,241,0.15)",
     iconFg: "#6366f1",
     label: "Total habits",
   },
 
   {
-    icon: Flame,
+    icon: "Flame",
     iconBg: "rgba(249,115,22,0.15)",
     iconFg: "#f97316",
     label: "Active streaks",
   },
   {
-    icon: Trophy,
+    icon: "Trophy",
     iconBg: "rgba(245,158,11,0.15)",
     iconFg: "#f59e0b",
     label: "Best streak",
   },
   {
-    icon: TrendingUp,
+    icon: "TrendingUp",
     iconBg: "rgba(16,185,129,0.15)",
     iconFg: "#10b981",
     label: "This week",

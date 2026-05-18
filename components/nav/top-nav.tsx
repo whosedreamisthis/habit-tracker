@@ -87,7 +87,10 @@ const TopNav = () => {
 
                 <Show when="signed-out">
                   <SignInButton mode="modal">
-                    <button className="rounded-full bg-transparent hover:bg-transparent active:bg-transparent p-2 transition-colors  dark:hover:bg-white/5">
+                    <button
+                      className="rounded-full bg-transparent hover:bg-transparent active:bg-transparent p-2 transition-colors  dark:hover:bg-white/5"
+                      aria-label="Sign In"
+                    >
                       <LogIn size={20} />
                     </button>
                   </SignInButton>

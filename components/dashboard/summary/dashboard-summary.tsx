@@ -1,4 +1,5 @@
 import React from "react";
+import { ListChecks, Flame, Trophy, TrendingUp } from "lucide-react";
 import { SUMMARY } from "@/lib/constants";
 import DashboardSummaryCard from "./dashboard-summary-card";
 
@@ -18,21 +19,41 @@ const DashboardSummary = async ({ habits }: { habits: Habit[] }) => {
 
   // 2. Tally up the matching objects
   const thisWeek = habits.reduce((total, h) => {
-    const completionCountThisWeek = (h.completions || []).filter((c) => {
+    if (!h.completions) return total;
+    let count = 0;
+    for (const c of h.completions) {
       const cDate =
-        typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
-      return cDate >= limitDateStr;
-    }).length;
-
-    return total + completionCountThisWeek;
+        typeof c.date === "string"
+          ? c.date.slice(0, 10)
+          : format(c.date, "yyyy-MM-dd");
+      if (cDate >= limitDateStr) {
+        count++;
+      }
+    }
+    return total + count;
   }, 0);
   const stats = [totalHabits, activeStreaksCount, bestStreak, thisWeek];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-4 justify-between gap-3 mx-auto w-full">
-      {SUMMARY.map((item, index) => (
-        <DashboardSummaryCard key={index} {...item} value={stats[index]} />
-      ))}
+      {SUMMARY.map((item, index) => {
+        const Icon =
+          item.icon === "ListChecks"
+            ? ListChecks
+            : item.icon === "Flame"
+              ? Flame
+              : item.icon === "Trophy"
+                ? Trophy
+                : TrendingUp;
+        return (
+          <DashboardSummaryCard
+            key={index}
+            {...item}
+            icon={Icon}
+            value={stats[index]}
+          />
+        );
+      })}
     </div>
   );
 };

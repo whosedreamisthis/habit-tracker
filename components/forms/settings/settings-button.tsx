@@ -15,6 +15,7 @@ const SettingsButton = ({ showLabel }: { showLabel: boolean }) => {
         variant="ghost"
         className="flex items-center gap-2 cursor-pointer justify-start hover:opacity-80 transition p-0"
         onClick={() => setIsOpen(true)}
+        aria-label="Settings"
       >
         <Settings size={18} />
         {showLabel && <p className="pl-1">Settings</p>}

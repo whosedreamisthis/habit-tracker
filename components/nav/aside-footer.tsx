@@ -36,6 +36,7 @@ const AsideFooter = () => {
       <button
         className="flex items-center justify-start gap-4 cursor-pointer hover:opacity-80 transition-all"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
         {theme === "light" ? (
           <div className="flex gap-3 items-center">
