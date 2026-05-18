@@ -36,7 +36,7 @@ const HabitsPage = async ({ searchParams }: PageProps) => {
 
   return (
     <section>
-      <HabitsHeader />
+      <HabitsHeader habits={allHabitsRaw} />
       <HabitSearch
         currentStatus={currentStatus}
         activeCount={activeCount}

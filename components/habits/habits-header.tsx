@@ -2,7 +2,9 @@ import React from "react";
 import SectionHeader from "../common/section-header";
 import SuggestHabitButton from "../forms/habit/suggest-habit-button";
 import AddHabitButton from "../forms/habit/add-habit-button";
-const HabitsHeader = () => {
+import { Habit } from "@/lib/types";
+
+const HabitsHeader = ({ habits }: { habits: Habit[] }) => {
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center pb-5 gap-2">
       <SectionHeader
@@ -11,7 +13,7 @@ const HabitsHeader = () => {
       />
 
       <div className="flex gap-1.5">
-        <SuggestHabitButton />
+        <SuggestHabitButton habits={habits} />
         <AddHabitButton />
       </div>
     </div>

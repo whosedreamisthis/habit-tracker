@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import { Sparkle } from "lucide-react";
 import Modal from "../modal";
-import SuggestHabitForm from "./suggest-habit-form";
+import AISuggestionsForm from "./ai-suggestions-form";
 import { Button } from "@/components/ui/button";
+import { Habit } from "@/lib/types";
 
-const SuggestHabitButton = () => {
+const SuggestHabitButton = ({ habits }: { habits: Habit[] }) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
 
@@ -20,7 +21,7 @@ const SuggestHabitButton = () => {
       </Button>
 
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <SuggestHabitForm onClose={closeModal} />
+        <AISuggestionsForm onClose={closeModal} habits={habits} />
       </Modal>
     </>
   );
