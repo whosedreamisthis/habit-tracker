@@ -1,11 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
-import Modal from "../modal";
-import HabitForm from "@/components/common/habit-form";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { NewHabit } from "@/lib/schema";
 import { createHabit } from "@/lib/actions";
+
+const Modal = dynamic(() => import("../modal"), { ssr: false });
+const HabitForm = dynamic(() => import("@/components/common/habit-form"), {
+  ssr: false,
+});
 
 const AddHabitButton = () => {
   const [isOpen, setIsOpen] = useState(false);

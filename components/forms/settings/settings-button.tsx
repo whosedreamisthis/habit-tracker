@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { Settings } from "lucide-react";
-import Modal from "../modal";
-import SettingsForm from "./settings-form";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
+
+const Modal = dynamic(() => import("../modal"), { ssr: false });
+const SettingsForm = dynamic(() => import("./settings-form"), { ssr: false });
 
 const SettingsButton = ({ showLabel }: { showLabel: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);

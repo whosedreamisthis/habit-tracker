@@ -5,7 +5,7 @@ import TodayHabits from "@/components/dashboard/today-habits/today-habits";
 import ConsistencyGrid from "@/components/dashboard/consistency-grid";
 import { getAllHabits } from "@/lib/actions";
 import MorningMotivation from "@/components/dashboard/morning-motivation";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 const ConsistencyGridSkeleton = () => (
   <div className="mt-5 bg-white dark:bg-stone-800 p-6 rounded-2xl border border-slate-100 dark:border-stone-700 shadow-sm w-full h-[180px] animate-pulse">
@@ -23,11 +23,12 @@ const ConsistencyGridSkeleton = () => (
 
 const DashboardPage = async () => {
   const { userId } = await auth();
+  const user = await currentUser();
   const activeHabits = await getAllHabits({ status: "active" });
 
   return (
     <section>
-      <DashboardHeader />
+      <DashboardHeader firstName={user?.firstName || "Friend"} />
       <MorningMotivation habits={activeHabits} userId={userId} />
       <DashboardSummary habits={activeHabits} />
       <TodayHabits habits={activeHabits} />

@@ -12,10 +12,17 @@ import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import { archiveHabit, editHabit } from "@/lib/actions";
 import { Habit } from "@/lib/types";
-import Modal from "@/components/forms/modal";
-import HabitForm from "@/components/common/habit-form";
+import dynamic from "next/dynamic";
 import { NewHabit } from "@/lib/schema";
-import DeleteHabitForm from "@/components/forms/habit/delete-habit-form";
+
+const Modal = dynamic(() => import("@/components/forms/modal"), { ssr: false });
+const HabitForm = dynamic(() => import("@/components/common/habit-form"), {
+  ssr: false,
+});
+const DeleteHabitForm = dynamic(
+  () => import("@/components/forms/habit/delete-habit-form"),
+  { ssr: false },
+);
 
 const TodayHabitActions = ({
   habit,
