@@ -5,22 +5,30 @@ import FormHeader from "../form-header";
 import ResetMockDataButton from "./reset-mock-data-button";
 import { getUserKey } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
+import { DEMO_USER_ID } from "@/lib/constants";
 
 const SettingsForm = ({ onClose }: { onClose: () => void }) => {
   const [isPending, startTransition] = useTransition();
-  const { userId } = useAuth();
+  const { userId: clerkUserId } = useAuth();
+  const [isDemo, setIsDemo] = useState(false);
 
-  const [isMotivationEnabled, setIsMotivationEnabled] = useState<boolean>(
-    () => {
-      if (typeof window !== "undefined") {
-        const saved = localStorage.getItem(
-          getUserKey(userId, "morning_motivation_enabled"),
-        );
-        return saved === null ? true : saved === "true";
-      }
-      return false;
-    },
-  );
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isDemoMode = document.cookie.includes("demo_mode=true");
+      setIsDemo(isDemoMode);
+    }
+  }, []);
+
+  const userId = clerkUserId || (isDemo ? DEMO_USER_ID : null);
+
+  const [isMotivationEnabled, setIsMotivationEnabled] = useState<boolean>(true);
+
+  React.useEffect(() => {
+    const saved = localStorage.getItem(
+      getUserKey(userId, "morning_motivation_enabled"),
+    );
+    setIsMotivationEnabled(saved === null ? true : saved === "true");
+  }, [userId]);
 
   const handleSave = () => {
     // Wrap the mutation and state signals inside the transition
@@ -88,16 +96,18 @@ const SettingsForm = ({ onClose }: { onClose: () => void }) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
-        <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
-          Data Management
-        </h3>
-        <ResetMockDataButton />
-        <p className="text-xs text-slate-400">
-          Resetting will restore the application to its original state. All
-          custom habits and completions will be lost.
-        </p>
-      </div>
+      {userId === DEMO_USER_ID && (
+        <div className="flex flex-col gap-4">
+          <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+            Data Management
+          </h3>
+          <ResetMockDataButton />
+          <p className="text-xs text-slate-400">
+            Resetting will restore the application to its original state. All
+            custom habits and completions will be lost.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

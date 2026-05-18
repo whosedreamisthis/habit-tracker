@@ -157,6 +157,11 @@ export async function resetAllHabitsData() {
   const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
+  // Safety check: Only allow re-seeding for the demo user
+  if (userId !== DEMO_USER_ID) {
+    throw new Error("Re-seeding is only allowed for the demo user.");
+  }
+
   console.log(`Resetting data for user ${userId}...`);
   await connectDB();
 
