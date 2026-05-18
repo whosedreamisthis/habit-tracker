@@ -15,12 +15,18 @@ const SettingsButton = ({ showLabel }: { showLabel: boolean }) => {
     <>
       <Button
         variant="ghost"
-        className="flex items-center gap-2 cursor-pointer justify-start hover:opacity-80 transition p-0"
+        className={`flex items-center gap-3 cursor-pointer justify-start hover:bg-stone-100 dark:hover:bg-white/5 transition p-2 rounded-lg w-fit ${
+          showLabel ? "-ml-2" : "rounded-full"
+        }`}
         onClick={() => setIsOpen(true)}
         aria-label="Settings"
       >
-        <Settings size={18} />
-        {showLabel && <p className="pl-1">Settings</p>}
+        <Settings size={20} />
+        {showLabel && (
+          <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+            Settings
+          </p>
+        )}
       </Button>
 
       <Modal isOpen={isOpen} onClose={closeModal}>

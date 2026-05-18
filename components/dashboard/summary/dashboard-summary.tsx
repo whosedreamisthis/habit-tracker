@@ -7,7 +7,7 @@ import { Habit } from "@/lib/types";
 
 import { format } from "date-fns";
 
-const DashboardSummary = async ({ habits }: { habits: Habit[] }) => {
+const DashboardSummary = ({ habits }: { habits: Habit[] }) => {
   const totalHabits = habits.length;
   const activeStreaksCount = habits.filter((h) => h.activeStreak > 0).length;
   const bestStreak = Math.max(0, ...habits.map((h) => h.bestStreak));

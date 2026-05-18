@@ -60,17 +60,14 @@ const AsideFooter = ({ isDemo }: AsideFooterProps) => {
     <div className="bg-brand-50/40 dark:bg-stone-800 flex flex-col gap-3 pb-3 px-5 w-full text-slate-600 dark:text-slate-300 text-sm">
       <hr className="slate-300" />
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <ThemeToggle className="-ml-2" />
-          <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
-            Theme
-          </span>
+      <div className="flex flex-col gap-1 -mb-1">
+        <div className="flex items-center">
+          <ThemeToggle showLabel={true} />
         </div>
-      </div>
 
-      <div className="min-h-[40px]">
-        <SettingsButton showLabel={true} />
+        <div className="">
+          <SettingsButton showLabel={true} />
+        </div>
       </div>
 
       <div className="min-h-[48px]">

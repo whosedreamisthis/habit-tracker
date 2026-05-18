@@ -8,8 +8,8 @@ import Tabs from "@/components/nav/tabs";
 import AsideFooter from "@/components/nav/aside-footer";
 import TopNav from "@/components/nav/top-nav";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { ClerkProvider, Show } from "@clerk/nextjs";
-import { cookies, headers } from "next/headers";
+import { ClerkProvider } from "@clerk/nextjs";
+import { cookies } from "next/headers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,19 +33,12 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const isDemo = cookieStore.get("demo_mode")?.value === "true";
 
-  const headersList = await headers();
-  const userAgent = headersList.get("user-agent") || "";
-  const isMobile =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      userAgent,
-    );
-
   return (
     <html lang="en" className={` h-full`} suppressHydrationWarning>
       {/* h-full here is critical to ensure the body can fill the screen */}
 
       <body
-        className={`${inter.className}  h-full flex flex-col md:flex-row antialiased w-full`}
+        className={`${inter.className}  h-full flex flex-col md:flex-row antialiased w-full overflow-hidden bg-brand-100/50 dark:bg-black`}
       >
         {/* 1. ASIDE: Fixed width, glass style, stays on the left */}
         <ClerkProvider
@@ -55,58 +48,26 @@ export default async function RootLayout({
           }}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {!isMobile && (
-              <>
-                {isDemo ? (
-                  <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
-                    <div className="bg-white dark:bg-stone-800">
-                      <Logo />
-                    </div>
-                    <hr className="slate-300" />
-                    <Aside className="flex-1" />
-                    <AsideFooter isDemo={isDemo} />
-                  </div>
-                ) : (
-                  <Show when="signed-in">
-                    <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
-                      <div className="bg-white dark:bg-stone-800">
-                        <Logo />
-                      </div>
-                      <hr className="slate-300" />
-                      <Aside className="flex-1" />
-                      <AsideFooter isDemo={isDemo} />
-                    </div>
-                  </Show>
-                )}
-              </>
-            )}
+            {/* Desktop Sidebar: Only rendered on larger screens */}
+            <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800 shrink-0">
+              <div className="bg-white dark:bg-stone-800">
+                <Logo />
+              </div>
+              <hr className="slate-300" />
+              <Aside className="flex-1" />
+              <AsideFooter isDemo={isDemo} />
+            </div>
 
-            <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto flex flex-col">
-              {isDemo ? (
-                <TopNav isDemo={isDemo} />
-              ) : (
-                <Show when="signed-in">
-                  <TopNav isDemo={isDemo} />
-                </Show>
-              )}
-              <div className="p-8 flex-1">{children}</div>
+            <main className="flex-1 flex flex-col min-h-0 overflow-hidden relative w-full shrink-1">
+              <TopNav isDemo={isDemo} />
+              <div className="p-4 md:p-8 flex-1 overflow-y-auto relative">
+                {children}
+              </div>
             </main>
 
-            {isMobile && (
-              <>
-                {isDemo ? (
-                  <div className="md:hidden w-full">
-                    <Tabs />
-                  </div>
-                ) : (
-                  <Show when="signed-in">
-                    <div className="md:hidden w-full">
-                      <Tabs />
-                    </div>
-                  </Show>
-                )}
-              </>
-            )}
+            <div className="md:hidden w-full sticky bottom-0 z-50 shrink-0">
+              <Tabs />
+            </div>
           </ThemeProvider>
         </ClerkProvider>
       </body>
