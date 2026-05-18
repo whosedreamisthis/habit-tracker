@@ -1,55 +1,28 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import {
-  Show,
-  UserButton,
-  SignInButton,
-  SignUpButton,
-  useUser,
-} from "@clerk/nextjs";
-import { Moon, Sun, LogIn, UserPlus, LogOut } from "lucide-react";
-import { useTheme } from "next-themes";
+import React from "react";
+import { Show, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { LogIn, UserPlus, LogOut } from "lucide-react";
 import SettingsButton from "../forms/settings/settings-button";
 import { logoutDemo } from "@/lib/actions";
+import ThemeToggle from "./theme-toggle";
 
-const AsideFooter = () => {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const { isLoaded, isSignedIn } = useUser();
+interface AsideFooterProps {
+  isDemo: boolean;
+}
 
-  useEffect(() => {
-    const init = () => setMounted(true);
-    init();
-  }, []);
-
-  if (!mounted) return null;
-
-  const isDemo =
-    typeof document !== "undefined" &&
-    document.cookie.includes("demo_mode=true");
-
+const AsideFooter = ({ isDemo }: AsideFooterProps) => {
   return (
     <div className="bg-brand-50/40 dark:bg-stone-800 flex flex-col gap-3 pb-3 px-5 w-full text-slate-600 dark:text-slate-300 text-sm">
       <hr className="slate-300" />
 
-      <button
-        className="flex items-center justify-start gap-4 cursor-pointer hover:opacity-80"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      >
-        {theme === "light" ? (
-          <div className="flex gap-3 items-center">
-            <Moon size={18} />
-            <p>Dark mode</p>
-          </div>
-        ) : (
-          <div className="flex gap-3 items-center">
-            <Sun size={18} />
-            <p>Light mode</p>
-          </div>
-        )}
-      </button>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <ThemeToggle className="-ml-2" />
+          <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
+            Theme
+          </span>
+        </div>
+      </div>
+
       <SettingsButton showLabel={true} />
 
       {isDemo ? (

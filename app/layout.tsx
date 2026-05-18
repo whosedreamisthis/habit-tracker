@@ -55,7 +55,7 @@ export default async function RootLayout({
                 </div>
                 <hr className="slate-300" />
                 <Aside className="flex-1" />
-                <AsideFooter />
+                <AsideFooter isDemo={isDemo} />
               </div>
             ) : (
               <Show when="signed-in">
@@ -65,7 +65,7 @@ export default async function RootLayout({
                   </div>
                   <hr className="slate-300" />
                   <Aside className="flex-1" />
-                  <AsideFooter />
+                  <AsideFooter isDemo={isDemo} />
                 </div>
               </Show>
             )}
@@ -73,10 +73,10 @@ export default async function RootLayout({
 
             <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto flex flex-col">
               {isDemo ? (
-                <TopNav />
+                <TopNav isDemo={isDemo} />
               ) : (
                 <Show when="signed-in">
-                  <TopNav />
+                  <TopNav isDemo={isDemo} />
                 </Show>
               )}
               <div className="p-8 flex-1">{children}</div>
