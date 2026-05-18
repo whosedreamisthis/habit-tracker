@@ -1,10 +1,10 @@
+"use client";
+
 import React from "react";
 import { LogIn, LogOut } from "lucide-react";
-import { Show, UserButton, SignInButton } from "@clerk/nextjs";
-import SettingsButton from "@/components/forms/settings/settings-button";
+import dynamic from "next/dynamic";
 import Logo from "@/components/nav/logo";
 import { logoutDemo } from "@/lib/actions";
-import ThemeToggle from "./theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +13,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+const ThemeToggle = dynamic(() => import("./theme-toggle"), { ssr: false });
+const SettingsButton = dynamic(
+  () => import("@/components/forms/settings/settings-button"),
+  { ssr: false },
+);
+const Show = dynamic(() => import("@clerk/nextjs").then((mod) => mod.Show), {
+  ssr: false,
+});
+const UserButton = dynamic(
+  () => import("@clerk/nextjs").then((mod) => mod.UserButton),
+  { ssr: false },
+);
+const SignInButton = dynamic(
+  () => import("@clerk/nextjs").then((mod) => mod.SignInButton),
+  { ssr: false },
+);
 
 interface TopNavProps {
   isDemo: boolean;
@@ -27,56 +44,58 @@ const TopNav = ({ isDemo }: TopNavProps) => {
           <ThemeToggle />
           <SettingsButton showLabel={false} />
 
-          {isDemo ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="h-8 w-8 rounded-full bg-brand-600 flex items-center justify-center text-white font-bold text-xs outline-none hover:opacity-90 transition-opacity"
-                  aria-label="Demo User Menu"
-                >
-                  D
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuLabel>Demo User</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <form action={logoutDemo}>
-                  <DropdownMenuItem asChild>
-                    <button
-                      type="submit"
-                      className="w-full cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/20"
-                    >
-                      <LogOut size={16} />
-                      <span>Logout Demo</span>
-                    </button>
-                  </DropdownMenuItem>
-                </form>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <>
-              <Show when="signed-in">
-                <UserButton
-                  appearance={{
-                    elements: {
-                      userButtonAvatarBox: "h-8 w-8",
-                    },
-                  }}
-                />
-              </Show>
-
-              <Show when="signed-out">
-                <SignInButton mode="modal">
+          <div className="min-w-[32px] flex items-center justify-center">
+            {isDemo ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                   <button
-                    className="rounded-full bg-transparent p-2 transition-colors hover:bg-stone-100 dark:hover:bg-white/5"
-                    aria-label="Sign In"
+                    className="h-8 w-8 rounded-full bg-brand-600 flex items-center justify-center text-white font-bold text-xs outline-none hover:opacity-90 transition-opacity"
+                    aria-label="Demo User Menu"
                   >
-                    <LogIn size={20} />
+                    D
                   </button>
-                </SignInButton>
-              </Show>
-            </>
-          )}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuLabel>Demo User</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <form action={logoutDemo}>
+                    <DropdownMenuItem asChild>
+                      <button
+                        type="submit"
+                        className="w-full cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/20"
+                      >
+                        <LogOut size={16} />
+                        <span>Logout Demo</span>
+                      </button>
+                    </DropdownMenuItem>
+                  </form>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Show when="signed-in">
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        userButtonAvatarBox: "h-8 w-8",
+                      },
+                    }}
+                  />
+                </Show>
+
+                <Show when="signed-out">
+                  <SignInButton mode="modal">
+                    <button
+                      className="rounded-full bg-transparent p-2 transition-colors hover:bg-stone-100 dark:hover:bg-white/5"
+                      aria-label="Sign In"
+                    >
+                      <LogIn size={20} />
+                    </button>
+                  </SignInButton>
+                </Show>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>
