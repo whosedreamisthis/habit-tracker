@@ -1,8 +1,9 @@
-import { format, subDays } from "date-fns";
+import { format, startOfWeek, addDays } from "date-fns";
 
 export const getDaysOfCurrentWeek = () => {
+  const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   return Array.from({ length: 7 }).map((_, i) => {
-    const d = subDays(new Date(), 6 - i);
+    const d = addDays(start, i);
     return {
       label: format(d, "EEE"), // "Mon"
       date: d.getDate(), // 11

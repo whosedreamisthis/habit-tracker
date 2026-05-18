@@ -2,14 +2,15 @@ import React from "react";
 import HabitIcon from "../common/habit-icon";
 import { Check } from "lucide-react";
 import { Habit } from "@/lib/types";
-import { format, subDays } from "date-fns";
+import { format, startOfWeek, addDays } from "date-fns";
 
 const GridRow = ({ habit }: { habit: Habit }) => {
   const { icon, color, name, completions } = habit;
 
-  // We want to show the last 7 days from left to right, ending today
+  // We want to show the current week from Monday to Sunday
+  const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const days = Array.from({ length: 7 }).map((_, i) =>
-    format(subDays(new Date(), 6 - i), "yyyy-MM-dd"),
+    format(addDays(start, i), "yyyy-MM-dd"),
   );
 
   return (
