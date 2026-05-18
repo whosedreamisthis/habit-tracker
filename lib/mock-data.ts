@@ -6,7 +6,7 @@ import { format, subDays, parseISO } from "date-fns";
 const todayKey = () => format(new Date(), "yyyy-MM-dd");
 
 export const mockUser = {
-  _id: "u_alex",
+  _id: "user_3DsLLAbzGlHCl02OZBjd7C70yys",
   name: "Alex Rivera",
   email: "alex@example.com",
   avatar: "A",
