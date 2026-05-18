@@ -7,6 +7,7 @@ import Logo from "@/components/nav/logo";
 import Tabs from "@/components/nav/tabs";
 import AsideFooter from "@/components/nav/aside-footer";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,23 +32,25 @@ export default function RootLayout({
         className={`${inter.className}  h-full flex flex-col md:flex-row antialiased w-full`}
       >
         {/* 1. ASIDE: Fixed width, glass style, stays on the left */}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
-            <Logo />
-            <hr className="slate-300" />
-            <Aside className="flex-1" />
-            <AsideFooter />
-          </div>
-          {/* MOBILE TABS: Only visible on small screens (below md) */}
+        <ClerkProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800">
+              <Logo />
+              <hr className="slate-300" />
+              <Aside className="flex-1" />
+              <AsideFooter />
+            </div>
+            {/* MOBILE TABS: Only visible on small screens (below md) */}
 
-          <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto">
-            <div className="p-8">{children} </div>
-          </main>
+            <main className="bg-brand-100/50 dark:bg-black flex-1 h-full overflow-y-auto">
+              <div className="p-8">{children} </div>
+            </main>
 
-          <div className="md:hidden w-full">
-            <Tabs />
-          </div>
-        </ThemeProvider>
+            <div className="md:hidden w-full">
+              <Tabs />
+            </div>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

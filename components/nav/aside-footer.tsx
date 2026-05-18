@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Moon, Sun, LogOut } from "lucide-react";
+import { Show, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { Moon, Sun, LogIn, UserPlus } from "lucide-react";
 import { useTheme } from "next-themes";
 import SettingsButton from "../forms/settings/settings-button";
 const AsideFooter = () => {
@@ -35,20 +36,35 @@ const AsideFooter = () => {
         )}
       </button>
       <SettingsButton showLabel={true} />
-      <div className="flex items-center justify-between ">
-        <div className="flex gap-2">
-          <div className="h-10 w-10  flex items-center justify-center bg-brand-600 rounded-full">
-            <p className="text-xl text-white ">A</p>
-          </div>
-          <div className="flex flex-col">
-            <p className="text-md text-black dark:text-white font-semibold">
-              Username
-            </p>
-            <p className="text-xs text-muted-foreground">email@example.com</p>
-          </div>
+      <Show when="signed-in">
+        <div className="flex items-center justify-between ">
+          <UserButton
+            appearance={{
+              elements: {
+                userButtonAvatarBox: "h-10 w-10",
+              },
+            }}
+            showName
+          />
         </div>
-        <LogOut className="mr-2" size={17} />
-      </div>
+      </Show>
+
+      <Show when="signed-out">
+        <div className="flex flex-col gap-2">
+          <SignInButton mode="modal">
+            <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg w-full text-left">
+              <LogIn size={18} />
+              <span>Sign In</span>
+            </button>
+          </SignInButton>
+          <SignUpButton mode="modal">
+            <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium bg-brand-600 text-white transition-opacity hover:opacity-90 rounded-lg w-full text-left">
+              <UserPlus size={18} />
+              <span>Sign Up</span>
+            </button>
+          </SignUpButton>
+        </div>
+      </Show>
     </div>
   );
 };
