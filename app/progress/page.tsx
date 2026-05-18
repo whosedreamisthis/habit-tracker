@@ -37,7 +37,7 @@ const ProgressPage = async ({ searchParams }: PageProps) => {
   ];
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-6 m-5">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <SectionHeader title="Progress & Insights" description={range} />
 
