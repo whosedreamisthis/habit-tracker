@@ -17,7 +17,7 @@ const DashboardPage = async () => {
       <MorningMotivation habits={activeHabits} userId={userId} />
       <DashboardSummary habits={activeHabits} />
       <TodayHabits habits={activeHabits} />
-      <ConsistencyGrid />
+      <ConsistencyGrid habits={activeHabits} />
     </section>
   );
 };

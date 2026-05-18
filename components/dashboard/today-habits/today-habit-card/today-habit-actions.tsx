@@ -67,6 +67,7 @@ const TodayHabitActions = ({
           <Button
             variant="ghost"
             className="hover:bg-transparent active:bg-transparent dark:text-stone-100"
+            aria-label="Habit options"
           >
             <Ellipsis className="mt-2" />
           </Button>
@@ -130,6 +131,9 @@ const TodayHabitActions = ({
           onToggle();
         }}
         disabled={isPending}
+        aria-label={
+          completed ? "Mark habit as incomplete" : "Mark habit as complete"
+        }
       >
         <Check strokeWidth={3} size={22} />
       </button>

@@ -1,19 +1,10 @@
 import React from "react";
 import ConsistencyHeader from "@/components/dashboard/consistency-header";
 import { getColor } from "@/lib/utils";
-import { getAllHabits } from "@/lib/actions";
-import {
-  format,
-  subDays,
-  startOfWeek,
-  addDays,
-  differenceInDays,
-} from "date-fns";
+import { format, subDays, startOfWeek, addDays } from "date-fns";
 import { Habit } from "@/lib/types";
 
-const ConsistencyGrid = async () => {
-  const habits = await getAllHabits({ status: "active" });
-
+const ConsistencyGrid = ({ habits }: { habits: Habit[] }) => {
   const today = new Date();
   // Start from a Monday approximately 90 days ago to ensure grid alignment
   const startDate = startOfWeek(subDays(today, 90), { weekStartsOn: 1 });

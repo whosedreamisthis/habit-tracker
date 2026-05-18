@@ -3,11 +3,11 @@ import React, { useOptimistic, useTransition } from "react";
 import TodayHabitInfo from "./today-habit-info";
 import HabitIcon from "../../../common/habit-icon";
 import TodayHabitActions from "@/components/dashboard/today-habits/today-habit-card/today-habit-actions";
-import { format, subDays, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Habit } from "@/lib/types";
 import { toggleHabitCompletion } from "@/lib/actions";
 import { useRouter } from "next/navigation";
-import confetti from "canvas-confetti";
+// import confetti from "canvas-confetti"; // Moved to dynamic import inside handleToggle
 
 type Props = {
   habit: Habit;
@@ -43,6 +43,7 @@ const TodayHabitCard = ({ habit, completed }: Props) => {
         const updatedCompletions = [...(habit.completions || [])];
         if (nextCompleted) {
           updatedCompletions.push({ _id: "temp", date: todayStr });
+          const confetti = (await import("canvas-confetti")).default;
           confetti({
             particleCount: 150,
             spread: 70,
