@@ -35,7 +35,7 @@ export default async function RootPage() {
         <form action={loginAsDemo} className="flex-1">
           <Button
             type="submit"
-            className="w-full bg-brand-600 hover:bg-brand-700 text-white h-14 text-lg font-semibold transition-all hover:scale-105"
+            className="w-full bg-brand-600 hover:bg-brand-700 text-white h-14 text-lg font-semibold transition-all hover:scale-105 cursor-pointer"
           >
             Demo
           </Button>
@@ -43,7 +43,7 @@ export default async function RootPage() {
         <SignInButton mode="modal">
           <Button
             variant="outline"
-            className="flex-1 border-brand-200 h-14 text-lg font-semibold bg-white dark:bg-stone-900 dark:border-stone-800 transition-all hover:scale-105"
+            className="flex-1 border-brand-200 h-14 text-lg font-semibold bg-white dark:bg-stone-900 dark:border-stone-800 transition-all hover:scale-105 cursor-pointer"
           >
             Sign In
           </Button>
