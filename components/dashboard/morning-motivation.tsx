@@ -144,10 +144,10 @@ const MorningMotivation = ({
   if (!isMotivationEnabled || isDismissedToday) return null;
 
   return (
-    <Card className="glass dark:bg-stone-800 p-4 rounded-lg border-none my-5 relative group transition-all duration-300">
+    <Card className="glass dark:bg-stone-800 p-4 rounded-lg border-none my-5 relative group ">
       <button
         onClick={handleDismiss}
-        className="absolute top-3 right-3 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors rounded-md p-1 focus:outline-hidden"
+        className="absolute top-3 right-3 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200  rounded-md p-1 focus:outline-hidden"
         aria-label="Dismiss morning motivation for today"
       >
         <X size={16} />

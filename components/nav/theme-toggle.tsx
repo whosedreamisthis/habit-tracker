@@ -26,7 +26,7 @@ const ThemeToggle = ({
 
   return (
     <button
-      className={`flex items-center gap-3 cursor-pointer transition-colors hover:bg-stone-100 dark:hover:bg-white/5 active:scale-95 duration-200 rounded-lg p-2 ${
+      className={`flex items-center gap-3 cursor-pointer hover:bg-stone-100 hover:bg-transparent active:scale-95 duration-0 rounded-lg p-2 ${
         showLabel ? "-ml-2" : "rounded-full"
       } ${className}`}
       onClick={() => setTheme(isDark ? "light" : "dark")}

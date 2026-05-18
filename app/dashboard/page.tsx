@@ -40,7 +40,7 @@ const DashboardData = async () => {
 
 const DashboardPage = () => {
   return (
-    <section>
+    <section className="p-4 md:p-8">
       <Suspense fallback={<DashboardHeader firstName="Friend" />}>
         <UserHeader />
       </Suspense>

@@ -50,7 +50,7 @@ const HabitsData = async ({
 
 const HabitsPage = ({ searchParams }: PageProps) => {
   return (
-    <section>
+    <section className="p-4 md:p-8">
       <Suspense
         fallback={
           <div className="space-y-6 animate-pulse">

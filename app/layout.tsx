@@ -7,6 +7,7 @@ import Logo from "@/components/nav/logo";
 import Tabs from "@/components/nav/tabs";
 import AsideFooter from "@/components/nav/aside-footer";
 import TopNav from "@/components/nav/top-nav";
+import NavVisibilityWrapper from "@/components/nav/nav-visibility-wrapper";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cookies } from "next/headers";
@@ -49,25 +50,29 @@ export default async function RootLayout({
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {/* Desktop Sidebar: Only rendered on larger screens */}
-            <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800 shrink-0">
-              <div className="bg-white dark:bg-stone-800">
-                <Logo />
+            <NavVisibilityWrapper>
+              <div className="hidden md:flex flex-col w-64 h-full glass border-r border-brand-100/20 dark:bg-stone-800 shrink-0">
+                <div className="bg-white dark:bg-stone-800">
+                  <Logo />
+                </div>
+                <hr className="slate-300" />
+                <Aside className="flex-1" />
+                <AsideFooter isDemo={isDemo} />
               </div>
-              <hr className="slate-300" />
-              <Aside className="flex-1" />
-              <AsideFooter isDemo={isDemo} />
-            </div>
+            </NavVisibilityWrapper>
 
-            <main className="flex-1 flex flex-col min-h-0 overflow-hidden relative w-full shrink-1">
-              <TopNav isDemo={isDemo} />
-              <div className="p-4 md:p-8 flex-1 overflow-y-auto relative">
-                {children}
-              </div>
+            <main className="flex-1 flex flex-col min-h-0 overflow-hidden relative w-full shrink-1 bg-brand-100/50 dark:bg-black">
+              <NavVisibilityWrapper>
+                <TopNav isDemo={isDemo} />
+              </NavVisibilityWrapper>
+              <div className="flex-1 overflow-y-auto relative">{children}</div>
             </main>
 
-            <div className="md:hidden w-full sticky bottom-0 z-50 shrink-0">
-              <Tabs />
-            </div>
+            <NavVisibilityWrapper>
+              <div className="md:hidden w-full sticky bottom-0 z-50 shrink-0">
+                <Tabs />
+              </div>
+            </NavVisibilityWrapper>
           </ThemeProvider>
         </ClerkProvider>
       </body>
