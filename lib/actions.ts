@@ -299,13 +299,17 @@ export async function toggleHabitCompletion(
     habit.targetDays,
   );
 
+  const isCompletedToday = updatedCompletions.some(
+    (c: any) => c.date === todayStr,
+  );
+
   await Habit.updateOne(
     { _id: habitId, userId },
     {
       completions: updatedCompletions,
       activeStreak,
       bestStreak: Math.max(bestStreak, habit.bestStreak),
-      isCompletedToday: targetCompletedState,
+      isCompletedToday: isCompletedToday,
     },
   );
 
@@ -334,12 +338,20 @@ export async function editHabit(habitId: string, data: NewHabit) {
     data.targetDays,
   );
 
+  const todayStr = format(new Date(), "yyyy-MM-dd");
+  const isCompletedToday = habit.completions.some((c: any) => {
+    const cDate =
+      typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+    return cDate === todayStr;
+  });
+
   await Habit.updateOne(
     { _id: habitId, userId },
     {
       ...data,
       activeStreak,
       bestStreak: Math.max(bestStreak, habit.bestStreak),
+      isCompletedToday,
     },
   );
 
@@ -405,5 +417,21 @@ export async function getAllHabits(filters?: {
   }
 
   const habits = await Habit.find(query).sort({ order: 1, createdAt: -1 });
-  return JSON.parse(JSON.stringify(habits));
+  const todayStr = format(new Date(), "yyyy-MM-dd");
+
+  const habitsWithSync = habits.map((habit) => {
+    const habitObj = habit.toObject();
+    const isCompletedToday = habitObj.completions.some((c: any) => {
+      const cDate =
+        typeof c.date === "string" ? c.date : format(c.date, "yyyy-MM-dd");
+      return cDate === todayStr;
+    });
+
+    return {
+      ...habitObj,
+      isCompletedToday,
+    };
+  });
+
+  return JSON.parse(JSON.stringify(habitsWithSync));
 }
